@@ -7,12 +7,10 @@ app.use(express.json()); // middleware to convert everything to json
 // TODO:
 // Post user signs in
 // Del delete a reptile
-// PUT update a reptile
 // Post create a feeding for reptile
 // GET list all feedings for a reptile
 // POST create husbandry record for a reptile
 // POST create a schedule for a reptile
-// GET all schedules for a reptile
 
 type CreateUserBody = {
   firstName: string;
@@ -47,12 +45,6 @@ app.get("/users", async (req, res) => {
   res.json({ users });
 });
 
-// GET list all reptiles
-app.get("/reptiles", async (req, res) => {
-  const reptiles = await client.reptile.findMany();
-  res.json({ reptiles });
-});
-
 type CreateReptileBody = {
   userId: number;
   species: string;
@@ -61,6 +53,34 @@ type CreateReptileBody = {
   createdAt: string;
   updatedAt: string;
 };
+
+// GET list all reptiles
+app.get("/reptiles", async (req, res) => {
+  const reptiles = await client.reptile.findMany();
+  res.json({ reptiles });
+});
+
+// PUT update a reptile
+// What is the best way to get the data back for a specific reptile? just update everything?
+// Why doesn't postman think this is a put request?
+app.put("/reptiles/:id", async (req, res) => {
+  console.log("UDPATE REPTILE");
+  const reptileId = parseInt(req.params.id);
+  const { species, name, sex, userId } = req.body as CreateReptileBody;
+  const reptile = await client.reptile.update({
+    where: {
+      id: reptileId,
+    },
+    data: {
+      species: species,
+      name: name,
+      sex: sex,
+      userId: userId,
+    },
+  });
+  res.json({ reptile });
+});
+
 // Post create a reptile
 app.post("/reptiles", async (req, res) => {
   const { species, name, sex } = req.body as CreateReptileBody;
@@ -92,8 +112,19 @@ app.get("/schedules/:id", async (req, res) => {
   res.json({ schedules });
 });
 
+// GET all schedules for a reptile
+app.get("/schedules/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const schedules = await client.schedule.findMany({
+    where: {
+      reptileId: id,
+    },
+  });
+  res.json({ schedules });
+});
+
 app.get("/", (req, res) => {
-  res.send(`<h1>Hello, world!</h1>`);
+  res.send(`<h1>Welcome to the homepage</h1>`);
 });
 
 app.listen(3000, () => {
@@ -101,18 +132,5 @@ app.listen(3000, () => {
 });
 
 function getCurrentDateTime() {
-  let currentdate = new Date();
-  let datetime =
-    currentdate.getDay() +
-    "/" +
-    currentdate.getMonth() +
-    "/" +
-    currentdate.getFullYear() +
-    " @ " +
-    currentdate.getHours() +
-    ":" +
-    currentdate.getMinutes() +
-    ":" +
-    currentdate.getSeconds();
-  return currentdate.toISOString();
+  return new Date().toISOString();
 }

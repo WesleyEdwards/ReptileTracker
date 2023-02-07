@@ -63,9 +63,11 @@ type CreateReptileBody = {
 };
 // Post create a reptile
 app.post("/reptiles", async (req, res) => {
-  const { userId, species, name, sex } = req.body as CreateReptileBody;
+  const { species, name, sex } = req.body as CreateReptileBody;
   const createdAt = getCurrentDateTime();
   const updatedAt = createdAt;
+  const userId = parseInt(req.body.userId);
+  console.log(req.body);
   const reptile = await client.reptile.create({
     data: {
       userId,

@@ -7,7 +7,7 @@ app.use(express.json()); // middleware to convert everything to json
 // TODO:
 // Post create a user account
 // Post user signs in
-// Post create a reptile
+
 // Del delete a reptile
 // PUT update a reptile
 // Post create a feeding for reptile
@@ -20,6 +20,31 @@ app.use(express.json()); // middleware to convert everything to json
 app.get("/reptiles", async (req, res) => {
   const reptiles = await client.reptile.findMany();
   res.json({ reptiles });
+});
+
+type CreateReptileBody = {
+  userId: number;
+  species: string;
+  name: string;
+  sex: string;
+  createdAt: string;
+  updatedAt: string;
+};
+// Post create a reptile
+app.post("/reptiles", async (req, res) => {
+  const { userId, species, name, sex, createdAt, updatedAt } =
+    req.body as CreateReptileBody;
+  const reptile = await client.reptile.create({
+    data: {
+      userId,
+      species,
+      name,
+      sex,
+      createdAt,
+      updatedAt,
+    },
+  });
+  res.json({ reptile });
 });
 
 // GET list all schedules for a user

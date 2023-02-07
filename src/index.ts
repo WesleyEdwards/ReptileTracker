@@ -5,7 +5,6 @@ const app = express();
 app.use(express.json()); // middleware to convert everything to json
 
 // TODO:
-
 // Post user signs in
 // Del delete a reptile
 // PUT update a reptile
@@ -25,8 +24,10 @@ type CreateUserBody = {
 };
 // Post create a user account
 app.post("/users", async (req, res) => {
-  const { firstName, lastName, email, passwordHash, createdAt, updatedAt } =
+  const { firstName, lastName, email, passwordHash } =
     req.body as CreateUserBody;
+  const createdAt = getCurrentDateTime();
+  const updatedAt = createdAt;
   const user = await client.user.create({
     data: {
       firstName,
@@ -38,6 +39,12 @@ app.post("/users", async (req, res) => {
     },
   });
   res.json({ user });
+});
+
+// GET list all users
+app.get("/users", async (req, res) => {
+  const users = await client.user.findMany();
+  res.json({ users });
 });
 
 // GET list all reptiles
@@ -56,8 +63,9 @@ type CreateReptileBody = {
 };
 // Post create a reptile
 app.post("/reptiles", async (req, res) => {
-  const { userId, species, name, sex, createdAt, updatedAt } =
-    req.body as CreateReptileBody;
+  const { userId, species, name, sex } = req.body as CreateReptileBody;
+  const createdAt = getCurrentDateTime();
+  const updatedAt = createdAt;
   const reptile = await client.reptile.create({
     data: {
       userId,
@@ -89,3 +97,20 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("I got started!");
 });
+
+function getCurrentDateTime() {
+  let currentdate = new Date();
+  let datetime =
+    currentdate.getDay() +
+    "/" +
+    currentdate.getMonth() +
+    "/" +
+    currentdate.getFullYear() +
+    " @ " +
+    currentdate.getHours() +
+    ":" +
+    currentdate.getMinutes() +
+    ":" +
+    currentdate.getSeconds();
+  return currentdate.toISOString();
+}

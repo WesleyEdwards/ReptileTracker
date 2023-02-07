@@ -10,9 +10,15 @@ This project serves as a starting point for full-stack applications.
 yarn
 ```
 
+### Migrate Data
+
+```bash
+yarn migrate
+```
+
 ## Development
 
-Start the server by running:
+### Start the server by running:
 
 ```bash
 yarn dev
@@ -20,7 +26,7 @@ yarn dev
 
 ## Production
 
-Build the project by running
+### Build the project by running
 
 ```bash
 yarn build

@@ -5,9 +5,8 @@ const app = express();
 app.use(express.json()); // middleware to convert everything to json
 
 // TODO:
-// Post create a user account
-// Post user signs in
 
+// Post user signs in
 // Del delete a reptile
 // PUT update a reptile
 // Post create a feeding for reptile
@@ -15,6 +14,31 @@ app.use(express.json()); // middleware to convert everything to json
 // POST create husbandry record for a reptile
 // POST create a schedule for a reptile
 // GET all schedules for a reptile
+
+type CreateUserBody = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  passwordHash: string;
+  createdAt: string;
+  updatedAt: string;
+};
+// Post create a user account
+app.post("/users", async (req, res) => {
+  const { firstName, lastName, email, passwordHash, createdAt, updatedAt } =
+    req.body as CreateUserBody;
+  const user = await client.user.create({
+    data: {
+      firstName,
+      lastName,
+      email,
+      passwordHash,
+      createdAt,
+      updatedAt,
+    },
+  });
+  res.json({ user });
+});
 
 // GET list all reptiles
 app.get("/reptiles", async (req, res) => {

@@ -20,7 +20,8 @@ type CreateUserBody = {
   createdAt: string;
   updatedAt: string;
 };
-// Post create a user account
+
+// Create a user account POST
 app.post("/users", async (req, res) => {
   const { firstName, lastName, email, passwordHash } =
     req.body as CreateUserBody;
@@ -39,7 +40,7 @@ app.post("/users", async (req, res) => {
   res.json({ user });
 });
 
-// GET list all users
+// List all users GET
 app.get("/users", async (req, res) => {
   const users = await client.user.findMany();
   res.json({ users });
@@ -54,17 +55,17 @@ type CreateReptileBody = {
   updatedAt: string;
 };
 
-// GET list all reptiles
+// List all reptiles GET
 app.get("/reptiles", async (req, res) => {
   const reptiles = await client.reptile.findMany();
   res.json({ reptiles });
 });
 
-// PUT update a reptile
+// Update a reptile PUT
 // What is the best way to get the data back for a specific reptile? just update everything?
 // Why doesn't postman think this is a put request?
 app.put("/reptiles/:id", async (req, res) => {
-  console.log("UDPATE REPTILE");
+  console.log("UPDATE REPTILE");
   const reptileId = parseInt(req.params.id);
   const { species, name, sex, userId } = req.body as CreateReptileBody;
   const reptile = await client.reptile.update({
@@ -81,7 +82,7 @@ app.put("/reptiles/:id", async (req, res) => {
   res.json({ reptile });
 });
 
-// Post create a reptile
+// Create a reptile POST
 app.post("/reptiles", async (req, res) => {
   const { species, name, sex } = req.body as CreateReptileBody;
   const createdAt = getCurrentDateTime();
@@ -101,7 +102,7 @@ app.post("/reptiles", async (req, res) => {
   res.json({ reptile });
 });
 
-// GET list all schedules for a user
+// List all schedules for a user GET
 app.get("/schedules/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   const schedules = await client.schedule.findMany({
@@ -112,7 +113,7 @@ app.get("/schedules/:id", async (req, res) => {
   res.json({ schedules });
 });
 
-// GET all schedules for a reptile
+// All schedules for a reptile GET
 app.get("/schedules/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   const schedules = await client.schedule.findMany({

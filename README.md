@@ -1,6 +1,4 @@
-# USU 4610 Simple Server
-
-This project serves as a starting point for full-stack applications.
+# Reptile Tracker
 
 ## Get Started
 

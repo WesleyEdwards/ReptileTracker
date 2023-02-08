@@ -1,5 +1,11 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import {
+  isCreateReptileBody,
+  isCreateUserBody,
+  getReptilePartial,
+} from "./inputHelpers";
+
 const client = new PrismaClient();
 const app = express();
 app.use(express.json()); // middleware to convert everything to json
@@ -12,19 +18,12 @@ app.use(express.json()); // middleware to convert everything to json
 // POST create husbandry record for a reptile
 // POST create a schedule for a reptile
 
-type CreateUserBody = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  passwordHash: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
 // Create a user account POST
 app.post("/users", async (req, res) => {
-  const { firstName, lastName, email, passwordHash } =
-    req.body as CreateUserBody;
+  if (!isCreateUserBody(req.body)) {
+    return res.status(400).json({ error: "Invalid user Input" });
+  }
+  const { firstName, lastName, email, passwordHash } = req.body;
   const createdAt = getCurrentDateTime();
   const updatedAt = createdAt;
   const user = await client.user.create({
@@ -46,15 +45,6 @@ app.get("/users", async (req, res) => {
   res.json({ users });
 });
 
-type CreateReptileBody = {
-  userId: number;
-  species: string;
-  name: string;
-  sex: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
 // List all reptiles GET
 app.get("/reptiles", async (req, res) => {
   const reptiles = await client.reptile.findMany();
@@ -65,18 +55,24 @@ app.get("/reptiles", async (req, res) => {
 // What is the best way to get the data back for a specific reptile? just update everything?
 // Why doesn't postman think this is a put request?
 app.put("/reptiles/:id", async (req, res) => {
-  console.log("UPDATE REPTILE");
   const reptileId = parseInt(req.params.id);
-  const { species, name, sex, userId } = req.body as CreateReptileBody;
+  const reptilePartial = getReptilePartial(req.body);
+
+  const updatedAt = getCurrentDateTime();
+  const currentReptile = await client.reptile.findUnique({
+    where: { id: reptileId },
+  });
   const reptile = await client.reptile.update({
     where: {
       id: reptileId,
     },
     data: {
-      species: species,
-      name: name,
-      sex: sex,
-      userId: userId,
+      sex: reptilePartial.sex ? reptilePartial.sex : currentReptile?.sex,
+      name: reptilePartial.name ? reptilePartial.name : currentReptile?.name,
+      species: reptilePartial.species
+        ? reptilePartial.species
+        : currentReptile?.species,
+      updatedAt,
     },
   });
   res.json({ reptile });
@@ -84,11 +80,14 @@ app.put("/reptiles/:id", async (req, res) => {
 
 // Create a reptile POST
 app.post("/reptiles", async (req, res) => {
-  const { species, name, sex } = req.body as CreateReptileBody;
+  if (!isCreateReptileBody(req.body)) {
+    return res
+      .status(400)
+      .json({ error: "Invalid parameters for creating Reptile" });
+  }
+  const { species, name, sex, userId } = req.body;
   const createdAt = getCurrentDateTime();
   const updatedAt = createdAt;
-  const userId = parseInt(req.body.userId);
-  console.log(req.body);
   const reptile = await client.reptile.create({
     data: {
       userId,

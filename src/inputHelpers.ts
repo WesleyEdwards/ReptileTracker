@@ -29,25 +29,21 @@ export function isCreateUserBody(body: any): body is CreateUserBody {
     passwordHash: "string",
   };
   return Object.entries(UserBodyMap).every(([key, value]) => {
-    if (value === "string" && !isString(key)) {
-      return false;
-    }
-    if (value === "number" && !isNumber(key)) {
-      return false;
-    }
+    if (value === "string" && !isString(key)) return false;
+    if (value === "number" && !isNumber(key)) return false;
     return key in body;
   });
 }
 
 export function isCreateReptileBody(body: any): body is CreateReptileBody {
-  const UserBodyMap: Record<keyof CreateReptileBody, KeyType> = {
+  const CreateReptileBodyMap: Record<keyof CreateReptileBody, KeyType> = {
     userId: "number",
     species: "string",
     name: "string",
     sex: "string",
   };
   if (!isSexType(body.sex)) return false;
-  return Object.entries(UserBodyMap).every(([key]) => key in body);
+  return Object.entries(CreateReptileBodyMap).every(([key]) => key in body);
 }
 
 export function getReptilePartial(body: any): UpdateReptileBody {

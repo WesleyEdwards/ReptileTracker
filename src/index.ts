@@ -62,6 +62,11 @@ app.put("/reptiles/:id", async (req, res) => {
   const currentReptile = await client.reptile.findUnique({
     where: { id: reptileId },
   });
+  if (currentReptile === null) {
+    return res
+      .status(404)
+      .json({ error: `Could not find reptile with id of ${reptileId}` });
+  }
   const reptile = await client.reptile.update({
     where: {
       id: reptileId,

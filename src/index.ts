@@ -1,16 +1,16 @@
 import express, { RequestHandler } from "express";
 import { PrismaClient } from "@prisma/client";
 import {
-  isCreateReptileBody,
-  isCreateUserBody,
-  getReptilePartial,
-} from "./inputHelpers";
-import {
   createReptile,
   getReptiles,
   updateReptile,
 } from "./dbQueries/reptiles";
-import { getScheduleByReptile, getScheduleByUser } from "./dbQueries/schedules";
+import {
+  createSchedule,
+  getAllSchedules,
+  getScheduleByReptile,
+  getScheduleByUser,
+} from "./dbQueries/schedules";
 import { createUser, getAllUsers } from "./dbQueries/users";
 
 export const client = new PrismaClient();
@@ -23,18 +23,16 @@ app.use(express.json()); // middleware to convert everything to json
 // Post create a feeding for reptile
 // GET list all feedings for a reptile
 // POST create husbandry record for a reptile
-// POST create a schedule for a reptile
-
-// Create a user account POST
 
 app.post("/users", createUser);
-
 app.get("/users", getAllUsers);
 
+app.post("/reptiles", createReptile);
 app.get("/reptiles", getReptiles);
 app.put("/reptiles/:id", updateReptile);
-app.post("/reptiles", createReptile);
 
+app.post("/schedules", createSchedule);
+app.get("/schedules", getAllSchedules);
 app.get("/schedules/:id", getScheduleByReptile);
 app.get("/schedules/user/:id", getScheduleByUser);
 

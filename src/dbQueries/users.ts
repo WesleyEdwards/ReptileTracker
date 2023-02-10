@@ -1,21 +1,17 @@
 import { RequestHandler } from "express";
 import { client } from "..";
 import { getCurrentDateTime } from "../helperFunctions";
-import { isCreateUserBody } from "../inputHelpers";
+import { isCreateUserBody } from "../validationFunctions";
 
-export const createUser: RequestHandler = async (req, res) => {
-  if (!isCreateUserBody(req.body)) {
+export const createUser: RequestHandler = async ({ body }, res) => {
+  if (!isCreateUserBody(body)) {
     return res.status(400).json({ error: "Invalid user Input" });
   }
-  const { firstName, lastName, email, passwordHash } = req.body;
   const createdAt = getCurrentDateTime();
   const updatedAt = createdAt;
   const user = await client.user.create({
     data: {
-      firstName,
-      lastName,
-      email,
-      passwordHash,
+      ...body,
       createdAt,
       updatedAt,
     },

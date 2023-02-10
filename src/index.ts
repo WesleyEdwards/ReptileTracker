@@ -4,6 +4,7 @@ import {
   createReptile,
   getReptiles,
   updateReptile,
+  deleteReptile,
 } from "./dbQueries/reptiles";
 import {
   createSchedule,
@@ -19,10 +20,6 @@ app.use(express.json()); // middleware to convert everything to json
 
 // TODO:
 // Post user signs in
-// Del delete a reptile
-// Post create a feeding for reptile
-// GET list all feedings for a reptile
-// POST create husbandry record for a reptile
 
 app.post("/users", createUser);
 app.get("/users", getAllUsers);
@@ -30,11 +27,17 @@ app.get("/users", getAllUsers);
 app.post("/reptiles", createReptile);
 app.get("/reptiles", getReptiles);
 app.put("/reptiles/:id", updateReptile);
+app.delete("/reptiles/:id", deleteReptile);
 
 app.post("/schedules", createSchedule);
 app.get("/schedules", getAllSchedules);
 app.get("/schedules/:id", getScheduleByReptile);
 app.get("/schedules/user/:id", getScheduleByUser);
+
+// app.post("/feeding/:id", createFeeding);
+// app.get("feeding/:id", getAllFeedings);
+
+// app.post("/feeding/:id", createHusbandryRecord);
 
 app.get("/", (req, res) => {
   res.send(`<h1>Welcome to the homepage</h1>`);

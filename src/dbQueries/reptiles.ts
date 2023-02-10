@@ -54,3 +54,17 @@ export const updateReptile: RequestHandler = async (req, res) => {
   });
   res.json({ reptile });
 };
+
+// Delete
+export const deleteReptile: RequestHandler = async (req, res) => {
+  const reptileId = parseInt(req.params.id);
+  const exists = await client.reptile.findFirst({
+    where: { id: reptileId },
+  });
+  if (!exists) return res.status(404).json({});
+  // we know this reptile exists so now we can delete it
+  await client.reptile.delete({
+    where: { id: reptileId },
+  });
+  res.json({ message: `Deleted the reptile with id ${reptileId}` });
+};

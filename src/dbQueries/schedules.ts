@@ -16,7 +16,7 @@ export const createSchedule: RequestHandler = async ({ body }, res) => {
     where: { id: body.userId },
   });
 
-  if (!reptileExists || !userExists) {
+  if (!(reptileExists && userExists)) {
     return res.json({ error: "Invalid User or Reptile Id" });
   }
 

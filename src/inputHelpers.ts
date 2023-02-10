@@ -14,6 +14,18 @@ export type CreateUserBody = {
   email: string;
   passwordHash: string;
 };
+export type CreateFeedingBody = {
+  reptileId: number;
+  foodItem: string;
+};
+
+export type CreateHusbandryBody = {
+  reptileId: number;
+  length: number;
+  weight: number;
+  temperature: number;
+  humidity: number;
+};
 
 export type CreateReptileBody = {
   userId: number;

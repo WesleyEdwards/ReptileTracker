@@ -13,6 +13,7 @@ import {
   getScheduleByUser,
 } from "./dbQueries/schedules";
 import { createUser, getAllUsers } from "./dbQueries/users";
+import { createFeeding, getAllFeedings } from "./dbQueries/feeding";
 
 export const client = new PrismaClient();
 const app = express();
@@ -34,8 +35,8 @@ app.get("/schedules", getAllSchedules);
 app.get("/schedules/:id", getScheduleByReptile);
 app.get("/schedules/user/:id", getScheduleByUser);
 
-// app.post("/feeding/:id", createFeeding);
-// app.get("feeding/:id", getAllFeedings);
+app.post("/feeding/", createFeeding);
+app.get("/feeding/:id", getAllFeedings); // id indicates the reptile id we want to get all feedings for
 
 // app.post("/feeding/:id", createHusbandryRecord);
 

@@ -28,6 +28,11 @@ export type UpdateReptileBody = {
   sex?: string;
 };
 
+export type CreateFeedingBody = {
+  reptileId: number;
+  foodItem: string;
+};
+
 export type CreateScheduleBody = {
   reptileId: number;
   userId: number;

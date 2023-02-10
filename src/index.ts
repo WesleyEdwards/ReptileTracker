@@ -14,6 +14,7 @@ import {
 } from "./dbQueries/schedules";
 import { createUser, getAllUsers } from "./dbQueries/users";
 import { createFeeding, getAllFeedings } from "./dbQueries/feeding";
+import { createHusbandryRecord, getAllRecords } from "./dbQueries/husbandry";
 
 export const client = new PrismaClient();
 const app = express();
@@ -38,7 +39,8 @@ app.get("/schedules/user/:id", getScheduleByUser);
 app.post("/feeding/", createFeeding);
 app.get("/feeding/:id", getAllFeedings); // id indicates the reptile id we want to get all feedings for
 
-// app.post("/feeding/:id", createHusbandryRecord);
+app.post("/record/", createHusbandryRecord);
+app.get("/record/:id", getAllRecords);
 
 app.get("/", (req, res) => {
   res.send(`<h1>Welcome to the homepage</h1>`);

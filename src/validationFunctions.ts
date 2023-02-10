@@ -7,6 +7,7 @@ import {
   SpeciesType,
   ScheduleType,
   CreateFeedingBody,
+  CreateHusbandryBody,
 } from "./inputHelpers";
 
 export type KeyType = "string" | "number";
@@ -50,6 +51,17 @@ export function isCreateFeedingBody(body: any): body is CreateFeedingBody {
     foodItem: "string",
   };
   return validateInputBody(CreateFeedingBodyMap, body);
+}
+
+export function isCreateHusbandryBody(body: any): body is CreateHusbandryBody {
+  const CreateHusbandryBodyMap: Record<keyof CreateHusbandryBody, KeyType> = {
+    reptileId: "number",
+    length: "number",
+    weight: "number",
+    temperature: "number",
+    humidity: "number",
+  };
+  return validateInputBody(CreateHusbandryBodyMap, body);
 }
 
 export function isString(field: any): field is string {

@@ -8,7 +8,7 @@ import {
   ScheduleType,
   CreateFeedingBody,
   CreateHusbandryBody,
-} from "./inputHelpers";
+} from "./types";
 
 export type KeyType = "string" | "number";
 
@@ -17,7 +17,7 @@ export function isCreateUserBody(body: any): body is CreateUserBody {
     firstName: "string",
     lastName: "string",
     email: "string",
-    passwordHash: "string",
+    password: "string",
   };
   return validateInputBody(UserBodyMap, body);
 }

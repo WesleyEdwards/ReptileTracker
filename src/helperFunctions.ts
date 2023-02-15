@@ -1,5 +1,6 @@
-import { UpdateReptileBody } from "./inputHelpers";
+import { UpdateReptileBody } from "./types";
 import { isSexType, isString } from "./validationFunctions";
+import jwt from "jsonwebtoken";
 
 export function getCurrentDateTime() {
   return new Date().toISOString();
@@ -10,4 +11,16 @@ export function getReptilePartial(body: any): UpdateReptileBody {
   const name = isString(body.name) ? body.name : undefined;
   const sex = isSexType(body.sex) ? body.sex : undefined;
   return { species, name, sex };
+}
+
+export function createUserToken(id: number) {
+  return jwt.sign(
+    {
+      userId: id,
+    },
+    process.env.ENCRYPTION_KEY!!,
+    {
+      expiresIn: "10m",
+    }
+  );
 }

@@ -20,14 +20,6 @@ model User {
   updatedAt    DateTime
   reptiles     Reptile[] // allows the user to have more than one reptile
   schedule     Schedule[]
-  session      Session[]
-}
-
-model Session {
-  id     Int    @id @default(autoincrement())
-  token  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
 }
 
 model Reptile {

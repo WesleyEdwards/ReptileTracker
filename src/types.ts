@@ -1,3 +1,6 @@
+import { Request, RequestHandler } from "express";
+import { PrismaClient } from "@prisma/client";
+
 export type SexType = "male" | "female";
 
 export type SpeciesType =
@@ -12,7 +15,7 @@ export type CreateUserBody = {
   firstName: string;
   lastName: string;
   email: string;
-  passwordHash: string;
+  password: string;
 };
 export type CreateFeedingBody = {
   reptileId: number;
@@ -47,6 +50,19 @@ export type CreateScheduleBody = {
   description: string;
 };
 
+export type JWTBody = {
+  userId: number;
+};
+
+export type RequestWithJWTBody = Request & {
+  jwtBody?: JWTBody;
+};
+
+export type LoginBody = {
+  email: string;
+  password: string;
+};
+
 export const emptyScheduleDays = {
   monday: false,
   tuesday: false,
@@ -55,4 +71,11 @@ export const emptyScheduleDays = {
   friday: false,
   saturday: false,
   sunday: false,
+};
+
+export type Route = {
+  path: string;
+  method: "post" | "put" | "get" | "delete";
+  endpointBuilder: (client: PrismaClient) => RequestHandler;
+  skipAuth?: boolean;
 };

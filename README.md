@@ -11,7 +11,7 @@ yarn
 ### Migrate Data
 
 ```bash
-yarn db:migrate
+yarn migrate
 ```
 
 ## Development

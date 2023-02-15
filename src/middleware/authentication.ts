@@ -16,7 +16,7 @@ export const authenticationMiddleware: RequestHandler = async (
     req.jwtBody = jwtBody;
   } catch (error) {
     console.log("token failed validation");
-    return res.status(401);
+    return res.status(401).json({ message: "Unauthorized" });
   } finally {
     next();
   }

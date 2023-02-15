@@ -6,16 +6,20 @@ import {
   updateReptile,
   deleteReptile,
 } from "./dbQueries/reptiles";
+
 import {
   createSchedule,
   getAllSchedules,
   getScheduleByReptile,
   getScheduleByUser,
 } from "./dbQueries/schedules";
+
 import { createUser, getAllUsers } from "./dbQueries/users";
 import { createFeeding, getAllFeedings } from "./dbQueries/feeding";
 import { createHusbandryRecord, getAllRecords } from "./dbQueries/husbandry";
 
+import dotenv from "dotenv";
+dotenv.config();
 export const client = new PrismaClient();
 const app = express();
 app.use(express.json()); // middleware to convert everything to json

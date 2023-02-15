@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { client } from "..";
 import { getCurrentDateTime } from "../helperFunctions";
 import { isCreateUserBody } from "../validationFunctions";
+import bcrypt from "bcrypt";
 
 // Create
 export const createUser: RequestHandler = async ({ body }, res) => {
@@ -10,6 +11,7 @@ export const createUser: RequestHandler = async ({ body }, res) => {
   }
   const createdAt = getCurrentDateTime();
   const updatedAt = createdAt;
+  body.passwordHash = await bcrypt.hash(body.passwordHash, 10);
   const user = await client.user.create({
     data: {
       ...body,

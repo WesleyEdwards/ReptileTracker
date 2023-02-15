@@ -14,10 +14,8 @@ export const authenticationMiddleware: RequestHandler = async (
       process.env.ENCRYPTION_KEY!!
     ) as JWTBody;
     req.jwtBody = jwtBody;
-  } catch (error) {
-    console.log("token failed validation");
-    // res.status(401).json({ message: "Unauthorized" });  // crashes if I try to use this
-  } finally {
     next();
+  } catch (error) {
+    res.status(401).json({ message: "Unauthorized" });
   }
 };

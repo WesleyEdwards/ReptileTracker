@@ -3,10 +3,11 @@ import { client } from "..";
 import { getCurrentDateTime, getReptilePartial } from "../helperFunctions";
 import { isCreateReptileBody } from "../validationFunctions";
 import { PrismaClient } from "@prisma/client";
+import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createReptile =
-  (client: PrismaClient): RequestHandler =>
+export const createReptile: ReqBuilder =
+  (client) =>
   async ({ body }, res) => {
     if (!isCreateReptileBody(body)) {
       return res
@@ -31,49 +32,43 @@ export const createReptile =
   };
 
 // Read
-export const getReptiles =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const reptiles = await client.reptile.findMany();
-    res.json({ reptiles });
-  };
+export const getReptiles: ReqBuilder = (client) => async (req, res) => {
+  const reptiles = await client.reptile.findMany();
+  res.json({ reptiles });
+};
 
 // Update
-export const updateReptile =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const reptileId = parseInt(req.params.id);
-    const exists = await client.reptile.findFirst({
-      where: { id: reptileId },
-    });
-    if (!exists) return res.status(404).json({});
+export const updateReptile: ReqBuilder = (client) => async (req, res) => {
+  const reptileId = parseInt(req.params.id);
+  const exists = await client.reptile.findFirst({
+    where: { id: reptileId },
+  });
+  if (!exists) return res.status(404).json({});
 
-    const reptilePartial = getReptilePartial(req.body);
-    const updatedAt = getCurrentDateTime();
-    const reptile = await client.reptile.update({
-      where: {
-        id: reptileId,
-      },
-      data: {
-        ...reptilePartial,
-        updatedAt,
-      },
-    });
-    res.json({ reptile });
-  };
+  const reptilePartial = getReptilePartial(req.body);
+  const updatedAt = getCurrentDateTime();
+  const reptile = await client.reptile.update({
+    where: {
+      id: reptileId,
+    },
+    data: {
+      ...reptilePartial,
+      updatedAt,
+    },
+  });
+  res.json({ reptile });
+};
 
 // Delete
-export const deleteReptile =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const reptileId = parseInt(req.params.id);
-    const exists = await client.reptile.findFirst({
-      where: { id: reptileId },
-    });
-    if (!exists) return res.status(404).json({});
-    // we know this reptile exists so now we can delete it
-    await client.reptile.delete({
-      where: { id: reptileId },
-    });
-    res.json({ message: `Deleted the reptile with id ${reptileId}` });
-  };
+export const deleteReptile: ReqBuilder = (client) => async (req, res) => {
+  const reptileId = parseInt(req.params.id);
+  const exists = await client.reptile.findFirst({
+    where: { id: reptileId },
+  });
+  if (!exists) return res.status(404).json({});
+  // we know this reptile exists so now we can delete it
+  await client.reptile.delete({
+    where: { id: reptileId },
+  });
+  res.json({ message: `Deleted the reptile with id ${reptileId}` });
+};

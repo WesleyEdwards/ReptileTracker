@@ -1,4 +1,4 @@
-import { Request, RequestHandler } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
 export type SexType = "male" | "female";
@@ -50,14 +50,6 @@ export type CreateScheduleBody = {
   description: string;
 };
 
-export type JWTBody = {
-  userId: number;
-};
-
-export type RequestWithJWTBody = Request & {
-  jwtBody?: JWTBody;
-};
-
 export type LoginBody = {
   email: string;
   password: string;
@@ -71,11 +63,4 @@ export const emptyScheduleDays = {
   friday: false,
   saturday: false,
   sunday: false,
-};
-
-export type Route = {
-  path: string;
-  method: "post" | "put" | "get" | "delete";
-  endpointBuilder: (client: PrismaClient) => RequestHandler;
-  skipAuth?: boolean;
 };

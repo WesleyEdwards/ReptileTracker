@@ -4,10 +4,11 @@ import { emptyScheduleDays } from "../types";
 import { isCreateHusbandryBody } from "../validationFunctions";
 import { RequestHandler } from "express";
 import { PrismaClient } from "@prisma/client";
+import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createHusbandryRecord =
-  (client: PrismaClient): RequestHandler =>
+export const createHusbandryRecord: ReqBuilder =
+  (client) =>
   async ({ body }, res) => {
     if (!isCreateHusbandryBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
@@ -25,14 +26,12 @@ export const createHusbandryRecord =
   };
 
 // Get
-export const getAllRecords =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const reptileId = parseInt(req.params.id);
-    const records = await client.husbandryRecord.findMany({
-      where: {
-        reptileId: reptileId,
-      },
-    });
-    res.json({ records });
-  };
+export const getAllRecords: ReqBuilder = (client) => async (req, res) => {
+  const reptileId = parseInt(req.params.id);
+  const records = await client.husbandryRecord.findMany({
+    where: {
+      reptileId: reptileId,
+    },
+  });
+  res.json({ records });
+};

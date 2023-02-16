@@ -4,10 +4,11 @@ import { isCreateUserBody } from "../validationFunctions";
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
 import { LoginBody } from "../types";
+import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createUser =
-  (client: PrismaClient): RequestHandler =>
+export const createUser: ReqBuilder =
+  (client) =>
   async ({ body }, res) => {
     if (!isCreateUserBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
@@ -32,35 +33,31 @@ export const createUser =
   };
 
 // Get
-export const getAllUsers =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const users = await client.user.findMany();
-    res.json({ users });
-  };
+export const getAllUsers: ReqBuilder = (client) => async (req, res) => {
+  const users = await client.user.findMany();
+  res.json({ users });
+};
 
-export const loginUser =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const { email, password } = req.body as LoginBody;
-    const user = await client.user.findFirst({
-      where: {
-        email,
-      },
-    });
-    if (!user) {
-      res.status(404).json({ message: "Invalid email or password" });
-      return;
-    }
-    const isValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isValid) {
-      // means the password was incorrect
-      res.status(404).json({ message: "Invalid email or password" });
-      return;
-    }
-    const token = createUserToken(user.id);
-    res.json({
-      user,
-      token,
-    });
-  };
+export const loginUser: ReqBuilder = (client) => async (req, res) => {
+  const { email, password } = req.body as LoginBody;
+  const user = await client.user.findFirst({
+    where: {
+      email,
+    },
+  });
+  if (!user) {
+    res.status(404).json({ message: "Invalid email or password" });
+    return;
+  }
+  const isValid = await bcrypt.compare(password, user.passwordHash);
+  if (!isValid) {
+    // means the password was incorrect
+    res.status(404).json({ message: "Invalid email or password" });
+    return;
+  }
+  const token = createUserToken(user.id);
+  res.json({
+    user,
+    token,
+  });
+};

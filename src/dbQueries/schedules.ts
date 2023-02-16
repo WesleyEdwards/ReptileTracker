@@ -1,5 +1,5 @@
 import { creationDates, getCurrentDateTime } from "../helperFunctions";
-import { isCreateScheduleBody } from "../validationFunctions";
+import { isCreateScheduleBody } from "../json_validation/request_body";
 import { emptyScheduleDays } from "../lib/constants";
 import { ReqBuilder } from "../middleware/auth_types";
 

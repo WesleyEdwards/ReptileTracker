@@ -1,5 +1,5 @@
 import { creationDates } from "../helperFunctions";
-import { isCreateHusbandryBody } from "../validationFunctions";
+import { isCreateHusbandryBody } from "../json_validation/request_body";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create

@@ -1,5 +1,5 @@
 import { creationDates } from "../helperFunctions";
-import { isCreateFeedingBody } from "../validationFunctions";
+import { isCreateFeedingBody } from "../json_validation/validationFunctions";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create

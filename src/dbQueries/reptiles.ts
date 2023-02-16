@@ -3,7 +3,7 @@ import {
   getCurrentDateTime,
   getReptilePartial,
 } from "../helperFunctions";
-import { isCreateReptileBody } from "../validationFunctions";
+import { isCreateReptileBody } from "../json_validation/request_body";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create

@@ -1,4 +1,4 @@
-import { isSexType, isString } from "./validationFunctions";
+import { isSexType, isString } from "./json_validation/validationFunctions";
 import jwt from "jsonwebtoken";
 import { UpdateReptileBody } from "./dbQueries/request_types";
 

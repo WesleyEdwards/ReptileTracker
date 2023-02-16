@@ -37,7 +37,7 @@ export const loginUser: ReqBuilder =
   (client) =>
   async ({ body }, res) => {
     if (!isLoginBody(body)) {
-      res.status(400).json({ message: "Invalid email or password" });
+      res.status(400).json({ message: "Bad Request" });
       return;
     }
     const { email, password } = body;

@@ -1,8 +1,5 @@
-import { RequestHandler } from "express";
-import { client } from "..";
 import { getCurrentDateTime, getReptilePartial } from "../helperFunctions";
 import { isCreateReptileBody } from "../validationFunctions";
-import { PrismaClient } from "@prisma/client";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create

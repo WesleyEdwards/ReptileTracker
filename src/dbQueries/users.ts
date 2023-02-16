@@ -1,10 +1,8 @@
-import { RequestHandler } from "express";
 import { createUserToken, getCurrentDateTime } from "../helperFunctions";
 import { isCreateUserBody } from "../validationFunctions";
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-import { LoginBody } from "../types";
 import { ReqBuilder } from "../middleware/auth_types";
+import { LoginBody } from "./request_types";
 
 // Create
 export const createUser: ReqBuilder =

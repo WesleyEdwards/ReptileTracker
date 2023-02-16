@@ -1,14 +1,11 @@
 import {
-  CreateReptileBody,
-  CreateScheduleBody,
   CreateUserBody,
-  UpdateReptileBody,
-  SexType,
-  SpeciesType,
-  ScheduleType,
+  CreateScheduleBody,
+  CreateReptileBody,
   CreateFeedingBody,
   CreateHusbandryBody,
-} from "./types";
+} from "./dbQueries/request_types";
+import { SexType, SpeciesType, ScheduleType } from "./types";
 
 export type KeyType = "string" | "number";
 

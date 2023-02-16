@@ -1,6 +1,6 @@
-import { UpdateReptileBody } from "./types";
 import { isSexType, isString } from "./validationFunctions";
 import jwt from "jsonwebtoken";
+import { UpdateReptileBody } from "./dbQueries/request_types";
 
 export function getCurrentDateTime() {
   return new Date().toISOString();

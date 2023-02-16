@@ -1,9 +1,5 @@
-import { client } from "..";
 import { getCurrentDateTime } from "../helperFunctions";
-import { emptyScheduleDays } from "../types";
 import { isCreateHusbandryBody } from "../validationFunctions";
-import { RequestHandler } from "express";
-import { PrismaClient } from "@prisma/client";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create

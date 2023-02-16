@@ -1,21 +1,5 @@
-import express, { RequestHandler } from "express";
+import express from "express";
 import { PrismaClient } from "@prisma/client";
-import {
-  createReptile,
-  getReptiles,
-  updateReptile,
-  deleteReptile,
-} from "./dbQueries/reptiles";
-import {
-  createSchedule,
-  getAllSchedules,
-  getScheduleByReptile,
-  getScheduleByUser,
-} from "./dbQueries/schedules";
-import { createUser, getAllUsers } from "./dbQueries/users";
-import { createFeeding, getAllFeedings } from "./dbQueries/feeding";
-import { createHusbandryRecord, getAllRecords } from "./dbQueries/husbandry";
-import { authenticationMiddleware } from "./middleware/authentication";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { usersController } from "./controllers/user_controller";
@@ -25,7 +9,7 @@ import { feedingController } from "./controllers/feeding_controller";
 import { scheduleController } from "./controllers/schedule_controller";
 
 dotenv.config();
-export const client = new PrismaClient();
+const client = new PrismaClient();
 const app = express();
 app.use(express.json()); // middleware to convert everything to json
 app.use(cookieParser());
@@ -47,5 +31,3 @@ app.get("/", (req, res) => {
 app.listen(parseInt(process.env.PORT || "3000", 10), () => {
   console.log(`App running on port ${process.env.PORT}`);
 });
-
-export default app;

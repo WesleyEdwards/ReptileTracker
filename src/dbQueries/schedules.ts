@@ -1,9 +1,6 @@
-import { RequestHandler } from "express";
-import { client } from "..";
 import { getCurrentDateTime } from "../helperFunctions";
-import { emptyScheduleDays } from "../types";
 import { isCreateScheduleBody } from "../validationFunctions";
-import { PrismaClient } from "@prisma/client";
+import { emptyScheduleDays } from "../lib/constants";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create

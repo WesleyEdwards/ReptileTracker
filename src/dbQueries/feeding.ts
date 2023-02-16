@@ -9,6 +9,15 @@ export const createFeeding: ReqBuilder =
     if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
+
+    const reptileExists = await client.reptile.findFirst({
+      where: { id: body.reptileId },
+    });
+
+    if (!reptileExists) {
+      return res.json({ error: "Invalid Reptile Id" });
+    }
+
     const feeding = await client.feeding.create({
       data: {
         ...body,
@@ -19,7 +28,7 @@ export const createFeeding: ReqBuilder =
   };
 
 // Get
-export const getAllFeedings: ReqBuilder = (client) => async (req, res) => {
+export const getFeedingsByReptile: ReqBuilder = (client) => async (req, res) => {
   const reptileId = parseInt(req.params.id);
   const feedings = await client.feeding.findMany({
     where: {

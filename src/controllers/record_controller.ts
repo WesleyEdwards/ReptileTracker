@@ -1,7 +1,10 @@
 import { controller } from "../lib/controller";
-import { getAllRecords, createHusbandryRecord } from "../dbQueries/husbandry";
+import {
+  getReptileRecords,
+  createHusbandryRecord,
+} from "../dbQueries/husbandry";
 
 export const recordController = controller("record", [
-  { path: "/:id", method: "get", endpointBuilder: getAllRecords },
+  { path: "/:id", method: "get", endpointBuilder: getReptileRecords },
   { path: "/", method: "post", endpointBuilder: createHusbandryRecord },
 ]);

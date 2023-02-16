@@ -1,7 +1,7 @@
 import { controller } from "../lib/controller";
-import { createFeeding, getAllFeedings } from "../dbQueries/feeding";
+import { createFeeding, getFeedingsByReptile } from "../dbQueries/feeding";
 
-export const feedingController = controller("record", [
-  { path: "/:id", method: "get", endpointBuilder: getAllFeedings },
+export const feedingController = controller("feeding", [
+  { path: "/:id", method: "get", endpointBuilder: getFeedingsByReptile },
   { path: "/", method: "post", endpointBuilder: createFeeding },
 ]);

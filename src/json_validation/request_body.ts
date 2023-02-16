@@ -25,6 +25,13 @@ const createSchedule: ValidationBuilder<CreateScheduleBody> = {
   userId: "number",
   type: "schedule",
   description: "string",
+  monday: "boolean",
+  tuesday: "boolean",
+  wednesday: "boolean",
+  thursday: "boolean",
+  friday: "boolean",
+  saturday: "boolean",
+  sunday: "boolean",
 };
 
 const createReptile: ValidationBuilder<CreateReptileBody> = {

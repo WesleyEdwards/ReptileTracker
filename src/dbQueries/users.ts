@@ -11,6 +11,14 @@ export const createUser: ReqBuilder =
     if (!isCreateUserBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
+    const emailExists = await client.user.findFirst({
+      where: {
+        email: body.email,
+      },
+    });
+    if (emailExists) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
     const passwordHash = await bcrypt.hash(body.password, 10);
     const { email, firstName, lastName } = body;
     const user = await client.user.create({

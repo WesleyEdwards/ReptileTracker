@@ -37,6 +37,13 @@ export type CreateScheduleBody = {
   userId: number;
   type: ScheduleType;
   description: string;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
 };
 
 export type LoginBody = {

@@ -1,6 +1,5 @@
 import { creationDates, getCurrentDateTime } from "../helperFunctions";
 import { isCreateScheduleBody } from "../json_validation/request_body";
-import { emptyScheduleDays } from "../lib/constants";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
@@ -24,7 +23,6 @@ export const createSchedule: ReqBuilder =
     const schedules = await client.schedule.create({
       data: {
         ...body,
-        ...emptyScheduleDays,
         ...creationDates,
       },
     });

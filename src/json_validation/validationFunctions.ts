@@ -1,6 +1,12 @@
 import { SexType, SpeciesType, ScheduleType } from "../types";
 
-type ValidFunctionTypes = "string" | "number" | "species" | "sex" | "schedule";
+type ValidFunctionTypes =
+  | "string"
+  | "number"
+  | "species"
+  | "sex"
+  | "schedule"
+  | "boolean";
 
 export type ValidationBuilder<T> = Record<keyof T, ValidFunctionTypes>;
 
@@ -10,6 +16,7 @@ const validFunctions: Record<ValidFunctionTypes, (body: any) => boolean> = {
   species: isSpeciesType,
   sex: isSexType,
   schedule: isScheduleType,
+  boolean: isBoolean,
 };
 
 export const validator =
@@ -26,6 +33,10 @@ export function isString(field: any): field is string {
 
 function isNumber(field: any): field is number {
   return typeof field === "number";
+}
+
+function isBoolean(field: any): field is boolean {
+  return typeof field === "boolean";
 }
 
 export function isSexType(field: any): field is SexType {

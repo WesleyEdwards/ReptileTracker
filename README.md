@@ -11,7 +11,7 @@ yarn
 ### Migrate Data
 
 ```bash
-yarn db:migrate
+yarn migrate
 ```
 
 ## Development
@@ -29,3 +29,8 @@ yarn dev
 ```bash
 yarn build
 ```
+
+# Questions:
+
+- How should I create the key for token encryption?
+- What code can I put into the middleware to exit and return a 401 response if the user is not authenticated? I am currently crashing when this happens.

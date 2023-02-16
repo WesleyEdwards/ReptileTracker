@@ -1,40 +1,42 @@
-import { RequestHandler } from "express";
-import { client } from "..";
-import { getCurrentDateTime, getReptilePartial } from "../helperFunctions";
-import { isCreateReptileBody } from "../validationFunctions";
+import {
+  creationDates,
+  getCurrentDateTime,
+  getReptilePartial,
+} from "../helperFunctions";
+import { isCreateReptileBody } from "../json_validation/request_body";
+import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createReptile: RequestHandler = async ({ body }, res) => {
-  if (!isCreateReptileBody(body)) {
-    return res
-      .status(400)
-      .json({ error: "Invalid parameters for creating Reptile" });
-  }
-  const userExists = await client.user.findFirst({
-    where: { id: body.userId },
-  });
-  if (!userExists) return res.json({ error: "User does not exist" });
+export const createReptile: ReqBuilder =
+  (client) =>
+  async ({ body }, res) => {
+    if (!isCreateReptileBody(body)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid parameters for creating Reptile" });
+    }
+    const userExists = await client.user.findFirst({
+      where: { id: body.userId },
+    });
+    if (!userExists) return res.json({ error: "User does not exist" });
 
-  const createdAt = getCurrentDateTime();
-  const updatedAt = createdAt;
-  const reptile = await client.reptile.create({
-    data: {
-      ...body,
-      createdAt,
-      updatedAt,
-    },
-  });
-  res.json({ reptile });
-};
+    const reptile = await client.reptile.create({
+      data: {
+        ...body,
+        ...creationDates,
+      },
+    });
+    res.json({ reptile });
+  };
 
 // Read
-export const getReptiles: RequestHandler = async (req, res) => {
+export const getReptiles: ReqBuilder = (client) => async (req, res) => {
   const reptiles = await client.reptile.findMany();
   res.json({ reptiles });
 };
 
 // Update
-export const updateReptile: RequestHandler = async (req, res) => {
+export const updateReptile: ReqBuilder = (client) => async (req, res) => {
   const reptileId = parseInt(req.params.id);
   const exists = await client.reptile.findFirst({
     where: { id: reptileId },
@@ -56,7 +58,7 @@ export const updateReptile: RequestHandler = async (req, res) => {
 };
 
 // Delete
-export const deleteReptile: RequestHandler = async (req, res) => {
+export const deleteReptile: ReqBuilder = (client) => async (req, res) => {
   const reptileId = parseInt(req.params.id);
   const exists = await client.reptile.findFirst({
     where: { id: reptileId },

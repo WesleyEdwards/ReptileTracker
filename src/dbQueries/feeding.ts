@@ -1,4 +1,4 @@
-import { getCurrentDateTime } from "../helperFunctions";
+import { creationDates } from "../helperFunctions";
 import { isCreateFeedingBody } from "../validationFunctions";
 import { ReqBuilder } from "../middleware/auth_types";
 
@@ -9,13 +9,10 @@ export const createFeeding: ReqBuilder =
     if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const createdAt = getCurrentDateTime();
-    const updatedAt = createdAt;
     const feeding = await client.feeding.create({
       data: {
         ...body,
-        createdAt,
-        updatedAt,
+        ...creationDates,
       },
     });
     res.json({ feeding });

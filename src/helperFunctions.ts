@@ -6,6 +6,12 @@ export function getCurrentDateTime() {
   return new Date().toISOString();
 }
 
+export const creationDates = (() => {
+  const createdAt = getCurrentDateTime();
+  const updatedAt = createdAt;
+  return { createdAt, updatedAt };
+})();
+
 export function getReptilePartial(body: any): UpdateReptileBody {
   const species = isString(body.species) ? body.species : undefined;
   const name = isString(body.name) ? body.name : undefined;

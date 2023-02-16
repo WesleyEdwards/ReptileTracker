@@ -1,4 +1,8 @@
-import { getCurrentDateTime, getReptilePartial } from "../helperFunctions";
+import {
+  creationDates,
+  getCurrentDateTime,
+  getReptilePartial,
+} from "../helperFunctions";
 import { isCreateReptileBody } from "../validationFunctions";
 import { ReqBuilder } from "../middleware/auth_types";
 
@@ -16,13 +20,10 @@ export const createReptile: ReqBuilder =
     });
     if (!userExists) return res.json({ error: "User does not exist" });
 
-    const createdAt = getCurrentDateTime();
-    const updatedAt = createdAt;
     const reptile = await client.reptile.create({
       data: {
         ...body,
-        createdAt,
-        updatedAt,
+        ...creationDates,
       },
     });
     res.json({ reptile });

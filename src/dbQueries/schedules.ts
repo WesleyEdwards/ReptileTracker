@@ -1,4 +1,4 @@
-import { getCurrentDateTime } from "../helperFunctions";
+import { creationDates, getCurrentDateTime } from "../helperFunctions";
 import { isCreateScheduleBody } from "../validationFunctions";
 import { emptyScheduleDays } from "../lib/constants";
 import { ReqBuilder } from "../middleware/auth_types";
@@ -21,13 +21,11 @@ export const createSchedule: ReqBuilder =
       return res.json({ error: "Invalid User or Reptile Id" });
     }
 
-    const createdAt = getCurrentDateTime();
     const schedules = await client.schedule.create({
       data: {
         ...body,
         ...emptyScheduleDays,
-        createdAt,
-        updateAt: createdAt,
+        ...creationDates,
       },
     });
     res.json({ schedules });

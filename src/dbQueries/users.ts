@@ -1,4 +1,4 @@
-import { createUserToken, getCurrentDateTime } from "../helperFunctions";
+import { createUserToken, creationDates } from "../helperFunctions";
 import { isCreateUserBody } from "../validationFunctions";
 import bcrypt from "bcrypt";
 import { ReqBuilder } from "../middleware/auth_types";
@@ -11,8 +11,6 @@ export const createUser: ReqBuilder =
     if (!isCreateUserBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const createdAt = getCurrentDateTime();
-    const updatedAt = createdAt;
     const passwordHash = await bcrypt.hash(body.password, 10);
     const { email, firstName, lastName } = body;
     const user = await client.user.create({
@@ -20,8 +18,7 @@ export const createUser: ReqBuilder =
         email,
         firstName,
         lastName,
-        createdAt,
-        updatedAt,
+        ...creationDates,
         passwordHash,
       },
     });

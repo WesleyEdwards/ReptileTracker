@@ -33,30 +33,32 @@ export const getAllUsers: ReqBuilder = (client) => async (req, res) => {
   res.json({ users });
 };
 
-export const loginUser: ReqBuilder = (client) => async (req, res) => {
-  if (!isLoginBody(req.body)) {
-    res.status(400).json({ message: "Invalid email or password" });
-    return;
-  }
-  const { email, password } = req.body as LoginBody;
-  const user = await client.user.findFirst({
-    where: {
-      email,
-    },
-  });
-  if (!user) {
-    res.status(404).json({ message: "Invalid email or password" });
-    return;
-  }
-  const isValid = await bcrypt.compare(password, user.passwordHash);
-  if (!isValid) {
-    // means the password was incorrect
-    res.status(404).json({ message: "Invalid email or password" });
-    return;
-  }
-  const token = createUserToken(user.id);
-  res.json({
-    user,
-    token,
-  });
-};
+export const loginUser: ReqBuilder =
+  (client) =>
+  async ({ body }, res) => {
+    if (!isLoginBody(body)) {
+      res.status(400).json({ message: "Invalid email or password" });
+      return;
+    }
+    const { email, password } = body;
+    const user = await client.user.findFirst({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      res.status(404).json({ message: "Invalid email or password" });
+      return;
+    }
+    const isValid = await bcrypt.compare(password, user.passwordHash);
+    if (!isValid) {
+      // means the password was incorrect
+      res.status(404).json({ message: "Invalid email or password" });
+      return;
+    }
+    const token = createUserToken(user.id);
+    res.json({
+      user,
+      token,
+    });
+  };

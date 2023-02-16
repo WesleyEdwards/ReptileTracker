@@ -10,66 +10,73 @@ import {
   isScheduleType,
   isSexType,
   isSpeciesType,
-  RecordMap,
-  validateInputBody,
 } from "./validationFunctions";
+import { ValidationBuilder, validator } from "./validation_builder";
 
-export function isCreateUserBody(body: any): body is CreateUserBody {
-  const UserBodyMap: RecordMap<CreateUserBody> = {
+const createUserValidation: ValidationBuilder<CreateUserBody> = {
+  recordMap: {
     firstName: "string",
     lastName: "string",
     email: "string",
     password: "string",
-  };
-  return validateInputBody(UserBodyMap, body);
-}
+  },
+};
 
-export function isLoginBody(body: any): body is LoginBody {
-  const UserBodyMap: RecordMap<LoginBody> = {
+const loginValidation: ValidationBuilder<LoginBody> = {
+  recordMap: {
     email: "string",
     password: "string",
-  };
-  return validateInputBody(UserBodyMap, body);
-}
+  },
+  additional: {
+    isEmail: (body) => body.email.includes("@"),
+  },
+};
 
-export function isCreateScheduleBody(body: any): body is CreateScheduleBody {
-  const CreateScheduleBodyMap: RecordMap<CreateScheduleBody> = {
+const createScheduleValidation: ValidationBuilder<CreateScheduleBody> = {
+  recordMap: {
     reptileId: "number",
     userId: "number",
     type: "string",
     description: "string",
-  };
-  if (!isScheduleType(body.type)) return false;
-  return validateInputBody(CreateScheduleBodyMap, body);
-}
+  },
+  additional: {
+    isScheduleType: (body) => isScheduleType(body.type),
+  },
+};
 
-export function isCreateReptileBody(body: any): body is CreateReptileBody {
-  const CreateReptileBodyMap: RecordMap<CreateReptileBody> = {
+const createReptileValidation: ValidationBuilder<CreateReptileBody> = {
+  recordMap: {
     userId: "number",
     species: "string",
     name: "string",
     sex: "string",
-  };
-  if (!isSexType(body.sex)) return false;
-  if (!isSpeciesType(body.species)) return false;
-  return validateInputBody(CreateReptileBodyMap, body);
-}
+  },
+  additional: {
+    isSpecies: (body) => isSpeciesType(body.species),
+    isSexType: (body) => isSexType(body.sex),
+  },
+};
 
-export function isCreateFeedingBody(body: any): body is CreateFeedingBody {
-  const CreateFeedingBodyMap: RecordMap<CreateFeedingBody> = {
+const createFeedingValidation: ValidationBuilder<CreateFeedingBody> = {
+  recordMap: {
     reptileId: "number",
     foodItem: "string",
-  };
-  return validateInputBody(CreateFeedingBodyMap, body);
-}
+  },
+};
 
-export function isCreateHusbandryBody(body: any): body is CreateHusbandryBody {
-  const CreateHusbandryBodyMap: RecordMap<CreateHusbandryBody> = {
+const createHusbandryValidation: ValidationBuilder<CreateHusbandryBody> = {
+  recordMap: {
     reptileId: "number",
     length: "number",
     weight: "number",
     temperature: "number",
     humidity: "number",
-  };
-  return validateInputBody(CreateHusbandryBodyMap, body);
-}
+  },
+};
+
+export const isCreateUserBody = validator(createUserValidation);
+export const isLoginBody = validator(loginValidation);
+export const isCreateScheduleBody = validator(createScheduleValidation);
+export const isCreateReptileBody = validator(createReptileValidation);
+export const isCreateFeedingBody = validator(createFeedingValidation);
+export const isCreateHusbandryBody = validator(createHusbandryValidation);

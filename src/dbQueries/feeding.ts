@@ -1,37 +1,39 @@
-import { RequestHandler } from "express";
-import { client } from "..";
-import { getCurrentDateTime } from "../helperFunctions";
-import { isCreateFeedingBody } from "../validationFunctions";
-import { PrismaClient } from "@prisma/client";
+import { creationDates } from "../helperFunctions";
+import { isCreateFeedingBody } from "../json_validation/request_body";
+import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createFeeding =
-  (client: PrismaClient): RequestHandler =>
+export const createFeeding: ReqBuilder =
+  (client) =>
   async ({ body }, res) => {
     if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const createdAt = getCurrentDateTime();
-    const updatedAt = createdAt;
+
+    const reptileExists = await client.reptile.findFirst({
+      where: { id: body.reptileId },
+    });
+
+    if (!reptileExists) {
+      return res.json({ error: "Invalid Reptile Id" });
+    }
+
     const feeding = await client.feeding.create({
       data: {
         ...body,
-        createdAt,
-        updatedAt,
+        ...creationDates,
       },
     });
     res.json({ feeding });
   };
 
 // Get
-export const getAllFeedings =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const reptileId = parseInt(req.params.id);
-    const feedings = await client.feeding.findMany({
-      where: {
-        reptileId: reptileId,
-      },
-    });
-    res.json({ feedings });
-  };
+export const getFeedingsByReptile: ReqBuilder = (client) => async (req, res) => {
+  const reptileId = parseInt(req.params.id);
+  const feedings = await client.feeding.findMany({
+    where: {
+      reptileId: reptileId,
+    },
+  });
+  res.json({ feedings });
+};

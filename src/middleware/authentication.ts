@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import { RequestWithJWTBody, JWTBody } from "../types";
 import jwt from "jsonwebtoken";
+import { AuthReqHandler, JWTBody } from "./auth_types";
 
-export const authenticationMiddleware: RequestHandler = async (
-  req: RequestWithJWTBody,
+export const authenticationMiddleware: AuthReqHandler = async (
+  req,
   res,
   next
 ) => {

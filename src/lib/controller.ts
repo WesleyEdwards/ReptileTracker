@@ -1,7 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import express, { RequestHandler, Express } from "express";
 import { authenticationMiddleware } from "../middleware/authentication";
-import { Route } from "../types";
+
+type Route = {
+  path: string;
+  method: "post" | "put" | "get" | "delete";
+  endpointBuilder: (client: PrismaClient) => RequestHandler;
+  skipAuth?: boolean;
+};
 
 export const controller =
   (name: string, routes: Route[]) => (app: Express, client: PrismaClient) => {

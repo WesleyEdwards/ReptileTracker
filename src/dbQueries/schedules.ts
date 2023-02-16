@@ -1,13 +1,11 @@
-import { RequestHandler } from "express";
-import { client } from "..";
-import { getCurrentDateTime } from "../helperFunctions";
-import { emptyScheduleDays } from "../types";
-import { isCreateScheduleBody } from "../validationFunctions";
-import { PrismaClient } from "@prisma/client";
+import { creationDates, getCurrentDateTime } from "../helperFunctions";
+import { isCreateScheduleBody } from "../json_validation/request_body";
+import { emptyScheduleDays } from "../lib/constants";
+import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createSchedule =
-  (client: PrismaClient): RequestHandler =>
+export const createSchedule: ReqBuilder =
+  (client) =>
   async ({ body }, res) => {
     if (!isCreateScheduleBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
@@ -23,41 +21,34 @@ export const createSchedule =
       return res.json({ error: "Invalid User or Reptile Id" });
     }
 
-    const createdAt = getCurrentDateTime();
     const schedules = await client.schedule.create({
       data: {
         ...body,
         ...emptyScheduleDays,
-        createdAt,
-        updateAt: createdAt,
+        ...creationDates,
       },
     });
     res.json({ schedules });
   };
 
 // Read
-export const getAllSchedules =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const schedules = await client.schedule.findMany();
-    return res.json({ schedules });
-  };
+export const getAllSchedules: ReqBuilder = (client) => async (req, res) => {
+  const schedules = await client.schedule.findMany();
+  return res.json({ schedules });
+};
 
-export const getScheduleByUser =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const userId = parseInt(req.params.id);
-    const schedules = await client.schedule.findMany({
-      where: {
-        userId: userId,
-      },
-    });
-    res.json({ schedules });
-  };
+export const getScheduleByUser: ReqBuilder = (client) => async (req, res) => {
+  const userId = parseInt(req.params.id);
+  const schedules = await client.schedule.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+  res.json({ schedules });
+};
 
-export const getScheduleByReptile =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
+export const getScheduleByReptile: ReqBuilder =
+  (client) => async (req, res) => {
     const id = parseInt(req.params.id);
     const schedules = await client.schedule.findMany({
       where: {

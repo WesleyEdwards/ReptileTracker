@@ -1,10 +1,16 @@
-import { UpdateReptileBody } from "./types";
-import { isSexType, isString } from "./validationFunctions";
+import { isSexType, isString } from "./json_validation/validationFunctions";
 import jwt from "jsonwebtoken";
+import { UpdateReptileBody } from "./dbQueries/request_types";
 
 export function getCurrentDateTime() {
   return new Date().toISOString();
 }
+
+export const creationDates = (() => {
+  const createdAt = getCurrentDateTime();
+  const updatedAt = createdAt;
+  return { createdAt, updatedAt };
+})();
 
 export function getReptilePartial(body: any): UpdateReptileBody {
   const species = isString(body.species) ? body.species : undefined;

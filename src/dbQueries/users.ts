@@ -1,19 +1,16 @@
-import { RequestHandler } from "express";
-import { createUserToken, getCurrentDateTime } from "../helperFunctions";
-import { isCreateUserBody } from "../validationFunctions";
+import { createUserToken, creationDates } from "../helperFunctions";
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-import { LoginBody } from "../types";
+import { ReqBuilder } from "../middleware/auth_types";
+import { LoginBody } from "./request_types";
+import { isCreateUserBody, isLoginBody } from "../json_validation/request_body";
 
 // Create
-export const createUser =
-  (client: PrismaClient): RequestHandler =>
+export const createUser: ReqBuilder =
+  (client) =>
   async ({ body }, res) => {
     if (!isCreateUserBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const createdAt = getCurrentDateTime();
-    const updatedAt = createdAt;
     const passwordHash = await bcrypt.hash(body.password, 10);
     const { email, firstName, lastName } = body;
     const user = await client.user.create({
@@ -21,8 +18,7 @@ export const createUser =
         email,
         firstName,
         lastName,
-        createdAt,
-        updatedAt,
+        ...creationDates,
         passwordHash,
       },
     });
@@ -32,17 +28,19 @@ export const createUser =
   };
 
 // Get
-export const getAllUsers =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const users = await client.user.findMany();
-    res.json({ users });
-  };
+export const getAllUsers: ReqBuilder = (client) => async (req, res) => {
+  const users = await client.user.findMany();
+  res.json({ users });
+};
 
-export const loginUser =
-  (client: PrismaClient): RequestHandler =>
-  async (req, res) => {
-    const { email, password } = req.body as LoginBody;
+export const loginUser: ReqBuilder =
+  (client) =>
+  async ({ body }, res) => {
+    if (!isLoginBody(body)) {
+      res.status(400).json({ message: "Bad Request" });
+      return;
+    }
+    const { email, password } = body;
     const user = await client.user.findFirst({
       where: {
         email,

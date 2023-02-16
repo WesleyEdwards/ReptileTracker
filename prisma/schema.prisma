@@ -73,5 +73,5 @@ model Schedule {
   saturday    Boolean
   sunday      Boolean
   createdAt   DateTime
-  updateAt    DateTime
+  updatedAt    DateTime
 }

@@ -32,7 +32,6 @@ export type UpdateReptileBody = {
 };
 
 export type CreateScheduleBody = {
-  reptileId: number;
   type: ScheduleType;
   description: string;
   monday: boolean;

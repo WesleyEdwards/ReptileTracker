@@ -38,16 +38,17 @@ export const createUser: ReqBuilder =
 // Get
 export const getUser: ReqBuilder =
   (client) =>
-  async ({ jwtBody }, res) => {
-    if (!jwtBody?.userId)
+  async ({ jwtBody, params }, res) => {
+    const userId = parseInt(params.id);
+    if (userId !== jwtBody?.userId)
       return res.status(401).json({ error: "Unauthorized" });
 
-    const users = await client.user.findFirst({
+    const user = await client.user.findFirst({
       where: {
-        id: jwtBody.userId,
+        id: userId,
       },
     });
-    res.json({ users });
+    res.json({ user });
   };
 
 export const loginUser: ReqBuilder =

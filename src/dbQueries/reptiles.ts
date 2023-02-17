@@ -32,7 +32,13 @@ export const createReptile: ReqBuilder =
 
 // Read
 export const getReptiles: ReqBuilder = (client) => async (req, res) => {
-  const reptiles = await client.reptile.findMany();
+  if (!req.jwtBody?.userId)
+    return res.status(401).json({ error: "Unauthorized" });
+  const reptiles = await client.reptile.findMany({
+    where: {
+      userId: req.jwtBody?.userId,
+    },
+  });
   res.json({ reptiles });
 };
 

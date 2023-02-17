@@ -5,12 +5,13 @@ import { ReqBuilder } from "../middleware/auth_types";
 // Create
 export const createSchedule: ReqBuilder =
   (client) =>
-  async ({ body, jwtBody }, res) => {
+  async ({ body, jwtBody, params }, res) => {
+    const reptileId = parseInt(params.id);
     if (!isCreateScheduleBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
     const reptileExists = await client.reptile.findFirst({
-      where: { id: body.reptileId, userId: jwtBody?.userId },
+      where: { id: reptileId, userId: jwtBody?.userId },
     });
 
     if (!reptileExists) {
@@ -20,6 +21,7 @@ export const createSchedule: ReqBuilder =
     const schedules = await client.schedule.create({
       data: {
         ...body,
+        reptileId,
         userId: jwtBody!.userId,
         ...creationDates,
       },

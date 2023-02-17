@@ -9,20 +9,21 @@ import { ReqBuilder } from "../middleware/auth_types";
 // Create
 export const createReptile: ReqBuilder =
   (client) =>
-  async ({ body }, res) => {
+  async ({ body, jwtBody }, res) => {
     if (!isCreateReptileBody(body)) {
       return res
         .status(400)
         .json({ error: "Invalid parameters for creating Reptile" });
     }
     const userExists = await client.user.findFirst({
-      where: { id: body.userId },
+      where: { id: jwtBody?.userId },
     });
     if (!userExists) return res.json({ error: "User does not exist" });
 
     const reptile = await client.reptile.create({
       data: {
         ...body,
+        userId: jwtBody!.userId,
         ...creationDates,
       },
     });
@@ -58,15 +59,17 @@ export const updateReptile: ReqBuilder = (client) => async (req, res) => {
 };
 
 // Delete
-export const deleteReptile: ReqBuilder = (client) => async (req, res) => {
-  const reptileId = parseInt(req.params.id);
-  const exists = await client.reptile.findFirst({
-    where: { id: reptileId },
-  });
-  if (!exists) return res.status(404).json({});
-  // we know this reptile exists so now we can delete it
-  await client.reptile.delete({
-    where: { id: reptileId },
-  });
-  res.json({ message: `Deleted the reptile with id ${reptileId}` });
-};
+export const deleteReptile: ReqBuilder =
+  (client) =>
+  async ({ params, jwtBody }, res) => {
+    const reptileId = parseInt(params.id);
+    const exists = await client.reptile.findFirst({
+      where: { id: reptileId, userId: jwtBody?.userId },
+    });
+    if (!exists) return res.status(404);
+
+    await client.reptile.delete({
+      where: { id: reptileId },
+    });
+    res.json({ message: `Deleted the reptile with id ${reptileId}` });
+  };

@@ -36,8 +36,12 @@ export const createUser: ReqBuilder =
   };
 
 // Get
-export const getAllUsers: ReqBuilder = (client) => async (req, res) => {
-  const users = await client.user.findMany();
+export const getUser: ReqBuilder = (client) => async (req, res) => {
+  const users = await client.user.findFirst({
+    where: {
+      id: req.jwtBody?.userId,
+    },
+  });
   res.json({ users });
 };
 
@@ -65,8 +69,5 @@ export const loginUser: ReqBuilder =
       return;
     }
     const token = createUserToken(user.id);
-    res.json({
-      user,
-      token,
-    });
+    res.json({ user, token });
   };

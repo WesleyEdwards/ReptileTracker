@@ -37,7 +37,6 @@ export const createUser: ReqBuilder =
 
 // Get
 export const getUser: ReqBuilder = (client) => async (req, res) => {
-  console.log(req.jwtBody);
   const users = await client.user.findFirst({
     where: {
       id: req.jwtBody?.userId,

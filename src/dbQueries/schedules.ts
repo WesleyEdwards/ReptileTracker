@@ -27,22 +27,30 @@ export const createSchedule: ReqBuilder =
     res.json({ schedules });
   };
 
-export const getScheduleByUser: ReqBuilder = (client) => async (req, res) => {
-  const userId = parseInt(req.params.id);
-  const schedules = await client.schedule.findMany({
-    where: {
-      userId: userId,
-    },
-  });
-  res.json({ schedules });
-};
+export const getScheduleByUser: ReqBuilder =
+  (client) =>
+  async ({ params, jwtBody }, res) => {
+    const userId = parseInt(params.id);
+    if (userId !== jwtBody?.userId)
+      return res
+        .status(401)
+        .json({ error: "No access to User with the given id" });
+    const schedules = await client.schedule.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    res.json({ schedules });
+  };
 
 export const getScheduleByReptile: ReqBuilder =
-  (client) => async (req, res) => {
-    const id = parseInt(req.params.id);
+  (client) =>
+  async ({ params, jwtBody }, res) => {
+    const id = parseInt(params.id);
     const schedules = await client.schedule.findMany({
       where: {
         reptileId: id,
+        userId: jwtBody?.userId,
       },
     });
     res.json({ schedules });

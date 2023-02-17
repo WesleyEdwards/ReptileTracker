@@ -63,12 +63,13 @@ export const deleteReptile: ReqBuilder =
   (client) =>
   async ({ params, jwtBody }, res) => {
     const reptileId = parseInt(params.id);
-    if (!jwtBody?.userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!jwtBody?.userId)
+      return res.status(401).json({ error: "Unauthorized" });
     const exists = await client.reptile.findFirst({
-      where: { id: reptileId, userId: jwtBody.userId },
+      where: { id: reptileId },
     });
-    if (!exists) return res.status(404);
-
+    if (!exists || !reptileId)
+      return res.json({ error: "Please use a reptileID that exists" });
     await client.reptile.delete({
       where: { id: reptileId },
     });

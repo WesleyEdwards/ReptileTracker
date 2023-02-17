@@ -33,10 +33,12 @@ export const getFeedingsByReptile: ReqBuilder =
     const { params, jwtBody } = req;
     const reptileId = parseInt(params.id);
 
+    if (!jwtBody?.userId) return res.status(401).json({ error: "Unauthorized" });
+
     const userOwnsReptile = await client.reptile.findFirst({
       where: {
         id: reptileId,
-        userId: jwtBody?.userId,
+        userId: jwtBody.userId,
       },
     });
     if (!userOwnsReptile) {

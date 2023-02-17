@@ -5,13 +5,13 @@ import { ReqBuilder } from "../middleware/auth_types";
 // Create
 export const createFeeding: ReqBuilder =
   (client) =>
-  async ({ body }, res) => {
+  async ({ body, jwtBody }, res) => {
     if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
 
     const reptileExists = await client.reptile.findFirst({
-      where: { id: body.reptileId },
+      where: { id: body.reptileId, userId: jwtBody?.userId },
     });
 
     if (!reptileExists) {
@@ -28,12 +28,26 @@ export const createFeeding: ReqBuilder =
   };
 
 // Get
-export const getFeedingsByReptile: ReqBuilder = (client) => async (req, res) => {
-  const reptileId = parseInt(req.params.id);
-  const feedings = await client.feeding.findMany({
-    where: {
-      reptileId: reptileId,
-    },
-  });
-  res.json({ feedings });
-};
+export const getFeedingsByReptile: ReqBuilder =
+  (client) => async (req, res) => {
+    const { params, jwtBody } = req;
+    const reptileId = parseInt(params.id);
+
+    const userOwnsReptile = await client.reptile.findFirst({
+      where: {
+        id: reptileId,
+        userId: jwtBody?.userId,
+      },
+    });
+    if (!userOwnsReptile) {
+      return res
+        .status(401)
+        .json({ error: "No access to Reptile with the given id" });
+    }
+    const feedings = await client.feeding.findMany({
+      where: {
+        reptileId: reptileId,
+      },
+    });
+    res.json({ feedings });
+  };

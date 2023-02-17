@@ -20,7 +20,6 @@ export type CreateHusbandryBody = {
 };
 
 export type CreateReptileBody = {
-  userId: number;
   species: SpeciesType;
   name: string;
   sex: SexType;
@@ -34,9 +33,15 @@ export type UpdateReptileBody = {
 
 export type CreateScheduleBody = {
   reptileId: number;
-  userId: number;
   type: ScheduleType;
   description: string;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
 };
 
 export type LoginBody = {

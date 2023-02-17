@@ -21,7 +21,6 @@ const login: ValidationBuilder<LoginBody> = {
 };
 
 const createSchedule: ValidationBuilder<CreateScheduleBody> = {
-  reptileId: "number",
   type: "schedule",
   description: "string",
   monday: "boolean",

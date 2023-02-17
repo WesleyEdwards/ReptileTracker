@@ -59,7 +59,10 @@ CREATE TABLE "Schedule" (
     "saturday" BOOLEAN NOT NULL,
     "sunday" BOOLEAN NOT NULL,
     "createdAt" DATETIME NOT NULL,
-    "updateAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Schedule_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Schedule_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

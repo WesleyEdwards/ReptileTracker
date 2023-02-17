@@ -7,7 +7,7 @@ import {
 
 export const scheduleController = controller("schedules", [
   {
-    path: "/",
+    path: "/:id",
     method: "post",
     endpointBuilder: createSchedule,
   },

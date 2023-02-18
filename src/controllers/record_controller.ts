@@ -6,5 +6,5 @@ import {
 
 export const recordController = controller("record", [
   { path: "/:id", method: "get", endpointBuilder: getReptileRecords },
-  { path: "/", method: "post", endpointBuilder: createHusbandryRecord },
+  { path: "/:id", method: "post", endpointBuilder: createHusbandryRecord },
 ]);

@@ -39,12 +39,10 @@ const createReptile: ValidationBuilder<CreateReptileBody> = {
 };
 
 const createFeeding: ValidationBuilder<CreateFeedingBody> = {
-  reptileId: "number",
   foodItem: "string",
 };
 
 const createHusbandry: ValidationBuilder<CreateHusbandryBody> = {
-  reptileId: "number",
   length: "number",
   weight: "number",
   temperature: "number",

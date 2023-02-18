@@ -5,19 +5,20 @@ import { ReqBuilder } from "../middleware/auth_types";
 // Create
 export const createHusbandryRecord: ReqBuilder =
   (client) =>
-  async ({ body, jwtBody }, res) => {
+  async ({ body, jwtBody, params }, res) => {
     if (!isCreateHusbandryBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-
+    const reptileId = parseInt(params.id);
     const reptileExists = await client.reptile.findFirst({
-      where: { id: body.reptileId, userId: jwtBody?.userId },
+      where: { id: reptileId, userId: jwtBody?.userId },
     });
     if (!reptileExists) {
       return res.json({ error: "Invalid Reptile Id" });
     }
     const husbandryRecord = await client.husbandryRecord.create({
       data: {
+        reptileId,
         ...body,
         ...creationDates,
       },
@@ -30,7 +31,8 @@ export const getReptileRecords: ReqBuilder =
   (client) =>
   async ({ params, jwtBody }, res) => {
     const reptileId = parseInt(params.id);
-    if (!jwtBody?.userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!jwtBody?.userId)
+      return res.status(401).json({ error: "Unauthorized" });
     const userOwnsReptile = await client.reptile.findFirst({
       where: {
         id: reptileId,

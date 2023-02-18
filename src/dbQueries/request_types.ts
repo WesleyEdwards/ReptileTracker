@@ -7,12 +7,10 @@ export type CreateUserBody = {
   password: string;
 };
 export type CreateFeedingBody = {
-  reptileId: number;
   foodItem: string;
 };
 
 export type CreateHusbandryBody = {
-  reptileId: number;
   length: number;
   weight: number;
   temperature: number;

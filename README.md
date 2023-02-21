@@ -29,3 +29,7 @@ yarn dev
 ```bash
 yarn build
 ```
+
+### Postman
+
+- Create a user and copy the `token` value into the Reptile Tracker variables under `auth_token`. This will allow all subsequent requests to be authenticated

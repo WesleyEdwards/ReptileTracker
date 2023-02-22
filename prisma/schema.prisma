@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String     @unique
+  passwordHash String
+  createdAt    DateTime
+  updatedAt    DateTime
+  reptiles     Reptile[] // allows the user to have more than one reptile
+  schedule     Schedule[]
+}
+
+model Reptile {
+  id              Int               @id @default(autoincrement())
+  user            User              @relation(fields: [userId], references: [id]) // one reptile per user
+  userId          Int
+  species         String
+  name            String
+  sex             String
+  createdAt       DateTime
+  updatedAt       DateTime
+  feeding         Feeding[] // all of the times the reptile fed
+  husbandryRecord HusbandryRecord[]
+  schedule        Schedule[]
+}
+
+model Feeding {
+  id        Int      @id @default(autoincrement())
+  reptile   Reptile  @relation(fields: [reptileId], references: [id])
+  reptileId Int
+  foodItem  String
+  createdAt DateTime
+  updatedAt DateTime
+}
+
+model HusbandryRecord {
+  id          Int      @id @default(autoincrement())
+  reptile     Reptile  @relation(fields: [reptileId], references: [id])
+  reptileId   Int
+  length      Float
+  weight      Float
+  temperature Float
+  humidity    Float
+  createdAt   DateTime
+  updatedAt   DateTime
+}
+
+model Schedule {
+  id          Int      @id @default(autoincrement())
+  reptile     Reptile  @relation(fields: [reptileId], references: [id])
+  reptileId   Int
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  type        String
+  description String
+  monday      Boolean
+  tuesday     Boolean
+  wednesday   Boolean
+  thursday    Boolean
+  friday      Boolean
+  saturday    Boolean
+  sunday      Boolean
+  createdAt   DateTime
+  updatedAt    DateTime
+}

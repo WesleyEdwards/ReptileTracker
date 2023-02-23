@@ -24,7 +24,7 @@ model User {
 
 model Reptile {
   id              Int               @id @default(autoincrement())
-  user            User              @relation(fields: [userId], references: [id]) // one reptile per user
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade) // one reptile per user
   userId          Int
   species         String
   name            String
@@ -73,5 +73,5 @@ model Schedule {
   saturday    Boolean
   sunday      Boolean
   createdAt   DateTime
-  updatedAt    DateTime
+  updatedAt   DateTime
 }

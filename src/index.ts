@@ -7,12 +7,14 @@ import { reptilesController } from "./controllers/reptile_controller";
 import { recordController } from "./controllers/record_controller";
 import { feedingController } from "./controllers/feeding_controller";
 import { scheduleController } from "./controllers/schedule_controller";
+import cors from "cors";
 
 dotenv.config();
 const client = new PrismaClient();
 const app = express();
 app.use(express.json()); // middleware to convert everything to json
 app.use(cookieParser());
+app.use(cors());
 
 // TODO:
 // Post user signs in

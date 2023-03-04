@@ -36,7 +36,7 @@ export const createUser: ReqBuilder =
   };
 
 // Get
-export const getUser: ReqBuilder =
+export const getUserById: ReqBuilder =
   (client) =>
   async ({ jwtBody, params }, res) => {
     const userId = parseInt(params.id);
@@ -46,6 +46,17 @@ export const getUser: ReqBuilder =
     const user = await client.user.findFirst({
       where: {
         id: userId,
+      },
+    });
+    res.json({ user });
+  };
+
+export const getUser: ReqBuilder =
+  (client) =>
+  async ({ jwtBody, params }, res) => {
+    const user = await client.user.findFirst({
+      where: {
+        id: jwtBody?.userId,
       },
     });
     res.json({ user });

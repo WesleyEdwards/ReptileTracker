@@ -42,6 +42,21 @@ export const getReptiles: ReqBuilder = (client) => async (req, res) => {
   res.json({ reptiles });
 };
 
+export const getReptileById: ReqBuilder =
+  (client) =>
+  async ({ params, jwtBody }, res) => {
+    const reptileId = parseInt(params.id);
+    if (!jwtBody?.userId)
+      return res.status(401).json({ error: "Unauthorized" });
+    const reptile = await client.reptile.findFirst({
+      where: { id: reptileId },
+    });
+    if (!reptile || !reptileId)
+      return res.json({ error: "Please use a reptileID that exists" });
+
+    res.json({ reptile });
+  };
+
 // Update
 export const updateReptile: ReqBuilder = (client) => async (req, res) => {
   const reptileId = parseInt(req.params.id);

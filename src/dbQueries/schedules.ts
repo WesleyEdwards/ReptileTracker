@@ -18,7 +18,7 @@ export const createSchedule: ReqBuilder =
       return res.json({ error: "Invalid User or Reptile Id" });
     }
 
-    const schedules = await client.schedule.create({
+    const schedule = await client.schedule.create({
       data: {
         ...body,
         reptileId,
@@ -26,7 +26,7 @@ export const createSchedule: ReqBuilder =
         ...creationDates,
       },
     });
-    res.json({ schedules });
+    res.json({ schedule });
   };
 
 export const getScheduleByUser: ReqBuilder =

@@ -16,10 +16,6 @@ app.use(express.json()); // middleware to convert everything to json
 app.use(cookieParser());
 app.use(cors());
 
-// TODO:
-// Post user signs in
-// Make sure the user can only access reptiles that are associated with their account
-// Make sure the user can't access anything unless signed in
 usersController(app, client);
 reptilesController(app, client);
 recordController(app, client);

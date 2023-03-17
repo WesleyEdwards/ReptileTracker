@@ -1,8 +1,10 @@
 import { controller } from "../lib/controller";
 import {
   createSchedule,
+  getSchedule,
   getScheduleByReptile,
   getScheduleByUser,
+  updateSchedule,
 } from "../dbQueries/schedules";
 
 export const scheduleController = controller("schedules", [
@@ -12,13 +14,23 @@ export const scheduleController = controller("schedules", [
     endpointBuilder: createSchedule,
   },
   {
+    path: "/:id",
+    method: "get",
+    endpointBuilder: getSchedule,
+  },
+  {
     path: "/user/:id",
     method: "get",
     endpointBuilder: getScheduleByUser,
   },
   {
-    path: "/:id",
+    path: "/reptile/:id",
     method: "get",
     endpointBuilder: getScheduleByReptile,
+  },
+  {
+    path: "/:id",
+    method: "put",
+    endpointBuilder: updateSchedule,
   },
 ]);

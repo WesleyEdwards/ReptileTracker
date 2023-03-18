@@ -5,13 +5,13 @@ import { ReqBuilder } from "../middleware/auth_types";
 // Create
 export const createFeeding: ReqBuilder =
   (client) =>
-  async ({ body, jwtBody }, res) => {
+  async ({ body, jwtBody, params }, res) => {
     if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-
+    const reptileId = parseInt(params.id);
     const reptileExists = await client.reptile.findFirst({
-      where: { id: body.reptileId, userId: jwtBody?.userId },
+      where: { id: reptileId, userId: jwtBody?.userId },
     });
 
     if (!reptileExists) {
@@ -21,6 +21,7 @@ export const createFeeding: ReqBuilder =
     const feeding = await client.feeding.create({
       data: {
         ...body,
+        reptileId,
         ...creationDates,
       },
     });
@@ -33,7 +34,8 @@ export const getFeedingsByReptile: ReqBuilder =
     const { params, jwtBody } = req;
     const reptileId = parseInt(params.id);
 
-    if (!jwtBody?.userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!jwtBody?.userId)
+      return res.status(401).json({ error: "Unauthorized" });
 
     const userOwnsReptile = await client.reptile.findFirst({
       where: {

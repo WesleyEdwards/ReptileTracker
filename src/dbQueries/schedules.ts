@@ -18,7 +18,7 @@ export const createSchedule: ReqBuilder =
       return res.json({ error: "Invalid User or Reptile Id" });
     }
 
-    const schedules = await client.schedule.create({
+    const schedule = await client.schedule.create({
       data: {
         ...body,
         reptileId,
@@ -26,7 +26,7 @@ export const createSchedule: ReqBuilder =
         ...creationDates,
       },
     });
-    res.json({ schedules });
+    res.json({ schedule });
   };
 
 export const getScheduleByUser: ReqBuilder =
@@ -56,4 +56,40 @@ export const getScheduleByReptile: ReqBuilder =
       },
     });
     res.json({ schedules });
+  };
+
+export const updateSchedule: ReqBuilder =
+  (client) =>
+  async ({ body, params, jwtBody }, res) => {
+    const id = parseInt(params.id);
+    const schedule = await client.schedule.findFirst({
+      where: {
+        id: id,
+        userId: jwtBody?.userId,
+      },
+    });
+    if (!schedule) {
+      return res.status(400).json({ error: "Invalid Schedule Id" });
+    }
+    const updatedSchedule = await client.schedule.update({
+      where: { id },
+      data: {
+        ...body,
+        updatedAt: getCurrentDateTime(),
+      },
+    });
+    res.json({ schedule: updatedSchedule });
+  };
+
+export const getSchedule: ReqBuilder =
+  (client) =>
+  async ({ params, jwtBody }, res) => {
+    const id = parseInt(params.id);
+    const schedule = await client.schedule.findFirst({
+      where: {
+        id: id,
+        userId: jwtBody?.userId,
+      },
+    });
+    res.json({ schedule });
   };

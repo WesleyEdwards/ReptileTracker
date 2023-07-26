@@ -1,6 +1,28 @@
 # Reptile Tracker
 
+## Description
+
+The Reptile Tracker is a way to track when you feed your pets and at what times to ensure optimal growth and comfort for your reptiles.
+
+This application use Material UI to create a modern aesthetic for users to interact with.
+
+The Dashboard:
+![Dashboard](./images/dashboard.png)
+
+Or the Pet Overview:
+![Pet Dash](./images/PetDash.png)
+
+Here is an example of the popups:
+![Popups](./images/Popups.png)
+
+
 ## Get Started
+
+To Run the Server:
+
+```bash
+cd backend
+```
 
 ### Install the dependencies
 
@@ -13,8 +35,6 @@ yarn
 ```bash
 yarn migrate
 ```
-
-## Development
 
 ### Start the server by running:
 
@@ -30,6 +50,20 @@ yarn dev
 yarn build
 ```
 
-### Postman
+## Run the Frontend
 
-- Create a user and copy the `token` value into the Reptile Tracker variables under `auth_token`. This will allow all subsequent requests to be authenticated
+```bash
+cd frontend
+```
+
+#### Install the dependencies
+
+```bash
+yarn
+```
+
+#### Start the client by running:
+
+```bash
+yarn dev
+```

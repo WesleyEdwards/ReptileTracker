@@ -7,7 +7,7 @@ The Reptile Tracker is a way to track when you feed your pets and at what times 
 This application use Material UI to create a modern aesthetic for users to interact with.
 
 The Dashboard:
-![Dashboard](./images/dashboard.png)
+![Dashboard](./images/Dashboard.png)
 
 Or the Pet Overview:
 ![Pet Dash](./images/PetDash.png)

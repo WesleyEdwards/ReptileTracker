@@ -14,7 +14,7 @@ type Method = "get" | "post" | "put" | "delete";
 
 export class Api {
   private token = "";
-  private baseUrl = "http://localhost:3000";
+  private baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   constructor() {
     const token = getToken();

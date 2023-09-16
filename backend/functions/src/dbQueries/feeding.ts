@@ -1,38 +1,42 @@
 import { creationDates } from "../helperFunctions";
-import { isCreateHusbandryBody } from "../json_validation/request_body";
+import { isCreateFeedingBody } from "../json_validation/request_body";
 import { ReqBuilder } from "../middleware/auth_types";
 
 // Create
-export const createHusbandryRecord: ReqBuilder =
+export const createFeeding: ReqBuilder =
   (client) =>
   async ({ body, jwtBody, params }, res) => {
-    if (!isCreateHusbandryBody(body)) {
+    if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
     const reptileId = parseInt(params.id);
     const reptileExists = await client.reptile.findFirst({
       where: { id: reptileId, userId: jwtBody?.userId },
     });
+
     if (!reptileExists) {
       return res.json({ error: "Invalid Reptile Id" });
     }
-    const husbandryRecord = await client.husbandryRecord.create({
+
+    const feeding = await client.feeding.create({
       data: {
-        reptileId,
         ...body,
+        reptileId,
         ...creationDates,
       },
     });
-    res.json({ husbandryRecord });
+    return res.json({ feeding });
   };
 
 // Get
-export const getReptileRecords: ReqBuilder =
-  (client) =>
-  async ({ params, jwtBody }, res) => {
+export const getFeedingsByReptile: ReqBuilder =
+  (client) => async (req, res) => {
+    const { params, jwtBody } = req;
     const reptileId = parseInt(params.id);
+
     if (!jwtBody?.userId)
       return res.status(401).json({ error: "Unauthorized" });
+
     const userOwnsReptile = await client.reptile.findFirst({
       where: {
         id: reptileId,
@@ -40,12 +44,14 @@ export const getReptileRecords: ReqBuilder =
       },
     });
     if (!userOwnsReptile) {
-      return res.status(401).json({ error: "No access to the reptile" });
+      return res
+        .status(401)
+        .json({ error: "No access to Reptile with the given id" });
     }
-    const records = await client.husbandryRecord.findMany({
+    const feedings = await client.feeding.findMany({
       where: {
         reptileId: reptileId,
       },
     });
-    res.json({ records });
+    return res.json({ feedings });
   };

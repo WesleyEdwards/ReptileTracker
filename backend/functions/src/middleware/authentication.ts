@@ -1,4 +1,3 @@
-import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { AuthReqHandler, JWTBody } from "./auth_types";
 

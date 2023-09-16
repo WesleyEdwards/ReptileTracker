@@ -1,7 +1,6 @@
 import { createUserToken, creationDates } from "../helperFunctions";
 import bcrypt from "bcrypt";
 import { ReqBuilder } from "../middleware/auth_types";
-import { LoginBody } from "./request_types";
 import { isCreateUserBody, isLoginBody } from "../json_validation/request_body";
 
 // Create
@@ -32,7 +31,7 @@ export const createUser: ReqBuilder =
     });
     // now we log the user in and return the user and token
     const token = createUserToken(user.id);
-    res.json({ user, token });
+    return res.json({ user, token });
   };
 
 // Get
@@ -48,7 +47,7 @@ export const getUserById: ReqBuilder =
         id: userId,
       },
     });
-    res.json({ user });
+    return res.json({ user });
   };
 
 export const getUser: ReqBuilder =
@@ -59,7 +58,7 @@ export const getUser: ReqBuilder =
         id: jwtBody?.userId,
       },
     });
-    res.json({ user });
+    return res.json({ user });
   };
 
 export const loginUser: ReqBuilder =
@@ -86,5 +85,5 @@ export const loginUser: ReqBuilder =
       return;
     }
     const token = createUserToken(user.id);
-    res.json({ user, token });
+    return res.json({ user, token });
   };

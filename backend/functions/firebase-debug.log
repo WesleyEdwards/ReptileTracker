@@ -1,0 +1,130 @@
+[debug] [2023-09-16T19:16:59.912Z] ----------------------------------------------------------------------
+[debug] [2023-09-16T19:16:59.913Z] Command:       /home/wesley/.nvm/versions/node/v16.15.1/bin/node /home/wesley/.nvm/versions/node/v16.15.1/bin/firebase emulators:start --only functions
+[debug] [2023-09-16T19:16:59.913Z] CLI Version:   11.29.1
+[debug] [2023-09-16T19:16:59.913Z] Platform:      linux
+[debug] [2023-09-16T19:16:59.913Z] Node Version:  v16.15.1
+[debug] [2023-09-16T19:16:59.914Z] Time:          Sat Sep 16 2023 13:16:59 GMT-0600 (Mountain Daylight Time)
+[debug] [2023-09-16T19:16:59.914Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-09-16T19:16:59.969Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-09-16T19:16:59.969Z] > authorizing via signed-in user (westheedwards@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2023-09-16T19:16:59.973Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-09-16T19:16:59.973Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2023-09-16T19:16:59.978Z] [hub] writing locator at /tmp/hub-server-project-3a101.json
+[debug] [2023-09-16T19:16:59.984Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-09-16T19:16:59.984Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-09-16T19:16:59.984Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[debug] [2023-09-16T19:16:59.987Z] defaultcredentials: writing to file /home/wesley/.config/firebase/westheedwards_gmail_com_application_default_credentials.json
+[debug] [2023-09-16T19:16:59.989Z] Setting GAC to /home/wesley/.config/firebase/westheedwards_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /home/wesley/.config/firebase/westheedwards_gmail_com_application_default_credentials.json"}}
+[debug] [2023-09-16T19:16:59.991Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/server-project-3a101/adminSdkConfig [none]
+[debug] [2023-09-16T19:17:00.418Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/server-project-3a101/adminSdkConfig 200
+[debug] [2023-09-16T19:17:00.418Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/server-project-3a101/adminSdkConfig {"projectId":"server-project-3a101","storageBucket":"server-project-3a101.appspot.com"}
+[debug] [2023-09-16T19:17:00.445Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-09-16T19:17:00.445Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2023-09-16T19:17:00.445Z] Starting Emulator UI with command {"binary":"node","args":["/home/wesley/.cache/firebase/emulators/ui-v1.11.5/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/home/wesley/.cache/firebase/emulators/ui-v1.11.5/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2023-09-16T19:17:00.525Z] Web / API server started at 127.0.0.1:4000
+Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\nWeb / API server started at ::1:4000\n"}}
+[info] i  functions: Watching "/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions\" for Cloud Functions..."}}
+[debug] [2023-09-16T19:17:00.721Z] Validating nodejs source
+[debug] [2023-09-16T19:17:01.523Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@prisma/client": "^5.3.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.4",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.16",
+    "firebase-functions-test": "^3.0.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2023-09-16T19:17:01.523Z] Building nodejs source
+[debug] [2023-09-16T19:17:01.523Z] Failed to find version of module node: reached end of search path /home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules
+[info] ✔  functions: Using node@16 from host. 
+[debug] [2023-09-16T19:17:01.525Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-09-16T19:17:01.527Z] Found firebase-functions binary at '/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/.bin/firebase-functions'
+[debug] [2023-09-16T19:17:01.622Z] Serving at port 8399
+
+[debug] [2023-09-16T19:17:01.763Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2023-09-16T19:17:01.768Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: helloWorld. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: helloWorld."}}
+[info] ✔  functions[us-central1-helloWorld]: http function initialized (http://127.0.0.1:5001/server-project-3a101/us-central1/helloWorld). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/server-project-3a101/us-central1/helloWorld)."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2023-09-16T19:17:12.921Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/helloWorld-2023-09-16T19:17:12.921Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-16T19:17:12.922Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/helloWorld-2023-09-16T19:17:12.921Z"],"workRunningCount":1}
+[debug] [2023-09-16T19:17:12.922Z] Accepted request GET /server-project-3a101/us-central1/helloWorld --> us-central1-helloWorld
+[debug] [2023-09-16T19:17:12.927Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-16T19:17:12.928Z] [functions] Got req.url=/server-project-3a101/us-central1/helloWorld, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/helloWorld, mapping to path=/"}}
+[debug] [2023-09-16T19:17:12.950Z] [worker-pool] addWorker(us-central1-helloWorld) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-helloWorld)"}}
+[debug] [2023-09-16T19:17:12.951Z] [worker-pool] Adding worker with key us-central1-helloWorld, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-helloWorld, total=1"}}
+[debug] [2023-09-16T19:17:13.558Z] [runtime-status] [239693] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.10.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.10.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2023-09-16T19:17:13.558Z] [runtime-status] [239693] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-16T19:17:13.558Z] [runtime-status] [239693] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2023-09-16T19:17:13.560Z] [runtime-status] [239693] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-16T19:17:13.651Z] [runtime-status] [239693] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Checked functions.config() {\"config\":{}}"}}
+[debug] [2023-09-16T19:17:13.651Z] [runtime-status] [239693] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}}"}}
+[debug] [2023-09-16T19:17:13.652Z] [runtime-status] [239693] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-16T19:17:13.652Z] [runtime-status] [239693] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.10.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.10.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2023-09-16T19:17:13.653Z] [runtime-status] [239693] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-16T19:17:13.653Z] [runtime-status] [239693] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.10.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.10.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2023-09-16T19:17:13.723Z] [runtime-status] [239693] Functions runtime initialized. {"cwd":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions","node_version":"16.15.1"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Functions runtime initialized. {\"cwd\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions\",\"node_version\":\"16.15.1\"}"}}
+[debug] [2023-09-16T19:17:13.723Z] [runtime-status] [239693] Listening to port: /tmp/fire_emu_0f68c1459a2456d3.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[runtime-status] [239693] Listening to port: /tmp/fire_emu_0f68c1459a2456d3.sock"}}
+[debug] [2023-09-16T19:17:13.765Z] [worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: IDLE"}}
+[debug] [2023-09-16T19:17:13.765Z] [worker-pool] submitRequest(triggerId=us-central1-helloWorld) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-helloWorld)"}}
+[info] i  functions: Beginning execution of "us-central1-helloWorld" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"Beginning execution of \"us-central1-helloWorld\""}}
+[debug] [2023-09-16T19:17:13.766Z] [worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: BUSY"}}
+[info] i  functions: Finished "us-central1-helloWorld" in 4.637208ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"Finished \"us-central1-helloWorld\" in 4.637208ms"}}
+[debug] [2023-09-16T19:17:13.771Z] [worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: IDLE"}}
+[debug] [2023-09-16T19:17:13.771Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-16T19:17:23.841Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/helloWorld/user-2023-09-16T19:17:23.841Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-16T19:17:23.841Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/helloWorld/user-2023-09-16T19:17:23.841Z"],"workRunningCount":1}
+[debug] [2023-09-16T19:17:23.842Z] Accepted request GET /server-project-3a101/us-central1/helloWorld/user --> us-central1-helloWorld
+[debug] [2023-09-16T19:17:23.845Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-16T19:17:23.845Z] [functions] Got req.url=/server-project-3a101/us-central1/helloWorld/user, mapping to path=/user {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/helloWorld/user, mapping to path=/user"}}
+[debug] [2023-09-16T19:17:23.845Z] [worker-pool] submitRequest(triggerId=us-central1-helloWorld) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-helloWorld)"}}
+[info] i  functions: Beginning execution of "us-central1-helloWorld" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"Beginning execution of \"us-central1-helloWorld\""}}
+[debug] [2023-09-16T19:17:23.846Z] [worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: BUSY"}}
+[info] i  functions: Finished "us-central1-helloWorld" in 5.536604ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"Finished \"us-central1-helloWorld\" in 5.536604ms"}}
+[debug] [2023-09-16T19:17:23.852Z] [worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-helloWorld"},"extension":{},"message":"[worker-us-central1-helloWorld-888240ac-fe27-42b5-994a-3ea4390b10a9]: IDLE"}}
+[debug] [2023-09-16T19:17:23.853Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}

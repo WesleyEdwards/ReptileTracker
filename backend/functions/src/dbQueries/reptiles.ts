@@ -27,7 +27,7 @@ export const createReptile: ReqBuilder =
         ...creationDates,
       },
     });
-    res.json({ reptile });
+    return res.json({ reptile });
   };
 
 // Read
@@ -39,7 +39,7 @@ export const getReptiles: ReqBuilder = (client) => async (req, res) => {
       userId: req.jwtBody?.userId,
     },
   });
-  res.json({ reptiles });
+  return res.json({ reptiles });
 };
 
 export const getReptileById: ReqBuilder =
@@ -54,7 +54,7 @@ export const getReptileById: ReqBuilder =
     if (!reptile || !reptileId)
       return res.json({ error: "Please use a reptileID that exists" });
 
-    res.json({ reptile });
+    return res.json({ reptile });
   };
 
 // Update
@@ -76,7 +76,7 @@ export const updateReptile: ReqBuilder = (client) => async (req, res) => {
       updatedAt,
     },
   });
-  res.json({ reptile });
+  return res.json({ reptile });
 };
 
 // Delete
@@ -94,5 +94,5 @@ export const deleteReptile: ReqBuilder =
     await client.reptile.delete({
       where: { id: reptileId },
     });
-    res.json({ message: `Deleted the reptile with id ${reptileId}` });
+    return res.json({ message: `Deleted the reptile with id ${reptileId}` });
   };

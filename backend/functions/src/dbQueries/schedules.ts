@@ -26,7 +26,7 @@ export const createSchedule: ReqBuilder =
         ...creationDates,
       },
     });
-    res.json({ schedule });
+    return res.json({ schedule });
   };
 
 export const getScheduleByUser: ReqBuilder =
@@ -42,7 +42,7 @@ export const getScheduleByUser: ReqBuilder =
         userId: userId,
       },
     });
-    res.json({ schedules });
+    return res.json({ schedules });
   };
 
 export const getScheduleByReptile: ReqBuilder =
@@ -78,7 +78,7 @@ export const updateSchedule: ReqBuilder =
         updatedAt: getCurrentDateTime(),
       },
     });
-    res.json({ schedule: updatedSchedule });
+    return res.json({ schedule: updatedSchedule });
   };
 
 export const getSchedule: ReqBuilder =
@@ -91,5 +91,5 @@ export const getSchedule: ReqBuilder =
         userId: jwtBody?.userId,
       },
     });
-    res.json({ schedule });
+    return res.json({ schedule });
   };

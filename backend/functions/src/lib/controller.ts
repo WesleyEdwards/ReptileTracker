@@ -1,16 +1,16 @@
-import { PrismaClient } from "@prisma/client";
 import express, { RequestHandler, Express } from "express";
 import { authenticationMiddleware } from "../middleware/authentication";
+import { DbClient } from "../middleware/auth_types";
 
 type Route = {
   path: string;
   method: "post" | "put" | "get" | "delete";
-  endpointBuilder: (client: PrismaClient) => RequestHandler;
+  endpointBuilder: (client: DbClient) => RequestHandler;
   skipAuth?: boolean;
 };
 
 export const controller =
-  (name: string, routes: Route[]) => (app: Express, client: PrismaClient) => {
+  (name: string, routes: Route[]) => (app: Express, client: DbClient) => {
     const router = express.Router();
     routes.forEach((route) => {
       if (!route.skipAuth) {

@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { NextFunction, Response, Request } from "express";
 
 export type JWTBody = {
@@ -13,4 +12,13 @@ export type AuthReqHandler = {
   (req: RequestWithJWTBody, res: Response, next: NextFunction): void;
 };
 
-export type ReqBuilder = (client: PrismaClient) => AuthReqHandler;
+export type DbClient = {
+  user: any;
+  reptile: any;
+  husbandryRecord: any;
+  feeding: any;
+  schedule: any,
+}
+
+export type ReqBuilder = (client: DbClient) => AuthReqHandler;
+

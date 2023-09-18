@@ -24,7 +24,8 @@ export function createUserToken(id: number) {
     {
       userId: id,
     },
-    process.env.ENCRYPTION_KEY!!,
+    // process.env.ENCRYPTION_KEY!!,
+    "",
     {
       expiresIn: "10m",
     }

@@ -10,7 +10,7 @@ export const authenticationMiddleware: AuthReqHandler = async (
   try {
     const jwtBody = jwt.verify(
       token || "",
-      process.env.ENCRYPTION_KEY!!
+      "" // process.env.ENCRYPTION_KEY!!
     ) as JWTBody;
     req.jwtBody = jwtBody;
     next();

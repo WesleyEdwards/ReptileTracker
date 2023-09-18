@@ -9,8 +9,12 @@ import { scheduleController } from "./controllers/schedule_controller";
 import * as functions from "firebase-functions";
 import cors from "cors";
 import { DbClient } from "./middleware/auth_types";
+import { MongoClient } from "mongodb";
 
 dotenv.config();
+
+const mongoClient = new MongoClient(process.env.MONGO_URI!);
+
 const client: DbClient = {
   user: {},
   reptile: {},
@@ -18,6 +22,7 @@ const client: DbClient = {
   feeding: {},
   schedule: {},
 };
+
 const app = express();
 app.use(express.json()); // middleware to convert everything to json
 app.use(cookieParser());
@@ -29,4 +34,27 @@ recordController(app, client);
 feedingController(app, client);
 scheduleController(app, client);
 
-export const helloWorld = functions.https.onRequest(app);
+// export const helloWorld = functions.https.onRequest((req, res) => {
+//   console.log(process.env.MONGO_URI);
+//   console.log(process.env.ENCRYPTION_KEY);
+//   res.send("Hello from Firebase!");
+// });
+
+// // mongoClient.connect().then(() => {
+// //   const db = mongoClient.db("reptile-tracker");
+// //   client.user = db.collection("user");
+// //   client.reptile = db.collection("reptile");
+// //   client.husbandryRecord = db.collection("husbandryRecord");
+// //   client.feeding = db.collection("feeding");
+// //   client.schedule = db.collection("schedule");
+// // });
+
+export const helloWorld = functions.https.onRequest((req, res) => {
+  mongoClient.connect().then((client) => {
+    const db = client.db("reptile-tracker-test");
+    db.collection("reptile-test").insertOne({
+      name: "test",
+    });
+    return res.send("Hello from Firebase!");
+  });
+});

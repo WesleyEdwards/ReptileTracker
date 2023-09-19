@@ -1,35 +1,7 @@
-import { Collection, InsertOneResult, MongoClient } from "mongodb";
-import { User } from "./types";
-
-// export const mongoClient = (mClient: MongoClient) => {
-//   () => {
-//     mClient.connect().then((client) => {
-//       const db = client.db("reptile-tracker-test");
-//       db.collection("reptile-test").insertOne({
-//         name: "test",
-//       });
-//       return res.send("Hello from Firebase!");
-//     });
-//   };
-// };
-
-type HasId = {
-  _id: string;
-};
-
-type OrError<T> = T | undefined;
-
-type Endpoints<T extends HasId> = {
-  createOne: (user: T) => Promise<OrError<T>>;
-  findOne: (id: string) => Promise<OrError<T>>;
-  findMany: (id: string[]) => Promise<OrError<T[]>>;
-  updateOne: (user: T) => Promise<OrError<T>>;
-  deleteOne: (id: string) => Promise<OrError<T>>;
-};
-
-type DbClient = {
-  user: Endpoints<User>;
-};
+import { Collection, MongoClient } from "mongodb";
+import { Feeding, HusbandryRecord, Reptile, Schedule, User } from "./types";
+import { DbClient, Endpoints } from "./middleware/auth_types";
+import { v4 as uuidv4 } from "uuid";
 
 export const mongoClient = (): DbClient => {
   const mClient: MongoClient = new MongoClient(process.env.MONGO_URI!);
@@ -38,17 +10,21 @@ export const mongoClient = (): DbClient => {
 
   return {
     user: {
-      createOne: async (user: User) => {
-        const { acknowledged } = await userCollection.insertOne(user);
+      createOne: async (user) => {
+        console.log(uuidv4());
+        const newUser = { ...user, _id: uuidv4() };
+        console.log("Inserting", newUser);
+        const { acknowledged } = await userCollection.insertOne(newUser);
+        console.log(acknowledged);
         if (acknowledged) {
-          return user;
+          return newUser;
         }
         return undefined;
       },
-      findOne: async (id: string) => {
-        const user = await userCollection.findOne({ _id: id });
+      findOne: async (filter) => {
+        const user = await userCollection.findOne(filter);
         if (!user) {
-          throw new Error("User not found");
+          return undefined;
         }
         return user;
       },
@@ -74,5 +50,9 @@ export const mongoClient = (): DbClient => {
         return value;
       },
     },
+    reptile: {} as any as Endpoints<Reptile>,
+    husbandryRecord: {} as any as Endpoints<HusbandryRecord>,
+    feeding: {} as any as Endpoints<Feeding>,
+    schedule: {} as any as Endpoints<Schedule>,
   };
 };

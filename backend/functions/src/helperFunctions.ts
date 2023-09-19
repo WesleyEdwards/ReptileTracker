@@ -19,15 +19,8 @@ export function getReptilePartial(body: any): UpdateReptileBody {
   return { species, name, sex };
 }
 
-export function createUserToken(id: number) {
-  return jwt.sign(
-    {
-      userId: id,
-    },
-    // process.env.ENCRYPTION_KEY!!,
-    "",
-    {
-      expiresIn: "10m",
-    }
-  );
+export function createUserToken(id: string) {
+  return jwt.sign({ userId: id }, process.env.ENCRYPTION_KEY!, {
+    expiresIn: "10m",
+  });
 }

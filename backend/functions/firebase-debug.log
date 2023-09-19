@@ -1,0 +1,224 @@
+[debug] [2023-09-19T14:16:19.882Z] ----------------------------------------------------------------------
+[debug] [2023-09-19T14:16:19.883Z] Command:       /home/wesley/.nvm/versions/node/v16.15.1/bin/node /home/wesley/.nvm/versions/node/v16.15.1/bin/firebase emulators:start --only functions
+[debug] [2023-09-19T14:16:19.883Z] CLI Version:   11.29.1
+[debug] [2023-09-19T14:16:19.883Z] Platform:      linux
+[debug] [2023-09-19T14:16:19.883Z] Node Version:  v16.15.1
+[debug] [2023-09-19T14:16:19.884Z] Time:          Tue Sep 19 2023 08:16:19 GMT-0600 (Mountain Daylight Time)
+[debug] [2023-09-19T14:16:19.884Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-09-19T14:16:19.945Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-09-19T14:16:19.945Z] > authorizing via signed-in user (westheedwards@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2023-09-19T14:16:19.949Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-09-19T14:16:19.949Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2023-09-19T14:16:19.955Z] [hub] writing locator at /tmp/hub-server-project-3a101.json
+[debug] [2023-09-19T14:16:19.962Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-09-19T14:16:19.962Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-09-19T14:16:19.962Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[debug] [2023-09-19T14:16:19.966Z] defaultcredentials: writing to file /home/wesley/.config/firebase/westheedwards_gmail_com_application_default_credentials.json
+[debug] [2023-09-19T14:16:19.968Z] Setting GAC to /home/wesley/.config/firebase/westheedwards_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /home/wesley/.config/firebase/westheedwards_gmail_com_application_default_credentials.json"}}
+[debug] [2023-09-19T14:16:19.970Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/server-project-3a101/adminSdkConfig [none]
+[debug] [2023-09-19T14:16:20.276Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/server-project-3a101/adminSdkConfig 200
+[debug] [2023-09-19T14:16:20.276Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/server-project-3a101/adminSdkConfig {"projectId":"server-project-3a101","storageBucket":"server-project-3a101.appspot.com"}
+[debug] [2023-09-19T14:16:20.293Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-09-19T14:16:20.293Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2023-09-19T14:16:20.293Z] Starting Emulator UI with command {"binary":"node","args":["/home/wesley/.cache/firebase/emulators/ui-v1.11.5/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/home/wesley/.cache/firebase/emulators/ui-v1.11.5/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2023-09-19T14:16:20.375Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2023-09-19T14:16:20.375Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[info] i  functions: Watching "/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions\" for Cloud Functions..."}}
+[debug] [2023-09-19T14:16:20.572Z] Validating nodejs source
+[debug] [2023-09-19T14:16:21.045Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@prisma/client": "^5.3.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.4",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.2.0",
+    "mongodb": "^6.1.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.16",
+    "@types/uuid": "^9.0.4",
+    "firebase-functions-test": "^3.0.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2023-09-19T14:16:21.046Z] Building nodejs source
+[debug] [2023-09-19T14:16:21.046Z] Failed to find version of module node: reached end of search path /home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules
+[info] ✔  functions: Using node@16 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2023-09-19T14:16:21.051Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-09-19T14:16:21.055Z] Found firebase-functions binary at '/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/.bin/firebase-functions'
+[debug] [2023-09-19T14:16:21.157Z] Serving at port 8906
+
+[debug] [2023-09-19T14:16:21.378Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2023-09-19T14:16:21.384Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[info] ✔  functions[us-central1-api]: http function initialized (http://127.0.0.1:5001/server-project-3a101/us-central1/api). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/server-project-3a101/us-central1/api)."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2023-09-19T14:16:22.621Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/login-2023-09-19T14:16:22.621Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:16:22.622Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/login-2023-09-19T14:16:22.621Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:16:22.622Z] Accepted request POST /server-project-3a101/us-central1/api/user/login --> us-central1-api
+[debug] [2023-09-19T14:16:22.624Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:16:22.624Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/login, mapping to path=/user/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/login, mapping to path=/user/login"}}
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2023-09-19T14:16:22.636Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2023-09-19T14:16:22.637Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2023-09-19T14:16:23.155Z] [runtime-status] [317828] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.10.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.10.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2023-09-19T14:16:23.155Z] [runtime-status] [317828] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-19T14:16:23.156Z] [runtime-status] [317828] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2023-09-19T14:16:23.156Z] [runtime-status] [317828] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-19T14:16:23.251Z] [runtime-status] [317828] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Checked functions.config() {\"config\":{}}"}}
+[debug] [2023-09-19T14:16:23.251Z] [runtime-status] [317828] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}}"}}
+[debug] [2023-09-19T14:16:23.252Z] [runtime-status] [317828] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-19T14:16:23.252Z] [runtime-status] [317828] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.10.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.10.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2023-09-19T14:16:23.253Z] [runtime-status] [317828] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.4.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.4.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2023-09-19T14:16:23.253Z] [runtime-status] [317828] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.10.1","resolution":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.10.1\",\"resolution\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2023-09-19T14:16:23.388Z] [runtime-status] [317828] Functions runtime initialized. {"cwd":"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions","node_version":"16.15.1"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Functions runtime initialized. {\"cwd\":\"/home/wesley/school/past-school/webDev/reptile-tracker/backend/functions\",\"node_version\":\"16.15.1\"}"}}
+[debug] [2023-09-19T14:16:23.388Z] [runtime-status] [317828] Listening to port: /tmp/fire_emu_5dfc8a990ba95d63.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [317828] Listening to port: /tmp/fire_emu_5dfc8a990ba95d63.sock"}}
+[debug] [2023-09-19T14:16:23.455Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:16:23.456Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:16:23.456Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 1146.15681ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1146.15681ms"}}
+[debug] [2023-09-19T14:16:24.603Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:16:24.603Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:16:33.875Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:16:33.875Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:16:33.875Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:16:33.875Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:16:33.875Z] Accepted request GET /server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef --> us-central1-api
+[debug] [2023-09-19T14:16:33.877Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:16:33.878Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef"}}
+[debug] [2023-09-19T14:16:33.878Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:16:33.878Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 78.662945ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 78.662945ms"}}
+[debug] [2023-09-19T14:16:33.957Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:16:33.957Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:16:40.184Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:16:40.184Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:16:40.184Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:16:40.184Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:16:40.184Z] Accepted request GET /server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef --> us-central1-api
+[debug] [2023-09-19T14:16:40.187Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:16:40.187Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef"}}
+[debug] [2023-09-19T14:16:40.187Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:16:40.187Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 79.986699ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 79.986699ms"}}
+[debug] [2023-09-19T14:16:40.268Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:16:40.268Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:18.843Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user-2023-09-19T14:18:18.843Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:18.843Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user-2023-09-19T14:18:18.843Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:18:18.843Z] Accepted request POST /server-project-3a101/us-central1/api/user --> us-central1-api
+[debug] [2023-09-19T14:18:18.845Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:18:18.846Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user, mapping to path=/user {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user, mapping to path=/user"}}
+[debug] [2023-09-19T14:18:18.846Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:18:18.846Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] >  b38a6950-9958-4f33-b23c-ae127087cbbc {"user":"b38a6950-9958-4f33-b23c-ae127087cbbc","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m b38a6950-9958-4f33-b23c-ae127087cbbc"}}
+[info] >  Inserting { {"user":"Inserting {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Inserting {"}}
+[info] >    email: 'john@example.com', {"user":"  email: 'john@example.com',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   email: 'john@example.com',"}}
+[info] >    firstName: 'John', {"user":"  firstName: 'John',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   firstName: 'John',"}}
+[info] >    lastName: 'Doe', {"user":"  lastName: 'Doe',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   lastName: 'Doe',"}}
+[info] >    passwordHash: '$2b$10$xJYGJJikmn80Ii1.M7d.w.fQBLcwGeNQym7aA4strruEEU55kYnOW', {"user":"  passwordHash: '$2b$10$xJYGJJikmn80Ii1.M7d.w.fQBLcwGeNQym7aA4strruEEU55kYnOW',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   passwordHash: '$2b$10$xJYGJJikmn80Ii1.M7d.w.fQBLcwGeNQym7aA4strruEEU55kYnOW',"}}
+[info] >    createdAt: '2023-09-19T14:16:23.286Z', {"user":"  createdAt: '2023-09-19T14:16:23.286Z',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   createdAt: '2023-09-19T14:16:23.286Z',"}}
+[info] >    updatedAt: '2023-09-19T14:16:23.286Z', {"user":"  updatedAt: '2023-09-19T14:16:23.286Z',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   updatedAt: '2023-09-19T14:16:23.286Z',"}}
+[info] >    _id: '42656a08-ea36-4611-a715-051c06f652ab' {"user":"  _id: '42656a08-ea36-4611-a715-051c06f652ab'","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   _id: '42656a08-ea36-4611-a715-051c06f652ab'"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[info] >  true {"user":true,"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m true"}}
+[info] i  functions: Finished "us-central1-api" in 146.819315ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 146.819315ms"}}
+[debug] [2023-09-19T14:18:18.993Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:18:18.994Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:32.220Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:18:32.220Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:32.221Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:18:32.220Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:18:32.221Z] Accepted request GET /server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef --> us-central1-api
+[debug] [2023-09-19T14:18:32.223Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:18:32.223Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef"}}
+[debug] [2023-09-19T14:18:32.223Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:18:32.224Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 85.168117ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 85.168117ms"}}
+[debug] [2023-09-19T14:18:32.309Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:18:32.310Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:37.870Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:18:37.870Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:37.871Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:18:37.870Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:18:37.871Z] Accepted request GET /server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef --> us-central1-api
+[debug] [2023-09-19T14:18:37.873Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:18:37.874Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef"}}
+[debug] [2023-09-19T14:18:37.874Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:18:37.874Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 3.814136ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 3.814136ms"}}
+[debug] [2023-09-19T14:18:37.878Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:18:37.878Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:44.713Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:18:44.713Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:18:44.713Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef-2023-09-19T14:18:44.713Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:18:44.714Z] Accepted request GET /server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef --> us-central1-api
+[debug] [2023-09-19T14:18:44.716Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:18:44.716Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/401f5adc-cbdf-488b-9dd3-860faf680eef, mapping to path=/user/401f5adc-cbdf-488b-9dd3-860faf680eef"}}
+[debug] [2023-09-19T14:18:44.716Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:18:44.717Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 1.965309ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.965309ms"}}
+[debug] [2023-09-19T14:18:44.719Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:18:44.719Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:19:16.607Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/login-2023-09-19T14:19:16.606Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:19:16.607Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/login-2023-09-19T14:19:16.606Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:19:16.607Z] Accepted request POST /server-project-3a101/us-central1/api/user/login --> us-central1-api
+[debug] [2023-09-19T14:19:16.609Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:19:16.609Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/login, mapping to path=/user/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/login, mapping to path=/user/login"}}
+[debug] [2023-09-19T14:19:16.609Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:19:16.609Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 144.479964ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 144.479964ms"}}
+[debug] [2023-09-19T14:19:16.754Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:19:16.754Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:19:40.437Z] [work-queue] {"queuedWork":["/server-project-3a101/us-central1/api/user/42656a08-ea36-4611-a715-051c06f652ab-2023-09-19T14:19:40.437Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2023-09-19T14:19:40.437Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/server-project-3a101/us-central1/api/user/42656a08-ea36-4611-a715-051c06f652ab-2023-09-19T14:19:40.437Z"],"workRunningCount":1}
+[debug] [2023-09-19T14:19:40.438Z] Accepted request GET /server-project-3a101/us-central1/api/user/42656a08-ea36-4611-a715-051c06f652ab --> us-central1-api
+[debug] [2023-09-19T14:19:40.439Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2023-09-19T14:19:40.439Z] [functions] Got req.url=/server-project-3a101/us-central1/api/user/42656a08-ea36-4611-a715-051c06f652ab, mapping to path=/user/42656a08-ea36-4611-a715-051c06f652ab {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/server-project-3a101/us-central1/api/user/42656a08-ea36-4611-a715-051c06f652ab, mapping to path=/user/42656a08-ea36-4611-a715-051c06f652ab"}}
+[debug] [2023-09-19T14:19:40.440Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2023-09-19T14:19:40.440Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: BUSY"}}
+[info] i  functions: Finished "us-central1-api" in 77.685663ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 77.685663ms"}}
+[debug] [2023-09-19T14:19:40.518Z] [worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-cdfce20c-c448-4bf0-8cfc-45d5feda7315]: IDLE"}}
+[debug] [2023-09-19T14:19:40.518Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}

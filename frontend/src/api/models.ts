@@ -1,41 +1,51 @@
-import { ScheduleType, SpeciesType } from "./apiTypes";
+export type SexType = "male" | "female";
+
+export type SpeciesType =
+  | "ball_python"
+  | "king_snake"
+  | "corn_snake"
+  | "redtail_boa";
+
+export type ScheduleType = "feed" | "record" | "clean";
 
 type DateTime = string;
 
 export type User = {
-  id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
+  passwordHash: string;
   createdAt: DateTime;
   updatedAt: DateTime;
 };
 
 export type Reptile = {
-  id: number;
-  userId: number;
+  _id: string;
+  userId: string;
   species: SpeciesType;
   name: string;
   sex: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
   feeding: Feeding[];
   husbandryRecord: HusbandryRecord[];
   schedule: Schedule[];
+  createdAt: DateTime;
+  updatedAt: DateTime;
 };
+
 export type Feeding = {
-  id: number;
+  _id: string;
   reptile: Reptile;
-  reptileId: number;
+  reptileId: string;
   foodItem: string;
   createdAt: DateTime;
   updatedAt: DateTime;
 };
 
 export type HusbandryRecord = {
-  id: number;
+  _id: string;
   reptile: Reptile;
-  reptileId: number;
+  reptileId: string;
   length: number;
   weight: number;
   temperature: number;
@@ -45,9 +55,9 @@ export type HusbandryRecord = {
 };
 
 export type Schedule = {
-  id: number;
-  reptileId: number;
-  userId: number;
+  _id: string;
+  reptileId: string;
+  userId: string;
   type: ScheduleType;
   description: string;
   monday: boolean;

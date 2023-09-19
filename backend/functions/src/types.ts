@@ -15,6 +15,7 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
+  passwordHash: string;
   createdAt: DateTime;
   updatedAt: DateTime;
 };
@@ -25,11 +26,11 @@ export type Reptile = {
   species: SpeciesType;
   name: string;
   sex: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
   feeding: Feeding[];
   husbandryRecord: HusbandryRecord[];
   schedule: Schedule[];
+  createdAt: DateTime;
+  updatedAt: DateTime;
 };
 
 export type Feeding = {

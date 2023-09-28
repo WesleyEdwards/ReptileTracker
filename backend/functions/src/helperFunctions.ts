@@ -1,16 +1,16 @@
 import { isSexType, isString } from "./json_validation/validationFunctions";
 import jwt from "jsonwebtoken";
 import { UpdateReptileBody } from "./dbQueries/request_types";
+import { v4 as uuidv4 } from "uuid";
 
 export function getCurrentDateTime() {
   return new Date().toISOString();
 }
 
-export const creationDates = (() => {
-  const createdAt = getCurrentDateTime();
-  const updatedAt = createdAt;
-  return { createdAt, updatedAt };
-})();
+export const creationDates = () => {
+  const currDate = getCurrentDateTime();
+  return { createdAt: currDate, updatedAt: currDate, _id: uuidv4() };
+};
 
 export function getReptilePartial(body: any): UpdateReptileBody {
   const species = isString(body.species) ? body.species : undefined;

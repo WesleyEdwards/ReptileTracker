@@ -9,43 +9,43 @@ export type SpeciesType =
 export type ScheduleType = "feed" | "record" | "clean";
 
 type DateTime = string;
+type UUID = string;
 
 export type User = {
-  _id: string;
+  _id: UUID;
   firstName: string;
   lastName: string;
   email: string;
   passwordHash: string;
   createdAt: DateTime;
   updatedAt: DateTime;
+  admin: boolean;
 };
 
 export type Reptile = {
-  _id: string;
-  userId: string;
+  _id: UUID;
+  user: UUID;
   species: SpeciesType;
   name: string;
   sex: string;
-  feeding: Feeding[];
-  husbandryRecord: HusbandryRecord[];
-  schedule: Schedule[];
+  feeding: UUID[];
+  husbandryRecord: UUID[];
+  schedule: UUID[];
   createdAt: DateTime;
   updatedAt: DateTime;
 };
 
 export type Feeding = {
-  _id: string;
-  reptile: Reptile;
-  reptileId: string;
+  _id: UUID;
+  reptile: UUID;
   foodItem: string;
   createdAt: DateTime;
   updatedAt: DateTime;
 };
 
 export type HusbandryRecord = {
-  _id: string;
-  reptile: Reptile;
-  reptileId: string;
+  _id: UUID;
+  reptile: string;
   length: number;
   weight: number;
   temperature: number;
@@ -55,9 +55,9 @@ export type HusbandryRecord = {
 };
 
 export type Schedule = {
-  _id: string;
-  reptileId: string;
-  userId: string;
+  _id: UUID;
+  reptile: string;
+  user: string;
   type: ScheduleType;
   description: string;
   monday: boolean;

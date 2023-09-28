@@ -6,6 +6,7 @@ export const authenticationMiddleware: AuthReqHandler = async (
   res,
   next
 ) => {
+  // console.log("PATH", req.baseUrl);
   const token = req.headers.authorization?.split(" ")[1];
   try {
     const jwtBody = jwt.verify(

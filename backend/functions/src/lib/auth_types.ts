@@ -1,47 +1,46 @@
-import { NextFunction, Request, Response } from "express";
-import { Feeding, HusbandryRecord, Reptile, Schedule, User } from "../types";
-import { Filter } from "mongodb";
+import {NextFunction, Request, Response} from "express"
+import {Feeding, HusbandryRecord, Reptile, Schedule, User} from "../types"
 
 export type HasId = {
-  _id: string;
-};
+  _id: string
+}
 
-export type OrError<T> = T | undefined;
+export type OrError<T> = T | undefined
 
 export type KeyAndValue<T extends HasId> = {
-  [P in keyof T]?: T[P];
-};
+  [P in keyof T]?: T[P]
+}
 
 export type Condition<T> = {
-  [P in keyof T]?: T[P][];
-};
+  [P in keyof T]?: T[P][]
+}
 
 export type BasicEndpoints<T extends HasId> = {
-  createOne: (item: T) => Promise<OrError<T>>;
-  findOne: (filter: KeyAndValue<T>) => Promise<OrError<T>>;
-  findMany: (id: Condition<T>) => Promise<OrError<T[]>>;
-  updateOne: (id: string, update: Partial<T>) => Promise<OrError<T>>;
-  deleteOne: (id: string) => Promise<string>;
-};
+  createOne: (item: T) => Promise<OrError<T>>
+  findOne: (filter: KeyAndValue<T>) => Promise<OrError<T>>
+  findMany: (id: Condition<T>) => Promise<OrError<T[]>>
+  updateOne: (id: string, update: Partial<T>) => Promise<OrError<T>>
+  deleteOne: (id: string) => Promise<string>
+}
 
 export type DbClient = {
-  user: BasicEndpoints<User>;
-  reptile: BasicEndpoints<Reptile>;
-  husbandryRecord: BasicEndpoints<HusbandryRecord>;
-  feeding: BasicEndpoints<Feeding>;
-  schedule: BasicEndpoints<Schedule>;
-};
+  user: BasicEndpoints<User>
+  reptile: BasicEndpoints<Reptile>
+  husbandryRecord: BasicEndpoints<HusbandryRecord>
+  feeding: BasicEndpoints<Feeding>
+  schedule: BasicEndpoints<Schedule>
+}
 
 export type JWTBody = {
-  userId: string;
-};
+  userId: string
+}
 
 type RequestWithJWTBody = Request & {
-  jwtBody?: JWTBody;
-};
+  jwtBody?: JWTBody
+}
 
 export type AuthReqHandler = {
-  (req: RequestWithJWTBody, res: Response, next: NextFunction): void;
-};
+  (req: RequestWithJWTBody, res: Response, next: NextFunction): void
+}
 
-export type ReqBuilder = (client: DbClient) => AuthReqHandler;
+export type ReqBuilder = (client: DbClient) => AuthReqHandler

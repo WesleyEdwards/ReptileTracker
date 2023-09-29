@@ -1,4 +1,4 @@
-import { SexType, SpeciesType, ScheduleType } from "../types";
+import {SexType, SpeciesType, ScheduleType} from "../types"
 
 type ValidFunctionTypes =
   | "string"
@@ -6,9 +6,9 @@ type ValidFunctionTypes =
   | "species"
   | "sex"
   | "schedule"
-  | "boolean";
+  | "boolean"
 
-export type ValidationBuilder<T> = Record<keyof T, ValidFunctionTypes>;
+export type ValidationBuilder<T> = Record<keyof T, ValidFunctionTypes>
 
 const validFunctions: Record<ValidFunctionTypes, (body: any) => boolean> = {
   string: isString,
@@ -16,31 +16,31 @@ const validFunctions: Record<ValidFunctionTypes, (body: any) => boolean> = {
   species: isSpeciesType,
   sex: isSexType,
   schedule: isScheduleType,
-  boolean: isBoolean,
-};
+  boolean: isBoolean
+}
 
 export const validator =
   <T>(validationSchema: ValidationBuilder<T>) =>
   (body: any): body is T => {
     return Object.entries(validationSchema).every(([key, func]) =>
       validFunctions[func as ValidFunctionTypes](body[key])
-    );
-  };
+    )
+  }
 
 export function isString(field: any): field is string {
-  return typeof field === "string";
+  return typeof field === "string"
 }
 
 function isNumber(field: any): field is number {
-  return typeof field === "number";
+  return typeof field === "number"
 }
 
 function isBoolean(field: any): field is boolean {
-  return typeof field === "boolean";
+  return typeof field === "boolean"
 }
 
 export function isSexType(field: any): field is SexType {
-  return field === "male" || field === "female";
+  return field === "male" || field === "female"
 }
 
 function isSpeciesType(field: any): field is SpeciesType {
@@ -49,9 +49,9 @@ function isSpeciesType(field: any): field is SpeciesType {
     field === "king_snake" ||
     field === "corn_snake" ||
     field === "redtail_boa"
-  );
+  )
 }
 
 function isScheduleType(field: any): field is ScheduleType {
-  return field === "feed" || field === "record" || field === "clean";
+  return field === "feed" || field === "record" || field === "clean"
 }

@@ -4,21 +4,21 @@ import {
   CreateReptileBody,
   CreateScheduleBody,
   CreateUserBody,
-  LoginBody,
-} from "../dbQueries/request_types";
-import { ValidationBuilder, validator } from "./validationFunctions";
+  LoginBody
+} from "../dbQueries/request_types"
+import {ValidationBuilder, validator} from "./validationFunctions"
 
 const createUser: ValidationBuilder<CreateUserBody> = {
   firstName: "string",
   lastName: "string",
   email: "string",
-  password: "string",
-};
+  password: "string"
+}
 
 const login: ValidationBuilder<LoginBody> = {
   email: "string",
-  password: "string",
-};
+  password: "string"
+}
 
 const createSchedule: ValidationBuilder<CreateScheduleBody> = {
   type: "schedule",
@@ -29,30 +29,30 @@ const createSchedule: ValidationBuilder<CreateScheduleBody> = {
   thursday: "boolean",
   friday: "boolean",
   saturday: "boolean",
-  sunday: "boolean",
-};
+  sunday: "boolean"
+}
 
 const createReptile: ValidationBuilder<CreateReptileBody> = {
   species: "species",
   name: "string",
-  sex: "sex",
-};
+  sex: "sex"
+}
 
 const createFeeding: ValidationBuilder<CreateFeedingBody> = {
-  foodItem: "string",
-};
+  foodItem: "string"
+}
 
 const createHusbandry: ValidationBuilder<CreateHusbandryBody> = {
   reptile: "string",
   length: "number",
   weight: "number",
   temperature: "number",
-  humidity: "number",
-};
+  humidity: "number"
+}
 
-export const isCreateUserBody = validator(createUser);
-export const isLoginBody = validator(login);
-export const isCreateSchedBody = validator(createSchedule);
-export const isCreateReptileBody = validator(createReptile);
-export const isCreateFeedingBody = validator(createFeeding);
-export const isCreateHusbandryBody = validator(createHusbandry);
+export const isCreateUserBody = validator(createUser)
+export const isLoginBody = validator(login)
+export const isCreateSchedBody = validator(createSchedule)
+export const isCreateReptileBody = validator(createReptile)
+export const isCreateFeedingBody = validator(createFeeding)
+export const isCreateHusbandryBody = validator(createHusbandry)

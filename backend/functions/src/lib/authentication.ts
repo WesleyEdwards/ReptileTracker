@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import { AuthReqHandler, JWTBody } from "./auth_types";
+import jwt from "jsonwebtoken"
+import {AuthReqHandler, JWTBody} from "./auth_types"
 
 export const authenticationMiddleware: AuthReqHandler = async (
   req,
@@ -7,15 +7,15 @@ export const authenticationMiddleware: AuthReqHandler = async (
   next
 ) => {
   // console.log("PATH", req.baseUrl);
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.headers.authorization?.split(" ")[1]
   try {
     const jwtBody = jwt.verify(
       token || "",
       process.env.ENCRYPTION_KEY!
-    ) as JWTBody;
-    req.jwtBody = jwtBody;
-    next();
+    ) as JWTBody
+    req.jwtBody = jwtBody
+    next()
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({message: "Unauthorized"})
   }
-};
+}

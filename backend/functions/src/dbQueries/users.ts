@@ -1,6 +1,6 @@
 import { createUserToken, creationDates } from "../helperFunctions";
 import bcrypt from "bcrypt";
-import { ReqBuilder, isError } from "../middleware/auth_types";
+import { ReqBuilder } from "../lib/auth_types";
 import { isCreateUserBody, isLoginBody } from "../json_validation/request_body";
 
 export const createUser: ReqBuilder =
@@ -12,8 +12,7 @@ export const createUser: ReqBuilder =
     const emailExists = await client.user.findOne({
       email: body.email,
     });
-    if (!isError(emailExists) && emailExists) {
-      console.log(emailExists);
+    if (emailExists) {
       return res.status(400).json({ error: "Email already exists" });
     }
     const passwordHash = await bcrypt.hash(body.password, 10);
@@ -27,7 +26,6 @@ export const createUser: ReqBuilder =
       ...creationDates(),
     };
     const user = await client.user.createOne(newUser);
-    if (isError(user)) return res.status(500).json({ error: user });
     if (!user) {
       return res.status(500).json({ error: "Internal Server Error" });
     }
@@ -68,14 +66,13 @@ export const getSelf: ReqBuilder =
 export const loginUser: ReqBuilder =
   (client) =>
   async ({ body }, res) => {
-    console.log(body);
     if (!isLoginBody(body)) {
       res.status(400).json({ message: "Bad Request" });
       return;
     }
     const { email, password } = body;
     const user = await client.user.findOne({ email });
-    if (isError(user)) {
+    if (!user) {
       res.status(404).json({ message: "Invalid email or password" });
       return;
     }

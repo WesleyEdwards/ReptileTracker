@@ -4,7 +4,7 @@ import {
   getReptilePartial,
 } from "../helperFunctions";
 import { isCreateReptileBody } from "../json_validation/request_body";
-import { ReqBuilder } from "../middleware/auth_types";
+import { ReqBuilder } from "../lib/auth_types";
 
 export const createReptile: ReqBuilder =
   (client) =>
@@ -14,12 +14,6 @@ export const createReptile: ReqBuilder =
         .status(400)
         .json({ error: "Invalid parameters for creating Reptile" });
     }
-    const userExists = await client.user.findOne({
-      _id: jwtBody?.userId || "",
-    });
-
-    if (!userExists) return res.json({ error: "User does not exist" });
-
     const reptile = await client.reptile.createOne({
       ...body,
       ...creationDates(),
@@ -31,23 +25,13 @@ export const createReptile: ReqBuilder =
     return res.json(reptile);
   };
 
-export const getReptiles: ReqBuilder = (client) => async (req, res) => {
-  const reptiles = await client.reptile.findMany({
-    user: [req.jwtBody?.userId || ""],
-  });
-  return res.json(reptiles);
-};
-
-export const getReptileById: ReqBuilder =
+export const reptileDetail: ReqBuilder =
   (client) =>
-  async ({ params, jwtBody }, res) => {
-    const reptileId = params.id;
-    if (!jwtBody?.userId)
-      return res.status(401).json({ error: "Unauthorized" });
+  async ({ params }, res) => {
     const reptile = await client.reptile.findOne({
-      _id: reptileId,
+      _id: params.id,
     });
-    if (!reptile || !reptileId)
+    if (!reptile)
       return res.json({ error: "Please use a reptileID that exists" });
 
     return res.json(reptile);
@@ -56,40 +40,34 @@ export const getReptileById: ReqBuilder =
 export const queryReptiles: ReqBuilder =
   (client) =>
   async ({ body }, res) => {
-    console.log("QUERYING REPTILES");
     const reptiles = await client.reptile.findMany(body);
     return res.json(reptiles);
   };
 
-// Update
-export const updateReptile: ReqBuilder = (client) => async (req, res) => {
-  const reptileId = req.params.id;
-  const exists = await client.reptile.findOne({
-    _id: reptileId,
-  });
-  if (!exists) return res.status(404).json({});
+export const updateReptile: ReqBuilder =
+  (client) =>
+  async ({ params, body }, res) => {
+    const exists = await client.reptile.findOne({ _id: params.id });
 
-  const reptilePartial = getReptilePartial(req.body);
-  const updatedAt = getCurrentDateTime();
-  const reptile = await client.reptile.updateOne({
-    ...reptilePartial,
-    updatedAt,
-  });
-  return res.json(reptile);
-};
+    if (!exists) return res.status(404).json("Reptile does not exist");
 
-// Delete
+    const reptilePartial = getReptilePartial(body);
+    const reptile = await client.reptile.updateOne({
+      ...reptilePartial,
+      updatedAt: getCurrentDateTime(),
+    });
+    return res.json(reptile);
+  };
+
 export const deleteReptile: ReqBuilder =
   (client) =>
-  async ({ params, jwtBody }, res) => {
-    const reptileId = params.id;
-    if (!jwtBody?.userId)
-      return res.status(401).json({ error: "Unauthorized" });
+  async ({ params }, res) => {
     const exists = await client.reptile.findOne({
-      _id: reptileId,
+      _id: params.id,
     });
-    if (!exists || !reptileId)
+    if (!exists) {
       return res.json({ error: "Please use a reptileID that exists" });
-    await client.reptile.deleteOne(reptileId);
-    return res.json({ message: `Deleted the reptile with id ${reptileId}` });
+    }
+    await client.reptile.deleteOne(exists._id);
+    return res.json({ message: `Deleted the reptile with id ${exists._id}` });
   };

@@ -1,45 +1,65 @@
-import { creationDates } from "../helperFunctions";
+import { creationDates, getCurrentDateTime } from "../helperFunctions";
 import { isCreateHusbandryBody } from "../json_validation/request_body";
-import { ReqBuilder } from "../middleware/auth_types";
+import { ReqBuilder } from "../lib/auth_types";
 
-// Create
-export const createHusbandryRecord: ReqBuilder =
+export const createHusbandry: ReqBuilder =
   (client) =>
-  async ({ body, params }, res) => {
+  async ({ body }, res) => {
     if (!isCreateHusbandryBody(body)) {
-      return res.status(400).json({ error: "Invalid user Input" });
+      return res
+        .status(400)
+        .json({ error: "Invalid parameters for creating Husbandry" });
     }
-    const reptileId = params.id;
-    const reptileExists = await client.reptile.findOne({
-      _id: reptileId,
-    });
-    if (!reptileExists) {
-      return res.json({ error: "Invalid Reptile Id" });
-    }
-    const husbandryRecord = await client.husbandryRecord.createOne({
-      reptile: reptileId,
+    const husbandry = await client.husbandryRecord.createOne({
       ...body,
       ...creationDates(),
     });
-    return res.json({ husbandryRecord });
+    return res.json(husbandry);
   };
 
-// Get
-export const getReptileRecords: ReqBuilder =
+export const husbandryDetail: ReqBuilder =
   (client) =>
-  async ({ params, jwtBody }, res) => {
-    const reptileId = params.id;
-    if (!jwtBody?.userId)
-      return res.status(401).json({ error: "Unauthorized" });
-    const userOwnsReptile = await client.reptile.findOne({
-      _id: reptileId,
-      user: jwtBody.userId,
+  async ({ params }, res) => {
+    const husbandry = await client.husbandryRecord.findOne({
+      _id: params.id,
     });
-    if (!userOwnsReptile) {
-      return res.status(401).json({ error: "No access to the reptile" });
+    if (!husbandry)
+      return res.json({ error: "Please use a husbandryID that exists" });
+
+    return res.json(husbandry);
+  };
+
+export const queryHusbandry: ReqBuilder =
+  (client) =>
+  async ({ body }, res) => {
+    const husbandry = await client.husbandryRecord.findMany(body);
+    return res.json(husbandry);
+  };
+
+export const updateHusbandry: ReqBuilder =
+  (client) =>
+  async ({ params, body }, res) => {
+    const exists = await client.husbandryRecord.findOne({ _id: params.id });
+
+    if (!exists) return res.status(404).json("Husbandry does not exist");
+
+    const reptilePartial = body;
+    const husbandry = await client.husbandryRecord.updateOne({
+      ...reptilePartial,
+      updatedAt: getCurrentDateTime(),
+    });
+    return res.json(husbandry);
+  };
+
+export const deleteHusbandry: ReqBuilder =
+  (client) =>
+  async ({ params }, res) => {
+    const exists = await client.husbandryRecord.findOne({
+      _id: params.id,
+    });
+    if (!exists) {
+      return res.json({ error: "Please use a reptileID that exists" });
     }
-    const records = await client.husbandryRecord.findMany({
-      reptile: [reptileId],
-    });
-    return res.json({ records });
+    await client.husbandryRecord.deleteOne(exists._id);
+    return res.json({ message: `Deleted the husbandry with id ${exists._id}` });
   };

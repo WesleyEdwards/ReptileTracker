@@ -1,4 +1,4 @@
-import { ScheduleType, SexType, SpeciesType } from "../types";
+import { Feeding, Reptile, ScheduleType, SexType, SpeciesType } from "../types";
 
 export type CreateUserBody = {
   firstName: string;
@@ -11,6 +11,7 @@ export type CreateFeedingBody = {
 };
 
 export type CreateHusbandryBody = {
+  reptile: string;
   length: number;
   weight: number;
   temperature: number;
@@ -23,11 +24,15 @@ export type CreateReptileBody = {
   sex: SexType;
 };
 
-export type UpdateReptileBody = {
-  species?: SpeciesType;
-  name?: string;
-  sex?: string;
-};
+export type Updatable<T extends { _id: string }, K extends keyof T> = Omit<
+  {
+    [P in keyof T]?: T[P];
+  },
+  "_id" | "createdAt" | "updatedAt" | K
+>;
+
+export type UpdateReptileBody = Updatable<Reptile, "user" | "sex" | "species">;
+export type UpdateFeedingBody = Updatable<Feeding, "reptile">;
 
 export type CreateScheduleBody = {
   type: ScheduleType;

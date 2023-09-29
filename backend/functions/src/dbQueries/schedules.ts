@@ -1,21 +1,17 @@
 import { creationDates, getCurrentDateTime } from "../helperFunctions";
-import { isCreateScheduleBody } from "../json_validation/request_body";
-import { ReqBuilder, isError } from "../middleware/auth_types";
+import { isCreateSchedBody } from "../json_validation/request_body";
+import { ReqBuilder } from "../lib/auth_types";
 
-// Create
-export const createSchedule: ReqBuilder =
+export const createSched: ReqBuilder =
   (client) =>
   async ({ body, jwtBody, params }, res) => {
     const reptileId = params.id;
-    if (!isCreateScheduleBody(body)) {
+    if (!isCreateSchedBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const reptileExists = await client.reptile.findOne({
-      _id: reptileId,
-    });
-
-    if (isError(reptileExists)) {
-      return res.json(reptileExists);
+    const reptileExists = await client.reptile.findOne({ _id: reptileId });
+    if (!reptileExists) {
+      return res.json("Reptile does not exist");
     }
 
     const schedule = await client.schedule.createOne({
@@ -24,57 +20,51 @@ export const createSchedule: ReqBuilder =
       user: jwtBody!.userId,
       ...creationDates(),
     });
-    return res.json({ schedule });
+    return res.json(schedule);
   };
 
-export const getScheduleByUser: ReqBuilder =
+export const querySched: ReqBuilder =
   (client) =>
-  async ({ params, jwtBody }, res) => {
-    const userId = params.id;
-    if (userId !== jwtBody?.userId)
-      return res
-        .status(401)
-        .json({ error: "No access to User with the given id" });
-    const schedules = await client.schedule.findMany({
-      user: [userId],
-    });
-    return res.json({ schedules });
+  async ({ body }, res) => {
+    const schedules = await client.schedule.findMany(body);
+    return res.json(schedules);
   };
 
-export const getScheduleByReptile: ReqBuilder =
-  (client) =>
-  async ({ params }, res) => {
-    const id = params.id;
-    const schedules = await client.schedule.findMany({
-      reptile: [id],
-    });
-    res.json({ schedules });
-  };
-
-export const updateSchedule: ReqBuilder =
+export const updateSched: ReqBuilder =
   (client) =>
   async ({ body, params }, res) => {
-    const id = params.id;
     const schedule = await client.schedule.findOne({
-      _id: id,
+      _id: params.id,
     });
     if (!schedule) {
-      return res.status(400).json({ error: "Invalid Schedule Id" });
+      return res.status(400).json({ error: "Invalid Sched Id" });
     }
-    const updatedSchedule = await client.schedule.updateOne({
-      _id: id,
+    const updatedSched = await client.schedule.updateOne({
+      _id: schedule._id,
       ...body,
       updatedAt: getCurrentDateTime(),
     });
-    return res.json({ schedule: updatedSchedule });
+    return res.json(updatedSched);
   };
 
-export const getSchedule: ReqBuilder =
+export const getSched: ReqBuilder =
   (client) =>
   async ({ params }, res) => {
-    const id = params.id;
     const schedule = await client.schedule.findOne({
-      _id: id,
+      _id: params.id,
     });
-    return res.json({ schedule });
+    return res.json(schedule);
+  };
+
+export const deleteSched: ReqBuilder =
+  (client) =>
+  async ({ params }, res) => {
+    const exists = await client.schedule.findOne({
+      _id: params.id,
+    });
+    if (!exists) {
+      return res.json({ error: "Please use a scheduleID that exists" });
+    }
+    await client.schedule.deleteOne(exists._id);
+    return res.json({ message: `Deleted the schedule with id ${exists._id}` });
   };

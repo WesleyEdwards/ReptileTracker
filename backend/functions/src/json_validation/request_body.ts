@@ -43,6 +43,7 @@ const createFeeding: ValidationBuilder<CreateFeedingBody> = {
 };
 
 const createHusbandry: ValidationBuilder<CreateHusbandryBody> = {
+  reptile: "string",
   length: "number",
   weight: "number",
   temperature: "number",
@@ -51,7 +52,7 @@ const createHusbandry: ValidationBuilder<CreateHusbandryBody> = {
 
 export const isCreateUserBody = validator(createUser);
 export const isLoginBody = validator(login);
-export const isCreateScheduleBody = validator(createSchedule);
+export const isCreateSchedBody = validator(createSchedule);
 export const isCreateReptileBody = validator(createReptile);
 export const isCreateFeedingBody = validator(createFeeding);
 export const isCreateHusbandryBody = validator(createHusbandry);

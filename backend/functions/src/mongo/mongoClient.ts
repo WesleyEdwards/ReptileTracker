@@ -5,13 +5,9 @@ import {
   MongoClient,
   OptionalUnlessRequiredId,
 } from "mongodb";
-import { Feeding, HusbandryRecord, Reptile, Schedule, User } from "./types";
-import {
-  DbClient,
-  BasicEndpoints,
-  Condition,
-  conditionToFilter,
-} from "./middleware/auth_types";
+import { Feeding, HusbandryRecord, Reptile, Schedule, User } from "../types";
+import { DbClient, BasicEndpoints, Condition } from "../lib/auth_types";
+import { conditionToFilter } from "./conditions";
 
 export const mongoClient = (): DbClient => {
   const mClient: MongoClient = new MongoClient(process.env.MONGO_URI!);
@@ -40,14 +36,14 @@ function functionsForModel<T extends { _id: string }>(
       if (acknowledged) {
         return newItem;
       }
-      return "Error creating item";
+      return undefined;
     },
     findOne: async (filter) => {
       const item = (await collection.findOne(filter as Filter<T>)) as T | null;
       if (item) {
         return item;
       }
-      return "Item not found";
+      return undefined;
     },
     findMany: async (filter: Condition<T>) => {
       const items = collection.find(conditionToFilter(filter));

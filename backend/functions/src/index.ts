@@ -8,8 +8,8 @@ import { feedingController } from "./controllers/feeding_controller";
 import { scheduleController } from "./controllers/schedule_controller";
 import * as functions from "firebase-functions";
 import cors from "cors";
-import { DbClient } from "./middleware/auth_types";
-import { mongoClient } from "./mongoClient";
+import { DbClient } from "./lib/auth_types";
+import { mongoClient } from "./mongo/mongoClient";
 
 dotenv.config();
 
@@ -26,7 +26,7 @@ recordController(app, client);
 feedingController(app, client);
 scheduleController(app, client);
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("Welcome to reptile-tracker!");
 });
 

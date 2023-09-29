@@ -1,6 +1,6 @@
 import express, { RequestHandler, Express } from "express";
-import { authenticationMiddleware } from "../middleware/authentication";
-import { DbClient } from "../middleware/auth_types";
+import { authenticationMiddleware } from "./authentication";
+import { DbClient } from "./auth_types";
 
 type Route = {
   path: string;

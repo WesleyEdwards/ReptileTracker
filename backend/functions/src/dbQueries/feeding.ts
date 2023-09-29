@@ -1,51 +1,73 @@
-import { creationDates } from "../helperFunctions";
+import {
+  creationDates,
+  getCurrentDateTime,
+  getFeedingPartial,
+} from "../helperFunctions";
 import { isCreateFeedingBody } from "../json_validation/request_body";
-import { ReqBuilder } from "../middleware/auth_types";
+import { ReqBuilder } from "../lib/auth_types";
 
-// Create
 export const createFeeding: ReqBuilder =
   (client) =>
   async ({ body, params }, res) => {
     if (!isCreateFeedingBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const reptileId = params.id;
-    const reptileExists = await client.reptile.findOne({
-      _id: reptileId,
-    });
 
-    if (!reptileExists) {
-      return res.json({ error: "Invalid Reptile Id" });
+    if (!(await client.reptile.findOne({ _id: params.id }))) {
+      return res.json({ error: "Invalid Feeding Id" });
     }
 
     const feeding = await client.feeding.createOne({
       ...body,
-      reptile: reptileId,
+      reptile: params.id,
       ...creationDates(),
     });
-    return res.json({ feeding });
+    return res.json(feeding);
   };
 
-// Get
-export const getFeedingsByReptile: ReqBuilder =
-  (client) => async (req, res) => {
-    const { params, jwtBody } = req;
-    const reptileId = params.id;
-
-    if (!jwtBody?.userId)
-      return res.status(401).json({ error: "Unauthorized" });
-
-    const userOwnsReptile = await client.reptile.findOne({
-      _id: reptileId,
-      user: jwtBody.userId,
+export const feedingDetail: ReqBuilder =
+  (client) =>
+  async ({ params }, res) => {
+    const feeding = await client.feeding.findOne({
+      _id: params.id,
     });
-    if (!userOwnsReptile) {
-      return res
-        .status(401)
-        .json({ error: "No access to Reptile with the given id" });
+    if (!feeding)
+      return res.json({ error: "Please use a feedingID that exists" });
+
+    return res.json(feeding);
+  };
+
+export const queryFeedings: ReqBuilder =
+  (client) =>
+  async ({ body }, res) => {
+    const feedings = await client.feeding.findMany(body);
+    return res.json(feedings);
+  };
+
+export const updateFeeding: ReqBuilder =
+  (client) =>
+  async ({ params, body }, res) => {
+    const exists = await client.feeding.findOne({ _id: params.id });
+
+    if (!exists) return res.status(404).json("Feeding does not exist");
+
+    const feedingPartial = getFeedingPartial(body);
+    const feeding = await client.feeding.updateOne({
+      ...feedingPartial,
+      updatedAt: getCurrentDateTime(),
+    });
+    return res.json(feeding);
+  };
+
+export const deleteFeeding: ReqBuilder =
+  (client) =>
+  async ({ params }, res) => {
+    const exists = await client.feeding.findOne({
+      _id: params.id,
+    });
+    if (!exists) {
+      return res.json({ error: "Please use a feedingID that exists" });
     }
-    const feedings = await client.feeding.findMany({
-      reptile: [reptileId],
-    });
-    return res.json({ feedings });
+    await client.feeding.deleteOne(exists._id);
+    return res.json({ message: `Deleted the feeding with id ${exists._id}` });
   };

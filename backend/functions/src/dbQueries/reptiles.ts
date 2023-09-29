@@ -52,7 +52,7 @@ export const updateReptile: ReqBuilder =
     if (!exists) return res.status(404).json("Reptile does not exist");
 
     const reptilePartial = getReptilePartial(body);
-    const reptile = await client.reptile.updateOne({
+    const reptile = await client.reptile.updateOne(exists._id, {
       ...reptilePartial,
       updatedAt: getCurrentDateTime(),
     });

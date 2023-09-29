@@ -5,11 +5,10 @@ import { ReqBuilder } from "../lib/auth_types";
 export const createSched: ReqBuilder =
   (client) =>
   async ({ body, jwtBody, params }, res) => {
-    const reptileId = params.id;
     if (!isCreateSchedBody(body)) {
       return res.status(400).json({ error: "Invalid user Input" });
     }
-    const reptileExists = await client.reptile.findOne({ _id: reptileId });
+    const reptileExists = await client.reptile.findOne({ _id: params.id });
     if (!reptileExists) {
       return res.json("Reptile does not exist");
     }
@@ -20,6 +19,13 @@ export const createSched: ReqBuilder =
       user: jwtBody!.userId,
       ...creationDates(),
     });
+    if (!schedule) return res.json("Error creating schedule");
+
+    await client.reptile.updateOne(reptileExists._id, {
+      schedule: [...reptileExists.schedule, schedule._id],
+      updatedAt: getCurrentDateTime(),
+    });
+
     return res.json(schedule);
   };
 
@@ -39,8 +45,7 @@ export const updateSched: ReqBuilder =
     if (!schedule) {
       return res.status(400).json({ error: "Invalid Sched Id" });
     }
-    const updatedSched = await client.schedule.updateOne({
-      _id: schedule._id,
+    const updatedSched = await client.schedule.updateOne(schedule._id, {
       ...body,
       updatedAt: getCurrentDateTime(),
     });

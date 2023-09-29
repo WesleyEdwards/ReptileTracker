@@ -4,16 +4,30 @@ import { ReqBuilder } from "../lib/auth_types";
 
 export const createHusbandry: ReqBuilder =
   (client) =>
-  async ({ body }, res) => {
+  async ({ body, params }, res) => {
     if (!isCreateHusbandryBody(body)) {
       return res
         .status(400)
         .json({ error: "Invalid parameters for creating Husbandry" });
     }
+
+    const reptileExists = await client.reptile.findOne({ _id: params.id });
+    if (!reptileExists) {
+      return res.json("Reptile does not exist");
+    }
+
     const husbandry = await client.husbandryRecord.createOne({
       ...body,
       ...creationDates(),
     });
+
+    if (!husbandry) return res.json("Error creating husbandry");
+
+    await client.reptile.updateOne(reptileExists._id, {
+      husbandryRecord: [...reptileExists.husbandryRecord, husbandry._id],
+      updatedAt: getCurrentDateTime(),
+    });
+
     return res.json(husbandry);
   };
 
@@ -44,7 +58,7 @@ export const updateHusbandry: ReqBuilder =
     if (!exists) return res.status(404).json("Husbandry does not exist");
 
     const reptilePartial = body;
-    const husbandry = await client.husbandryRecord.updateOne({
+    const husbandry = await client.husbandryRecord.updateOne(params.id, {
       ...reptilePartial,
       updatedAt: getCurrentDateTime(),
     });

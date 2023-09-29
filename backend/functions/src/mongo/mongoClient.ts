@@ -49,9 +49,9 @@ function functionsForModel<T extends { _id: string }>(
       const items = collection.find(conditionToFilter(filter));
       return (await items.toArray()) as T[];
     },
-    updateOne: async (item) => {
+    updateOne: async (id, item) => {
       const value = await collection.findOneAndUpdate(
-        { _id: item._id } as Filter<T>,
+        { _id: id } as Filter<T>,
         { $set: item }
       );
       if (!value) {

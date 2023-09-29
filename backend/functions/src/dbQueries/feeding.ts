@@ -13,8 +13,9 @@ export const createFeeding: ReqBuilder =
       return res.status(400).json({ error: "Invalid user Input" });
     }
 
-    if (!(await client.reptile.findOne({ _id: params.id }))) {
-      return res.json({ error: "Invalid Feeding Id" });
+    const reptileExists = await client.reptile.findOne({ _id: params.id });
+    if (!reptileExists) {
+      return res.json({ error: "Invalid Reptile Id" });
     }
 
     const feeding = await client.feeding.createOne({
@@ -22,6 +23,13 @@ export const createFeeding: ReqBuilder =
       reptile: params.id,
       ...creationDates(),
     });
+    if (!feeding) return res.json({ error: "Error creating feeding" });
+
+    await client.reptile.updateOne(params.id, {
+      feeding: [...reptileExists.feeding, feeding._id],
+      updatedAt: getCurrentDateTime(),
+    });
+
     return res.json(feeding);
   };
 
@@ -52,7 +60,7 @@ export const updateFeeding: ReqBuilder =
     if (!exists) return res.status(404).json("Feeding does not exist");
 
     const feedingPartial = getFeedingPartial(body);
-    const feeding = await client.feeding.updateOne({
+    const feeding = await client.feeding.updateOne(params.id, {
       ...feedingPartial,
       updatedAt: getCurrentDateTime(),
     });

@@ -17,10 +17,10 @@ export type Condition<T> = {
 };
 
 export type BasicEndpoints<T extends HasId> = {
-  createOne: (user: T) => Promise<OrError<T>>;
+  createOne: (item: T) => Promise<OrError<T>>;
   findOne: (filter: KeyAndValue<T>) => Promise<OrError<T>>;
   findMany: (id: Condition<T>) => Promise<OrError<T[]>>;
-  updateOne: (user: Partial<T>) => Promise<OrError<T>>;
+  updateOne: (id: string, update: Partial<T>) => Promise<OrError<T>>;
   deleteOne: (id: string) => Promise<string>;
 };
 

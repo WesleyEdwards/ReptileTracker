@@ -1,14 +1,16 @@
 import {getCurrentDateTime} from "../helperFunctions"
 import {
   checkPartialValidation,
-  checkValidation
+  checkValidation,
+  isParseError
 } from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
 export const createHusbandry: ReqBuilder =
   (client) =>
-  async ({body, params}, res) => {
+  async ({body}, res) => {
     const newHusbandry = checkValidation("husbandry", body)
+    if (isParseError(newHusbandry)) return res.status(400).json(newHusbandry)
 
     const reptileExists = await client.reptile.findOne({
       _id: newHusbandry.reptile
@@ -60,6 +62,9 @@ export const updateHusbandry: ReqBuilder =
       _id: params.id,
       updatedAt: getCurrentDateTime()
     })
+    if (isParseError(husbandryPartial)) {
+      return res.status(400).json(husbandryPartial)
+    }
     const husbandry = await client.husbandryRecord.updateOne(
       params.id,
       husbandryPartial

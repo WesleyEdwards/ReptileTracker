@@ -1,7 +1,8 @@
 import {getCurrentDateTime} from "../helperFunctions"
 import {
   checkPartialValidation,
-  checkValidation
+  checkValidation,
+  isParseError
 } from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
@@ -17,6 +18,7 @@ export const createSched: ReqBuilder =
       reptile: reptileExists._id,
       user: jwtBody!.userId
     })
+    if (isParseError(schedBody)) return res.status(400).json(schedBody)
 
     const schedule = await client.schedule.createOne(schedBody)
     if (!schedule) return res.json("Error creating schedule")
@@ -44,6 +46,7 @@ export const updateSched: ReqBuilder =
       _id: params.id,
       updatedAt: getCurrentDateTime()
     })
+    if (isParseError(schedBody)) return res.status(400).json(schedBody)
     const updatedSched = await client.schedule.updateOne(params._id, schedBody)
     return res.json(updatedSched)
   }

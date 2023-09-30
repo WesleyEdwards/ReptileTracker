@@ -3,7 +3,8 @@ import bcrypt from "bcrypt"
 import {ReqBuilder} from "../lib/auth_types"
 import {
   checkLoginValidation,
-  checkValidation
+  checkValidation,
+  isParseError
 } from "../json_validation/request_body"
 
 export const createUser: ReqBuilder =
@@ -13,17 +14,17 @@ export const createUser: ReqBuilder =
       return res.status(400).json({error: "Password is required"})
     }
     const passwordHash = await bcrypt.hash(body.password, 10)
-    const createUserBody = checkValidation("user", {...body, passwordHash})
+    const userBody = checkValidation("user", {...body, passwordHash})
+    if (isParseError(userBody)) return res.status(400).json(userBody)
 
     const emailExists = await client.user.findOne({
-      email: createUserBody.email
+      email: userBody.email
     })
     if (emailExists) {
       return res.status(400).json({error: "Email already exists"})
     }
-    const newUser = checkValidation("user", createUserBody)
-    const user = await client.user.createOne(newUser)
-    if (!user) return res.status(400).json({error: "Error creating user"})
+    const user = await client.user.createOne(userBody)
+    if (!user) return res.status(500).json({error: "Error creating user"})
 
     const token = createUserToken(user._id)
     return res.json({user, token})
@@ -45,7 +46,7 @@ export const getUser: ReqBuilder =
 
 export const queryUser: ReqBuilder =
   (client) =>
-  async ({params, body}, res) => {
+  async ({body}, res) => {
     const users = await client.user.findMany(body)
     return res.json(users)
   }
@@ -62,26 +63,18 @@ export const getSelf: ReqBuilder =
 export const loginUser: ReqBuilder =
   (client) =>
   async ({body}, res) => {
-    try {
-      const loginBody = checkLoginValidation(body)
-      const user = await client.user.findOne({email: loginBody.email})
-      if (!user) {
-        res.status(404).json({message: "Invalid email or password"})
-        return
-      }
+    const loginBody = checkLoginValidation(body)
+    if (isParseError(loginBody)) return res.status(400).json(loginBody)
 
-      const isValid = await bcrypt.compare(
-        loginBody.password,
-        user.passwordHash
-      )
-      if (!isValid) {
-        res.status(404).json({message: "Invalid email or password"})
-        return
-      }
-      const token = createUserToken(user._id)
-      return res.json({user, token})
-    } catch (error) {
-      // console.log(error)
-      return res.status(400).json({error})
+    const user = await client.user.findOne({email: loginBody.email})
+    if (!user) {
+      res.status(404).json({message: "Invalid email or password"})
+      return
     }
+
+    const isValid = await bcrypt.compare(loginBody.password, user.passwordHash)
+    if (!isValid) {
+      return res.status(404).json({message: "Invalid email or password"})
+    }
+    return res.json({user, token: createUserToken(user._id)})
   }

@@ -1,7 +1,8 @@
 import {getCurrentDateTime} from "../helperFunctions"
 import {
   checkPartialValidation,
-  checkValidation
+  checkValidation,
+  isParseError
 } from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
@@ -13,10 +14,10 @@ export const createFeeding: ReqBuilder =
       reptile: params.id
     })
 
+    if (isParseError(feedingBody)) return res.status(400).json(feedingBody)
+
     const reptileExists = await client.reptile.findOne({_id: params.id})
-    if (!reptileExists) {
-      return res.json({error: "Invalid Reptile Id"})
-    }
+    if (!reptileExists) return res.json({error: "Invalid Reptile Id"})
 
     const feeding = await client.feeding.createOne(feedingBody)
     if (!feeding) return res.json({error: "Error creating feeding"})
@@ -54,12 +55,13 @@ export const updateFeeding: ReqBuilder =
 
     if (!exists) return res.status(404).json("Feeding does not exist")
 
-    const feedingPartial = checkPartialValidation("feeding", {
+    const feedingBody = checkPartialValidation("feeding", {
       ...body,
       _id: params.id,
       updatedAt: getCurrentDateTime()
     })
-    const feeding = await client.feeding.updateOne(params.id, feedingPartial)
+    if (isParseError(feedingBody)) return res.status(400).json(feedingBody)
+    const feeding = await client.feeding.updateOne(params.id, feedingBody)
     return res.json(feeding)
   }
 

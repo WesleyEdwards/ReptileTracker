@@ -1,7 +1,8 @@
 import {getCurrentDateTime} from "../helperFunctions"
 import {
   checkPartialValidation,
-  checkValidation
+  checkValidation,
+  isParseError
 } from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
@@ -9,6 +10,7 @@ export const createReptile: ReqBuilder =
   (client) =>
   async ({body, jwtBody}, res) => {
     const reptileBody = checkValidation("reptile", body)
+    if (isParseError(reptileBody)) return res.status(400).json(reptileBody)
     if (jwtBody!.userId !== reptileBody.user) {
       return res.json({error: "You can only create a reptile for yourself"})
     }
@@ -42,6 +44,9 @@ export const updateReptile: ReqBuilder =
       _id: params.id,
       updatedAt: getCurrentDateTime()
     })
+    if (isParseError(reptilePartial)) {
+      return res.status(400).json(reptilePartial)
+    }
     const exists = await client.reptile.findOne({_id: params.id})
 
     if (!exists) return res.status(404).json("Reptile does not exist")

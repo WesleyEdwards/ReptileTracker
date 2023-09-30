@@ -1,28 +1,24 @@
+import {getCurrentDateTime} from "../helperFunctions"
 import {
-  creationDates,
-  getCurrentDateTime,
-  getFeedingPartial
-} from "../helperFunctions"
-import {isCreateFeedingBody} from "../json_validation/request_body"
+  checkPartialValidation,
+  checkValidation
+} from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
 export const createFeeding: ReqBuilder =
   (client) =>
   async ({body, params}, res) => {
-    if (!isCreateFeedingBody(body)) {
-      return res.status(400).json({error: "Invalid user Input"})
-    }
+    const feedingBody = checkValidation("feeding", {
+      ...body,
+      reptile: params.id
+    })
 
     const reptileExists = await client.reptile.findOne({_id: params.id})
     if (!reptileExists) {
       return res.json({error: "Invalid Reptile Id"})
     }
 
-    const feeding = await client.feeding.createOne({
-      ...body,
-      reptile: params.id,
-      ...creationDates()
-    })
+    const feeding = await client.feeding.createOne(feedingBody)
     if (!feeding) return res.json({error: "Error creating feeding"})
 
     await client.reptile.updateOne(params.id, {
@@ -58,11 +54,12 @@ export const updateFeeding: ReqBuilder =
 
     if (!exists) return res.status(404).json("Feeding does not exist")
 
-    const feedingPartial = getFeedingPartial(body)
-    const feeding = await client.feeding.updateOne(params.id, {
-      ...feedingPartial,
+    const feedingPartial = checkPartialValidation("feeding", {
+      ...body,
+      _id: params.id,
       updatedAt: getCurrentDateTime()
     })
+    const feeding = await client.feeding.updateOne(params.id, feedingPartial)
     return res.json(feeding)
   }
 

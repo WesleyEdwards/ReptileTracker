@@ -5,9 +5,9 @@ import {
   MongoClient,
   OptionalUnlessRequiredId
 } from "mongodb"
-import {Feeding, HusbandryRecord, Reptile, Schedule, User} from "../types"
-import {DbClient, BasicEndpoints, Condition} from "../lib/auth_types"
+import {DbClient, BasicEndpoints, Condition, HasId} from "../lib/auth_types"
 import {conditionToFilter} from "./conditions"
+import {Feeding, HusbandryRecord, Reptile, Schedule, User} from "../types"
 
 export const mongoClient = (): DbClient => {
   const mClient: MongoClient = new MongoClient(process.env.MONGO_URI!)
@@ -22,7 +22,7 @@ export const mongoClient = (): DbClient => {
   }
 }
 
-function functionsForModel<T extends {_id: string}>(
+function functionsForModel<T extends HasId>(
   db: Db,
   model: string
 ): BasicEndpoints<T> {

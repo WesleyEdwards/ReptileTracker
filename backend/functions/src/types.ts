@@ -1,72 +1,123 @@
-export type SexType = "male" | "female"
+import {v4 as uuidv4} from "uuid"
+import {z} from "zod"
 
-export type SpeciesType =
-  | "ball_python"
-  | "king_snake"
-  | "corn_snake"
-  | "redtail_boa"
-
-export type ScheduleType = "feed" | "record" | "clean"
-
-type DateTime = string
-type UUID = string
-
-export type User = {
-  _id: UUID
-  firstName: string
-  lastName: string
-  email: string
-  passwordHash: string
-  createdAt: DateTime
-  updatedAt: DateTime
-  admin: boolean
+enum SpeciesType {
+  "ball_python",
+  "king_snake",
+  "corn_snake",
+  "redtail_boa"
 }
 
-export type Reptile = {
-  _id: UUID
-  user: UUID
-  species: SpeciesType
-  name: string
-  sex: string
-  feeding: UUID[]
-  husbandryRecord: UUID[]
-  schedule: UUID[]
-  createdAt: DateTime
-  updatedAt: DateTime
+enum Sex {
+  "male",
+  "female"
 }
 
-export type Feeding = {
-  _id: UUID
-  reptile: UUID
-  foodItem: string
-  createdAt: DateTime
-  updatedAt: DateTime
+enum ScheduleType {
+  "feed",
+  "record",
+  "clean"
 }
 
-export type HusbandryRecord = {
-  _id: UUID
-  reptile: string
-  length: number
-  weight: number
-  temperature: number
-  humidity: number
-  createdAt: DateTime
-  updatedAt: DateTime
+const baseObjectSchema = z.object({
+  _id: z.string().default(uuidv4),
+  createdAt: z.string().default(new Date().toISOString()),
+  updatedAt: z.string().default(new Date().toISOString())
+})
+
+const userSchema = z
+  .object({
+    firstName: z.string({required_error: "First name is required"}),
+    lastName: z.string({required_error: "Last name is required"}),
+    email: z
+      .string({required_error: "Email is required"})
+      .email({message: "Invalid email"}),
+    passwordHash: z.string(),
+    admin: z.boolean().default(false)
+  })
+  .merge(baseObjectSchema)
+
+const reptileSchema = z
+  .object({
+    user: z.string(),
+    species: z.nativeEnum(SpeciesType),
+    name: z.string(),
+    sex: z.nativeEnum(Sex),
+    feeding: z.array(z.string()).default([]),
+    husbandryRecord: z.array(z.string()).default([]),
+    schedule: z.array(z.string()).default([])
+  })
+  .merge(baseObjectSchema)
+
+const feedingSchema = z
+  .object({
+    reptile: z.string(),
+    foodItem: z.string()
+  })
+  .merge(baseObjectSchema)
+
+const husbandrySchema = z
+  .object({
+    reptile: z.string(),
+    length: z.number().optional(),
+    weight: z.number().optional(),
+    temperature: z.number().optional(),
+    humidity: z.number().optional()
+  })
+  .merge(baseObjectSchema)
+
+const scheduleSchema = z
+  .object({
+    reptile: z.string(),
+    user: z.string(),
+    type: z.nativeEnum(ScheduleType),
+    description: z.string(),
+    monday: z.boolean(),
+    tuesday: z.boolean(),
+    wednesday: z.boolean(),
+    thursday: z.boolean(),
+    friday: z.boolean(),
+    saturday: z.boolean(),
+    sunday: z.boolean()
+  })
+  .merge(baseObjectSchema)
+
+export type Reptile = z.infer<typeof reptileSchema>
+export type User = z.infer<typeof userSchema>
+export type Feeding = z.infer<typeof feedingSchema>
+export type HusbandryRecord = z.infer<typeof husbandrySchema>
+export type Schedule = z.infer<typeof scheduleSchema>
+
+type Schemas =
+  | typeof reptileSchema
+  | typeof userSchema
+  | typeof feedingSchema
+  | typeof husbandrySchema
+  | typeof scheduleSchema
+
+export type SchemaType =
+  | "reptile"
+  | "user"
+  | "feeding"
+  | "husbandry"
+  | "schedule"
+
+export const schemaMap: Record<SchemaType, Schemas> = {
+  reptile: reptileSchema,
+  user: userSchema,
+  feeding: feedingSchema,
+  husbandry: husbandrySchema,
+  schedule: scheduleSchema
 }
 
-export type Schedule = {
-  _id: UUID
-  reptile: string
-  user: string
-  type: ScheduleType
-  description: string
-  monday: boolean
-  tuesday: boolean
-  wednesday: boolean
-  thursday: boolean
-  friday: boolean
-  saturday: boolean
-  sunday: boolean
-  createdAt?: DateTime
-  updatedAt?: DateTime
-}
+export type DbObject<T extends SchemaType> = T extends "reptile"
+  ? Reptile
+  : T extends "user"
+  ? User
+  : T extends "feeding"
+  ? Feeding
+  : T extends "husbandry"
+  ? HusbandryRecord
+  : T extends "schedule"
+  ? Schedule
+  : never

@@ -1,27 +1,18 @@
+import {getCurrentDateTime} from "../helperFunctions"
 import {
-  creationDates,
-  getCurrentDateTime,
-  getReptilePartial
-} from "../helperFunctions"
-import {isCreateReptileBody} from "../json_validation/request_body"
+  checkPartialValidation,
+  checkValidation
+} from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
 export const createReptile: ReqBuilder =
   (client) =>
   async ({body, jwtBody}, res) => {
-    if (!isCreateReptileBody(body)) {
-      return res
-        .status(400)
-        .json({error: "Invalid parameters for creating Reptile"})
+    const reptileBody = checkValidation("reptile", body)
+    if (jwtBody!.userId !== reptileBody.user) {
+      return res.json({error: "You can only create a reptile for yourself"})
     }
-    const reptile = await client.reptile.createOne({
-      ...body,
-      ...creationDates(),
-      user: jwtBody!.userId,
-      feeding: [],
-      husbandryRecord: [],
-      schedule: []
-    })
+    const reptile = await client.reptile.createOne(reptileBody)
     return res.json(reptile)
   }
 
@@ -46,15 +37,16 @@ export const queryReptiles: ReqBuilder =
 export const updateReptile: ReqBuilder =
   (client) =>
   async ({params, body}, res) => {
+    const reptilePartial = checkPartialValidation("reptile", {
+      ...body,
+      _id: params.id,
+      updatedAt: getCurrentDateTime()
+    })
     const exists = await client.reptile.findOne({_id: params.id})
 
     if (!exists) return res.status(404).json("Reptile does not exist")
 
-    const reptilePartial = getReptilePartial(body)
-    const reptile = await client.reptile.updateOne(exists._id, {
-      ...reptilePartial,
-      updatedAt: getCurrentDateTime()
-    })
+    const reptile = await client.reptile.updateOne(exists._id, reptilePartial)
     return res.json(reptile)
   }
 

@@ -7,7 +7,7 @@ import {
   updateSched
 } from "../dbQueries/schedules"
 
-export const scheduleController = controller("schedules", [
+export const scheduleController = controller("schedule", [
   {path: "/:id", method: "post", endpointBuilder: createSched},
   {path: "/:id", method: "get", endpointBuilder: getSched},
   {path: "/", method: "post", endpointBuilder: querySched},

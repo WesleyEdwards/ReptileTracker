@@ -1,58 +1,31 @@
-import {
-  CreateFeedingBody,
-  CreateHusbandryBody,
-  CreateReptileBody,
-  CreateScheduleBody,
-  CreateUserBody,
-  LoginBody
-} from "../dbQueries/request_types"
-import {ValidationBuilder, validator} from "./validationFunctions"
+import {DbObject, SchemaType, schemaMap} from "../types"
+import {z} from "zod"
 
-const createUser: ValidationBuilder<CreateUserBody> = {
-  firstName: "string",
-  lastName: "string",
-  email: "string",
-  password: "string"
+export function checkValidation<T extends SchemaType>(
+  schemaName: T,
+  body: any
+): DbObject<T> {
+  return schemaMap[schemaName].parse(body) as DbObject<T>
 }
 
-const login: ValidationBuilder<LoginBody> = {
-  email: "string",
-  password: "string"
+export function checkPartialValidation<T extends SchemaType>(
+  schemaName: T,
+  body: any
+): Partial<DbObject<T>> {
+  return schemaMap[schemaName].partial().parse(body) as Partial<DbObject<T>>
 }
 
-const createSchedule: ValidationBuilder<CreateScheduleBody> = {
-  type: "schedule",
-  description: "string",
-  monday: "boolean",
-  tuesday: "boolean",
-  wednesday: "boolean",
-  thursday: "boolean",
-  friday: "boolean",
-  saturday: "boolean",
-  sunday: "boolean"
+export function checkLoginValidation(body: any) {
+  const result = z
+    .object({
+      email: z
+        .string({required_error: "Email is required"})
+        .email({message: "Invalid email"}),
+      password: z.string({required_error: "Password is required"})
+    })
+    .safeParse(body)
+  if (!result.success) {
+    throw new Error("Error logging in")
+  }
+  return result.data
 }
-
-const createReptile: ValidationBuilder<CreateReptileBody> = {
-  species: "species",
-  name: "string",
-  sex: "sex"
-}
-
-const createFeeding: ValidationBuilder<CreateFeedingBody> = {
-  foodItem: "string"
-}
-
-const createHusbandry: ValidationBuilder<CreateHusbandryBody> = {
-  reptile: "string",
-  length: "number",
-  weight: "number",
-  temperature: "number",
-  humidity: "number"
-}
-
-export const isCreateUserBody = validator(createUser)
-export const isLoginBody = validator(login)
-export const isCreateSchedBody = validator(createSchedule)
-export const isCreateReptileBody = validator(createReptile)
-export const isCreateFeedingBody = validator(createFeeding)
-export const isCreateHusbandryBody = validator(createHusbandry)

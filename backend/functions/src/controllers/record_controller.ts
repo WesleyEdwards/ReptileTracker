@@ -8,7 +8,7 @@ import {
 } from "../dbQueries/husbandry"
 
 export const recordController = controller("husbandry", [
-  {path: "/:id", method: "post", endpointBuilder: createHusbandry},
+  {path: "/create", method: "post", endpointBuilder: createHusbandry},
   {path: "/:id", method: "get", endpointBuilder: husbandryDetail},
   {path: "/", method: "post", endpointBuilder: queryHusbandry},
   {path: "/:id", method: "put", endpointBuilder: updateHusbandry},

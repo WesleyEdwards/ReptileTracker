@@ -1,24 +1,24 @@
-import {creationDates, getCurrentDateTime} from "../helperFunctions"
-import {isCreateSchedBody} from "../json_validation/request_body"
+import {getCurrentDateTime} from "../helperFunctions"
+import {
+  checkPartialValidation,
+  checkValidation
+} from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
 export const createSched: ReqBuilder =
   (client) =>
   async ({body, jwtBody, params}, res) => {
-    if (!isCreateSchedBody(body)) {
-      return res.status(400).json({error: "Invalid user Input"})
-    }
     const reptileExists = await client.reptile.findOne({_id: params.id})
     if (!reptileExists) {
       return res.json("Reptile does not exist")
     }
-
-    const schedule = await client.schedule.createOne({
+    const schedBody = checkValidation("schedule", {
       ...body,
       reptile: reptileExists._id,
-      user: jwtBody!.userId,
-      ...creationDates()
+      user: jwtBody!.userId
     })
+
+    const schedule = await client.schedule.createOne(schedBody)
     if (!schedule) return res.json("Error creating schedule")
 
     await client.reptile.updateOne(reptileExists._id, {
@@ -39,16 +39,12 @@ export const querySched: ReqBuilder =
 export const updateSched: ReqBuilder =
   (client) =>
   async ({body, params}, res) => {
-    const schedule = await client.schedule.findOne({
-      _id: params.id
-    })
-    if (!schedule) {
-      return res.status(400).json({error: "Invalid Sched Id"})
-    }
-    const updatedSched = await client.schedule.updateOne(schedule._id, {
+    const schedBody = checkPartialValidation("schedule", {
       ...body,
+      _id: params.id,
       updatedAt: getCurrentDateTime()
     })
+    const updatedSched = await client.schedule.updateOne(params._id, schedBody)
     return res.json(updatedSched)
   }
 

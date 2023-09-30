@@ -1,25 +1,23 @@
-import {creationDates, getCurrentDateTime} from "../helperFunctions"
-import {isCreateHusbandryBody} from "../json_validation/request_body"
+import {getCurrentDateTime} from "../helperFunctions"
+import {
+  checkPartialValidation,
+  checkValidation
+} from "../json_validation/request_body"
 import {ReqBuilder} from "../lib/auth_types"
 
 export const createHusbandry: ReqBuilder =
   (client) =>
   async ({body, params}, res) => {
-    if (!isCreateHusbandryBody(body)) {
-      return res
-        .status(400)
-        .json({error: "Invalid parameters for creating Husbandry"})
-    }
+    const newHusbandry = checkValidation("husbandry", body)
 
-    const reptileExists = await client.reptile.findOne({_id: params.id})
+    const reptileExists = await client.reptile.findOne({
+      _id: newHusbandry.reptile
+    })
     if (!reptileExists) {
       return res.json("Reptile does not exist")
     }
 
-    const husbandry = await client.husbandryRecord.createOne({
-      ...body,
-      ...creationDates()
-    })
+    const husbandry = await client.husbandryRecord.createOne(newHusbandry)
 
     if (!husbandry) return res.json("Error creating husbandry")
 
@@ -57,11 +55,15 @@ export const updateHusbandry: ReqBuilder =
 
     if (!exists) return res.status(404).json("Husbandry does not exist")
 
-    const reptilePartial = body
-    const husbandry = await client.husbandryRecord.updateOne(params.id, {
-      ...reptilePartial,
+    const husbandryPartial = checkPartialValidation("husbandry", {
+      ...body,
+      _id: params.id,
       updatedAt: getCurrentDateTime()
     })
+    const husbandry = await client.husbandryRecord.updateOne(
+      params.id,
+      husbandryPartial
+    )
     return res.json(husbandry)
   }
 

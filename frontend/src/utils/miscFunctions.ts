@@ -1,5 +1,3 @@
-import { SpeciesType } from "../api/apiTypes";
-import { Reptile } from "../api/models";
 
 export function setTokenToLocalStorage(token: string) {
   localStorage.setItem("token", token);

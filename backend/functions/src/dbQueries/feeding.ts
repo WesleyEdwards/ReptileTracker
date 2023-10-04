@@ -1,4 +1,4 @@
-import {getCurrentDateTime} from "../helperFunctions"
+import {getCurrentDateTime} from "../lib/helperFunctions"
 import {
   checkPartialValidation,
   checkValidation,
@@ -8,21 +8,20 @@ import {ReqBuilder} from "../lib/auth_types"
 
 export const createFeeding: ReqBuilder =
   (client) =>
-  async ({body, params}, res) => {
-    const feedingBody = checkValidation("feeding", {
-      ...body,
-      reptile: params.id
-    })
-
+  async ({body, jwtBody}, res) => {
+    const feedingBody = checkValidation("feeding", body)
     if (isParseError(feedingBody)) return res.status(400).json(feedingBody)
+    if (!jwtBody?.reptiles.includes(feedingBody.reptile)) return res.status(401)
 
-    const reptileExists = await client.reptile.findOne({_id: params.id})
-    if (!reptileExists) return res.json({error: "Invalid Reptile Id"})
+    const reptileExists = await client.reptile.findOne({
+      _id: feedingBody.reptile
+    })
+    if (!reptileExists) return res.status(404)
 
     const feeding = await client.feeding.createOne(feedingBody)
     if (!feeding) return res.json({error: "Error creating feeding"})
 
-    await client.reptile.updateOne(params.id, {
+    await client.reptile.updateOne(feedingBody.reptile, {
       feeding: [...reptileExists.feeding, feeding._id],
       updatedAt: getCurrentDateTime()
     })
@@ -32,20 +31,23 @@ export const createFeeding: ReqBuilder =
 
 export const feedingDetail: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
     const feeding = await client.feeding.findOne({
       _id: params.id
     })
-    if (!feeding) return res.json({error: "Please use a feedingID that exists"})
+    if (!feeding) return res.json({error: "feeding doesn't exist"})
+    if (!jwtBody?.reptiles.includes(feeding.reptile)) return res.status(401)
 
     return res.json(feeding)
   }
 
 export const queryFeedings: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
+  async ({body, jwtBody}, res) => {
     const feedings = await client.feeding.findMany(body)
-    return res.json(feedings)
+    return res.json(
+      feedings.filter((f) => jwtBody?.reptiles.includes(f.reptile))
+    )
   }
 
 export const updateFeeding: ReqBuilder =
@@ -67,13 +69,19 @@ export const updateFeeding: ReqBuilder =
 
 export const deleteFeeding: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
     const exists = await client.feeding.findOne({
       _id: params.id
     })
     if (!exists) {
       return res.json({error: "Please use a feedingID that exists"})
     }
+    const reptileExists = await client.reptile.findOne({
+      _id: exists.reptile,
+      user: jwtBody?.userId ?? ""
+    })
+    if (!reptileExists) return res.status(404)
+
     await client.feeding.deleteOne(exists._id)
     return res.json({message: `Deleted the feeding with id ${exists._id}`})
   }

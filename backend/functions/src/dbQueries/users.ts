@@ -1,4 +1,4 @@
-import {createUserToken} from "../helperFunctions"
+import {createUserToken, sendUserBody} from "../lib/helperFunctions"
 import bcrypt from "bcrypt"
 import {ReqBuilder} from "../lib/auth_types"
 import {
@@ -26,13 +26,19 @@ export const createUser: ReqBuilder =
     const user = await client.user.createOne(userBody)
     if (!user) return res.status(500).json({error: "Error creating user"})
 
-    const token = createUserToken(user._id)
-    return res.json({user, token})
+    const reptiles = await client.reptile.findMany({user: [user._id]})
+    const token = createUserToken({
+      userId: user._id,
+      admin: user.admin,
+      reptiles: reptiles.map((r) => r._id)
+    })
+    return res.json({user: sendUserBody(user), token})
   }
 
 export const deleteUser: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
+    if (!jwtBody?.admin) return res.status(401).json("Unauthorized")
     const response = await client.user.deleteOne(params.id)
     return res.json(`User ${response} successfully deleted`)
   }
@@ -41,14 +47,16 @@ export const getUser: ReqBuilder =
   (client) =>
   async ({params}, res) => {
     const user = await client.user.findOne({_id: params.id})
-    return res.json(user)
+    if (!user) return res.status(404).json("User does not exist")
+    return res.json(sendUserBody(user))
   }
 
 export const queryUser: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
+  async ({body, jwtBody}, res) => {
+    if (!jwtBody?.admin) return res.status(401).json("Unauthorized")
     const users = await client.user.findMany(body)
-    return res.json(users)
+    return res.json(users?.map(sendUserBody))
   }
 
 export const getSelf: ReqBuilder =
@@ -57,7 +65,8 @@ export const getSelf: ReqBuilder =
     const user = await client.user.findOne({
       _id: jwtBody?.userId || ""
     })
-    return res.json(user)
+    if (!user) return res.status(404).json("User does not exist")
+    return res.json(sendUserBody(user))
   }
 
 export const loginUser: ReqBuilder =
@@ -76,5 +85,13 @@ export const loginUser: ReqBuilder =
     if (!isValid) {
       return res.status(404).json({message: "Invalid email or password"})
     }
-    return res.json({user, token: createUserToken(user._id)})
+    const reptiles = await client.reptile.findMany({user: [user._id]})
+    return res.json({
+      user: sendUserBody(user),
+      token: createUserToken({
+        userId: user._id,
+        admin: user.admin,
+        reptiles: reptiles.map((r) => r._id)
+      })
+    })
   }

@@ -2,21 +2,21 @@ import {v4 as uuidv4} from "uuid"
 import {z} from "zod"
 
 enum SpeciesType {
-  "ball_python",
-  "king_snake",
-  "corn_snake",
-  "redtail_boa"
+  ball_python = "ball_python",
+  king_snake = "king_snake",
+  corn_snake = "corn_snake",
+  redtail_boa = "redtail_boa"
 }
 
-enum Sex {
-  "male",
-  "female"
+enum SexType {
+  male = "male",
+  female = "female"
 }
 
 enum ScheduleType {
-  "feed",
-  "record",
-  "clean"
+  feed = "feed",
+  record = "record",
+  clean = "clean"
 }
 
 const baseObjectSchema = z.object({
@@ -42,7 +42,7 @@ const reptileSchema = z
     user: z.string(),
     species: z.nativeEnum(SpeciesType),
     name: z.string(),
-    sex: z.nativeEnum(Sex),
+    sex: z.nativeEnum(SexType),
     feeding: z.array(z.string()).default([]),
     husbandryRecord: z.array(z.string()).default([]),
     schedule: z.array(z.string()).default([])
@@ -69,7 +69,6 @@ const husbandrySchema = z
 const scheduleSchema = z
   .object({
     reptile: z.string(),
-    user: z.string(),
     type: z.nativeEnum(ScheduleType),
     description: z.string(),
     monday: z.boolean(),
@@ -82,8 +81,8 @@ const scheduleSchema = z
   })
   .merge(baseObjectSchema)
 
-export type Reptile = z.infer<typeof reptileSchema>
 export type User = z.infer<typeof userSchema>
+export type Reptile = z.infer<typeof reptileSchema>
 export type Feeding = z.infer<typeof feedingSchema>
 export type HusbandryRecord = z.infer<typeof husbandrySchema>
 export type Schedule = z.infer<typeof scheduleSchema>

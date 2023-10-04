@@ -1,4 +1,4 @@
-import {getCurrentDateTime} from "../helperFunctions"
+import {getCurrentDateTime} from "../lib/helperFunctions"
 import {
   checkPartialValidation,
   checkValidation,
@@ -8,17 +8,19 @@ import {ReqBuilder} from "../lib/auth_types"
 
 export const createSched: ReqBuilder =
   (client) =>
-  async ({body, jwtBody, params}, res) => {
-    const reptileExists = await client.reptile.findOne({_id: params.id})
-    if (!reptileExists) {
-      return res.json("Reptile does not exist")
-    }
+  async ({body, jwtBody}, res) => {
     const schedBody = checkValidation("schedule", {
       ...body,
-      reptile: reptileExists._id,
       user: jwtBody!.userId
     })
     if (isParseError(schedBody)) return res.status(400).json(schedBody)
+    const reptileExists = await client.reptile.findOne({
+      _id: schedBody.reptile,
+      user: jwtBody?.userId ?? ""
+    })
+    if (!reptileExists) {
+      return res.json("Reptile does not exist")
+    }
 
     const schedule = await client.schedule.createOne(schedBody)
     if (!schedule) return res.json("Error creating schedule")
@@ -62,13 +64,20 @@ export const getSched: ReqBuilder =
 
 export const deleteSched: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
     const exists = await client.schedule.findOne({
       _id: params.id
     })
     if (!exists) {
       return res.json({error: "Please use a scheduleID that exists"})
     }
+
+    const reptile = await client.reptile.findOne({
+      _id: exists._id,
+      user: jwtBody?.userId ?? ""
+    })
+    if (!reptile) return res.status(404)
+
     await client.schedule.deleteOne(exists._id)
     return res.json({message: `Deleted the schedule with id ${exists._id}`})
   }

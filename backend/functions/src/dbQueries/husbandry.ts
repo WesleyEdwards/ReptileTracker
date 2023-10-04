@@ -1,4 +1,4 @@
-import {getCurrentDateTime} from "../helperFunctions"
+import {getCurrentDateTime} from "../lib/helperFunctions"
 import {
   checkPartialValidation,
   checkValidation,
@@ -8,12 +8,13 @@ import {ReqBuilder} from "../lib/auth_types"
 
 export const createHusbandry: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
+  async ({body, jwtBody}, res) => {
     const newHusbandry = checkValidation("husbandry", body)
     if (isParseError(newHusbandry)) return res.status(400).json(newHusbandry)
 
     const reptileExists = await client.reptile.findOne({
-      _id: newHusbandry.reptile
+      _id: newHusbandry.reptile,
+      user: jwtBody?.userId ?? ""
     })
     if (!reptileExists) {
       return res.json("Reptile does not exist")
@@ -74,13 +75,19 @@ export const updateHusbandry: ReqBuilder =
 
 export const deleteHusbandry: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
     const exists = await client.husbandryRecord.findOne({
       _id: params.id
     })
     if (!exists) {
       return res.json({error: "Please use a reptileID that exists"})
     }
+    const reptile = await client.reptile.findOne({
+      _id: exists._id,
+      user: jwtBody?.userId ?? ""
+    })
+    if (!reptile) return res.status(404)
+
     await client.husbandryRecord.deleteOne(exists._id)
     return res.json({message: `Deleted the husbandry with id ${exists._id}`})
   }

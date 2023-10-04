@@ -1,4 +1,4 @@
-import {getCurrentDateTime} from "../helperFunctions"
+import {getCurrentDateTime} from "../lib/helperFunctions"
 import {
   checkPartialValidation,
   checkValidation,
@@ -57,9 +57,10 @@ export const updateReptile: ReqBuilder =
 
 export const deleteReptile: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
     const exists = await client.reptile.findOne({
-      _id: params.id
+      _id: params.id,
+      user: jwtBody?.userId ?? ""
     })
     if (!exists) {
       return res.json({error: "Please use a reptileID that exists"})

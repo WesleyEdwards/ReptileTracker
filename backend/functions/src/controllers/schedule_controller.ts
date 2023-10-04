@@ -8,7 +8,7 @@ import {
 } from "../dbQueries/schedules"
 
 export const scheduleController = controller("schedule", [
-  {path: "/:id", method: "post", endpointBuilder: createSched},
+  {path: "/create", method: "post", endpointBuilder: createSched},
   {path: "/:id", method: "get", endpointBuilder: getSched},
   {path: "/", method: "post", endpointBuilder: querySched},
   {path: "/:id", method: "put", endpointBuilder: updateSched},

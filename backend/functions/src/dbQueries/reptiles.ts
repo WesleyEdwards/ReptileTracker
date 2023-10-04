@@ -20,25 +20,27 @@ export const createReptile: ReqBuilder =
 
 export const reptileDetail: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
-    const reptile = await client.reptile.findOne({
-      _id: params.id
-    })
-    if (!reptile) return res.json({error: "Please use a reptileID that exists"})
+  async ({params, jwtBody}, res) => {
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, reptile: jwtBody?.reptiles}
+    const reptile = await client.reptile.findOne(condition)
+    if (!reptile) return res.status(404)
 
     return res.json(reptile)
   }
 
 export const queryReptiles: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
-    const reptiles = await client.reptile.findMany(body)
+  async ({body, jwtBody}, res) => {
+    const condition = jwtBody?.admin ? body : {...body, user: jwtBody?.userId}
+    const reptiles = await client.reptile.findMany(condition)
     return res.json(reptiles)
   }
 
 export const updateReptile: ReqBuilder =
   (client) =>
-  async ({params, body}, res) => {
+  async ({params, body, jwtBody}, res) => {
     const reptilePartial = checkPartialValidation("reptile", {
       ...body,
       _id: params.id,
@@ -47,7 +49,13 @@ export const updateReptile: ReqBuilder =
     if (isParseError(reptilePartial)) {
       return res.status(400).json(reptilePartial)
     }
-    const exists = await client.reptile.findOne({_id: params.id})
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {
+          _id: params.id,
+          user: jwtBody?.userId ?? ""
+        }
+    const exists = await client.reptile.findOne(condition)
 
     if (!exists) return res.status(404).json("Reptile does not exist")
 

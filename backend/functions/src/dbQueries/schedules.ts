@@ -35,8 +35,9 @@ export const createSched: ReqBuilder =
 
 export const querySched: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
-    const schedules = await client.schedule.findMany(body)
+  async ({body, jwtBody}, res) => {
+    const condition = jwtBody?.admin ? body : {...body, user: jwtBody?.userId}
+    const schedules = await client.schedule.findMany(condition)
     return res.json(schedules)
   }
 
@@ -55,19 +56,21 @@ export const updateSched: ReqBuilder =
 
 export const getSched: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
-    const schedule = await client.schedule.findOne({
-      _id: params.id
-    })
+  async ({params, jwtBody}, res) => {
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, user: jwtBody?.userId}
+    const schedule = await client.schedule.findOne(condition)
     return res.json(schedule)
   }
 
 export const deleteSched: ReqBuilder =
   (client) =>
   async ({params, jwtBody}, res) => {
-    const exists = await client.schedule.findOne({
-      _id: params.id
-    })
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, reptile: jwtBody?.reptiles ?? []}
+    const exists = await client.schedule.findOne(condition)
     if (!exists) {
       return res.json({error: "Please use a scheduleID that exists"})
     }

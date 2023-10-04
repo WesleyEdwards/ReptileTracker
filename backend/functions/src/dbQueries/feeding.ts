@@ -11,11 +11,12 @@ export const createFeeding: ReqBuilder =
   async ({body, jwtBody}, res) => {
     const feedingBody = checkValidation("feeding", body)
     if (isParseError(feedingBody)) return res.status(400).json(feedingBody)
-    if (!jwtBody?.reptiles.includes(feedingBody.reptile)) return res.status(401)
 
-    const reptileExists = await client.reptile.findOne({
-      _id: feedingBody.reptile
-    })
+    const condition = jwtBody?.admin
+      ? {_id: feedingBody.reptile}
+      : {_id: feedingBody.reptile, user: jwtBody?.userId ?? []}
+
+    const reptileExists = await client.reptile.findOne(condition)
     if (!reptileExists) return res.status(404)
 
     const feeding = await client.feeding.createOne(feedingBody)
@@ -32,9 +33,10 @@ export const createFeeding: ReqBuilder =
 export const feedingDetail: ReqBuilder =
   (client) =>
   async ({params, jwtBody}, res) => {
-    const feeding = await client.feeding.findOne({
-      _id: params.id
-    })
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, user: jwtBody?.userId}
+    const feeding = await client.feeding.findOne(condition)
     if (!feeding) return res.json({error: "feeding doesn't exist"})
     if (!jwtBody?.reptiles.includes(feeding.reptile)) return res.status(401)
 
@@ -44,16 +46,18 @@ export const feedingDetail: ReqBuilder =
 export const queryFeedings: ReqBuilder =
   (client) =>
   async ({body, jwtBody}, res) => {
-    const feedings = await client.feeding.findMany(body)
-    return res.json(
-      feedings.filter((f) => jwtBody?.reptiles.includes(f.reptile))
-    )
+    const condition = jwtBody?.admin ? body : {...body, user: jwtBody?.userId}
+    const feedings = await client.feeding.findMany(condition)
+    return res.json(feedings)
   }
 
 export const updateFeeding: ReqBuilder =
   (client) =>
-  async ({params, body}, res) => {
-    const exists = await client.feeding.findOne({_id: params.id})
+  async ({params, body, jwtBody}, res) => {
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, user: jwtBody?.userId}
+    const exists = await client.feeding.findOne(condition)
 
     if (!exists) return res.status(404).json("Feeding does not exist")
 

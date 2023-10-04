@@ -45,17 +45,20 @@ export const deleteUser: ReqBuilder =
 
 export const getUser: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
+  async ({params, jwtBody}, res) => {
+    if (!jwtBody?.admin || jwtBody.userId !== params.id) {
+      return res.status(401).json("Unauthorized")
+    }
     const user = await client.user.findOne({_id: params.id})
-    if (!user) return res.status(404).json("User does not exist")
+    if (!user) return res.status(404)
     return res.json(sendUserBody(user))
   }
 
 export const queryUser: ReqBuilder =
   (client) =>
   async ({body, jwtBody}, res) => {
-    if (!jwtBody?.admin) return res.status(401).json("Unauthorized")
-    const users = await client.user.findMany(body)
+    const condition = jwtBody?.admin ? body : {...body, _id: jwtBody?.userId}
+    const users = await client.user.findMany(condition)
     return res.json(users?.map(sendUserBody))
   }
 
@@ -65,7 +68,7 @@ export const getSelf: ReqBuilder =
     const user = await client.user.findOne({
       _id: jwtBody?.userId || ""
     })
-    if (!user) return res.status(404).json("User does not exist")
+    if (!user) return res.status(404)
     return res.json(sendUserBody(user))
   }
 

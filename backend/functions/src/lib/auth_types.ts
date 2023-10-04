@@ -7,17 +7,13 @@ export type HasId = {
 
 export type OrError<T> = T | undefined
 
-export type KeyAndValue<T extends HasId> = {
-  [P in keyof T]?: T[P]
-}
-
-export type Condition<T> = {
-  [P in keyof T]?: T[P][]
+export type Condition<T extends HasId> = {
+  [P in keyof T]?: T[P][] | T[P]
 }
 
 export type BasicEndpoints<T extends HasId> = {
   createOne: (item: T) => Promise<OrError<T>>
-  findOne: (filter: KeyAndValue<T>) => Promise<OrError<T>>
+  findOne: (filter: Condition<T>) => Promise<OrError<T>>
   findMany: (id: Condition<T>) => Promise<T[]>
   updateOne: (id: string, update: Partial<T>) => Promise<OrError<T>>
   deleteOne: (id: string) => Promise<string>

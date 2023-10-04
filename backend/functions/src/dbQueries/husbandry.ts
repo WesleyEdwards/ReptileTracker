@@ -34,10 +34,11 @@ export const createHusbandry: ReqBuilder =
 
 export const husbandryDetail: ReqBuilder =
   (client) =>
-  async ({params}, res) => {
-    const husbandry = await client.husbandryRecord.findOne({
-      _id: params.id
-    })
+  async ({params, jwtBody}, res) => {
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, user: jwtBody?.userId}
+    const husbandry = await client.husbandryRecord.findOne(condition)
     if (!husbandry)
       return res.json({error: "Please use a husbandryID that exists"})
 
@@ -46,15 +47,19 @@ export const husbandryDetail: ReqBuilder =
 
 export const queryHusbandry: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
-    const husbandry = await client.husbandryRecord.findMany(body)
+  async ({body, jwtBody}, res) => {
+    const condition = jwtBody?.admin ? body : {...body, user: jwtBody?.userId}
+    const husbandry = await client.husbandryRecord.findMany(condition)
     return res.json(husbandry)
   }
 
 export const updateHusbandry: ReqBuilder =
   (client) =>
-  async ({params, body}, res) => {
-    const exists = await client.husbandryRecord.findOne({_id: params.id})
+  async ({params, body, jwtBody}, res) => {
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, user: jwtBody?.userId}
+    const exists = await client.husbandryRecord.findOne(condition)
 
     if (!exists) return res.status(404).json("Husbandry does not exist")
 
@@ -76,17 +81,13 @@ export const updateHusbandry: ReqBuilder =
 export const deleteHusbandry: ReqBuilder =
   (client) =>
   async ({params, jwtBody}, res) => {
-    const exists = await client.husbandryRecord.findOne({
-      _id: params.id
-    })
+    const condition = jwtBody?.admin
+      ? {_id: params.id}
+      : {_id: params.id, user: jwtBody?.userId}
+    const exists = await client.husbandryRecord.findOne(condition)
     if (!exists) {
       return res.json({error: "Please use a reptileID that exists"})
     }
-    const reptile = await client.reptile.findOne({
-      _id: exists._id,
-      user: jwtBody?.userId ?? ""
-    })
-    if (!reptile) return res.status(404)
 
     await client.husbandryRecord.deleteOne(exists._id)
     return res.json({message: `Deleted the husbandry with id ${exists._id}`})

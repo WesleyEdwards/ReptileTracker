@@ -1,8 +1,4 @@
-import {
-  CreateFeedingBody,
-  CreateHusbandryBody,
-  CreateScheduleBody,
-} from "../api/apiTypes";
+import { HusbandryRecord, Schedule } from "../api/models";
 
 export const daysList = [
   "sunday",
@@ -14,7 +10,7 @@ export const daysList = [
   "saturday",
 ];
 
-export const initialSchedule: CreateScheduleBody = {
+export const initialSchedule = {
   type: "feed",
   description: "",
   monday: false,
@@ -24,15 +20,15 @@ export const initialSchedule: CreateScheduleBody = {
   friday: false,
   saturday: false,
   sunday: false,
-};
+} satisfies Partial<Schedule>;
 
 export const initialHusbandryRecord = {
   length: undefined,
   weight: undefined,
   temperature: undefined,
   humidity: undefined,
-} as Record<string, number | undefined>;
+} satisfies Partial<HusbandryRecord>;
 
-export const initialFeedingRecord: CreateFeedingBody = {
-  foodItem: "",
-};
+// export const initialFeedingRecord: CreateFeedingBody = {
+//   foodItem: "",
+// };

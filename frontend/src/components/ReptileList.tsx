@@ -37,7 +37,7 @@ export const ReptileList = () => {
 
       <Grid container spacing={4} paddingTop={8}>
         {reptiles.map((reptile) => (
-          <Grid item key={reptile.id}>
+          <Grid item key={reptile._id}>
             <ReptileCard reptile={reptile} />
           </Grid>
         ))}

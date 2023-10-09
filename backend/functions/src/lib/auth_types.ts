@@ -14,7 +14,7 @@ export type Condition<T extends HasId> = {
 export type BasicEndpoints<T extends HasId> = {
   createOne: (item: T) => Promise<OrError<T>>
   findOne: (filter: Condition<T>) => Promise<OrError<T>>
-  findMany: (id: Condition<T>) => Promise<T[]>
+  findMany: (filter: Condition<T>) => Promise<T[]>
   updateOne: (id: string, update: Partial<T>) => Promise<OrError<T>>
   deleteOne: (id: string) => Promise<string>
 }

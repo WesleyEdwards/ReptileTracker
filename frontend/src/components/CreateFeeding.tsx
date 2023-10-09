@@ -1,6 +1,4 @@
 import { FC, useContext, useState } from "react";
-import { CreateFeedingBody } from "../api/apiTypes";
-import { initialFeedingRecord } from "../utils/constants";
 import { AuthContext } from "../context/AuthContext";
 import {
   TextField,
@@ -23,17 +21,16 @@ export const CreateFeeding = (props: CreateFeedingProps) => {
   const { api } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
-  const [feeding, setFeeding] =
-    useState<CreateFeedingBody>(initialFeedingRecord);
+  const [feeding, setFeeding] = useState<string>("");
 
   const handleClose = () => {
     setOpen(false);
     setError(undefined);
-    setFeeding(initialFeedingRecord);
+    setFeeding("");
   };
 
   const validInput = () => {
-    if (!feeding.foodItem) return false;
+    if (!feeding) return false;
     if (!reptileId) return false;
     return true;
   };
@@ -64,9 +61,9 @@ export const CreateFeeding = (props: CreateFeedingProps) => {
               <TextField
                 placeholder="Bacon"
                 label="Food Item"
-                value={feeding.foodItem}
+                value={feeding}
                 onChange={(event) => {
-                  setFeeding({ ...feeding, foodItem: event.target.value });
+                  setFeeding(event.target.value);
                 }}
               />
             </Stack>

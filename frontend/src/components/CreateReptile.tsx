@@ -16,16 +16,16 @@ import {
 } from "@mui/material";
 import { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SexType, SpeciesType } from "../api/apiTypes";
 import { AuthContext } from "../context/AuthContext";
 import { camelToTitleCase } from "../utils/miscFunctions";
+import { SexType, SpeciesType } from "../api/models";
 
 type CreateReptileProps = {
   refreshReptileList: () => void;
 };
 
 export const CreateReptile: FC<CreateReptileProps> = (props) => {
-  const { api } = useContext(AuthContext);
+  const { api, user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -52,10 +52,23 @@ export const CreateReptile: FC<CreateReptileProps> = (props) => {
     if (!name || !species || !sex) {
       return setError("Please fill out all fields");
     }
-    api.createReptile({ name, species, sex }).then((newRep) => {
-      handleClose();
-      navigate(`/reptile/${newRep.id}`);
-    });
+    api
+      .createReptile({
+        _id: crypto.randomUUID(),
+        user: user._id,
+        feeding: [],
+        husbandryRecord: [],
+        schedule: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        name,
+        species,
+        sex,
+      })
+      .then((newRep) => {
+        handleClose();
+        navigate(`/reptile/${newRep._id}`);
+      });
   };
 
   return (

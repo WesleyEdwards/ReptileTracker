@@ -62,10 +62,8 @@ export const unAuthRouter = createBrowserRouter([
 ]);
 
 function generateRouteObjects(routes: RoutePath[]): RouteObject[] {
-  return routes.map((route) => {
-    return {
-      path: route,
-      element: pathPageMap[route],
-    };
-  });
+  return routes.map((route) => ({
+    path: route,
+    element: pathPageMap[route],
+  }));
 }

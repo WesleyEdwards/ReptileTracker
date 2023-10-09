@@ -1,15 +1,15 @@
-
 export type LoginBody = {
   email: string;
   password: string;
 };
 
-export type SexType = "male" | "female";
 
-export type SpeciesType =
-  | "ball_python"
-  | "king_snake"
-  | "corn_snake"
-  | "redtail_boa";
+export type HasId = {
+  _id: string
+}
 
-export type ScheduleType = "feed" | "record" | "clean";
+export type OrError<T> = T | undefined
+
+export type Condition<T extends HasId> = {
+  [P in keyof T]?: T[P][] | T[P]
+}

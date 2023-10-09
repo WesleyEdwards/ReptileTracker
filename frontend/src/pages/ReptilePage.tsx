@@ -69,7 +69,7 @@ export const ReptilePage: FC = () => {
 
   const deleteReptile = () => {
     if (!reptile) return;
-    api.deleteReptile(reptile.id).then(() => {
+    api.deleteReptile(reptile._id).then(() => {
       navigate("/dashboard");
     });
   };
@@ -131,13 +131,13 @@ export const ReptilePage: FC = () => {
       )}
       <HeaderTitle title="Feedings" secondary>
         <CreateFeeding
-          reptileId={reptile.id}
+          reptileId={reptile._id}
           refreshFeedingList={fetchFeedings}
         />
       </HeaderTitle>
       <Grid container spacing={4} paddingTop={0}>
         {feedings.map((feeding) => (
-          <Grid item key={feeding.id}>
+          <Grid item key={feeding._id}>
             <FeedingCard feeding={feeding} />
           </Grid>
         ))}
@@ -145,26 +145,26 @@ export const ReptilePage: FC = () => {
 
       <HeaderTitle title="Husbandry Records" secondary>
         <CreateHusbandryRecord
-          reptileId={reptile.id}
+          reptileId={reptile._id}
           refreshHusbandryRecordList={fetchHusbandryRecords}
         />
       </HeaderTitle>
       <Grid container spacing={4} paddingTop={0}>
         {records.map((record) => (
-          <Grid item key={record.id}>
+          <Grid item key={record._id}>
             <HusbandryRecordCard record={record} />
           </Grid>
         ))}
       </Grid>
       <HeaderTitle title="Schedules" secondary>
         <CreateSchedule
-          initialReptileId={reptile.id}
+          initialReptileId={reptile._id}
           refreshScheduleList={fetchSchedules}
         />
       </HeaderTitle>
       <Grid container spacing={4} paddingTop={0}>
         {schedules.map((schedule) => (
-          <Grid item key={schedule.id}>
+          <Grid item key={schedule._id}>
             <ScheduleCard schedule={schedule} />
           </Grid>
         ))}

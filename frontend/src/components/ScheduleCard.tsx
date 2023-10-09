@@ -22,7 +22,7 @@ export const ScheduleCard: FC<ScheduleCardProps> = (
     <Card
       sx={{ minWidth: "12rem", cursor: "pointer" }}
       onClick={() => {
-        navigate(`/schedule/${schedule.id}`);
+        navigate(`/schedule/${schedule._id}`);
       }}
     >
       <CardContent>

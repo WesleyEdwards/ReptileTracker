@@ -1,6 +1,4 @@
 import { FC, useContext, useState } from "react";
-import { CreateHusbandryBody } from "../api/apiTypes";
-import { initialHusbandryRecord } from "../utils/constants";
 import { AuthContext } from "../context/AuthContext";
 import {
   TextField,
@@ -12,6 +10,13 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
+import { HusbandryRecord } from "../api/models";
+import { initialHusbandryRecord } from "../utils/constants";
+
+type HusbandryForm = Pick<
+  HusbandryRecord,
+  "length" | "weight" | "temperature" | "humidity"
+>;
 
 type CreateHusbandryRecordProps = {
   refreshHusbandryRecordList: () => void;
@@ -23,7 +28,7 @@ export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
   const { api } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
-  const [husbandryRecord, setHusbandryRecord] = useState(
+  const [husbandryRecord, setHusbandryRecord] = useState<HusbandryForm>(
     initialHusbandryRecord
   );
 
@@ -54,15 +59,12 @@ export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
       return;
     }
 
-    await api.createHusbandryRecord(
-      reptileId,
-      husbandryRecord as CreateHusbandryBody
-    );
+    await api.createHusbandryRecord(reptileId, husbandryRecord);
     refreshHusbandryRecordList();
     handleClose();
   };
 
-  const makeTextFieldProps = (name: keyof CreateHusbandryBody) => ({
+  const makeTextFieldProps = (name: keyof HusbandryForm) => ({
     name,
     label: name[0].toUpperCase() + name.slice(1),
     value: husbandryRecord[name],

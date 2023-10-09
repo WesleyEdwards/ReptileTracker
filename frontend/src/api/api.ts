@@ -1,28 +1,20 @@
 import { getToken, setTokenToLocalStorage } from "../utils/miscFunctions";
-import {
-  CreateReptileBody,
-  UpdateReptileBody,
-  CreateScheduleBody,
-  CreateUserBody,
-  LoginBody,
-  CreateHusbandryBody,
-  CreateFeedingBody,
-} from "./apiTypes";
+import { Condition, LoginBody } from "./apiTypes";
 import { Reptile, User, Schedule, HusbandryRecord, Feeding } from "./models";
 
 type Method = "get" | "post" | "put" | "delete";
 
 export class Api {
   private token = "";
-  private baseUrl = import.meta.env.VITE_BACKEND_URL;
+  public baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-  constructor() {
+  public constructor() {
     const token = getToken();
     if (token) {
       this.token = token;
     }
   }
-  private async makeRequest(
+  public async makeRequest(
     path: string,
     method: Method,
     body: Record<string, any> = {}
@@ -43,7 +35,7 @@ export class Api {
     return result.json();
   }
 
-  get(path: string) {
+  public get(path: string) {
     return this.makeRequest(path, "get");
   }
 
@@ -65,7 +57,7 @@ export class Api {
     setTokenToLocalStorage(token);
   }
 
-  createAccount(body: CreateUserBody): Promise<User> {
+  createAccount(body: User): Promise<User> {
     return this.post("user", body).then((res) => {
       this.setToken(res.token);
       return res.user;
@@ -85,69 +77,86 @@ export class Api {
       return res.user;
     });
   }
-  getReptiles(): Promise<Reptile[]> {
-    return this.get("reptiles").then((res) => res.reptiles);
-  }
 
-  deleteReptile(reptileId: number): Promise<Reptile> {
-    return this.del(`reptiles/${reptileId}`).then((res) => res.reptile);
-  }
+  readonly user = {
+    getSelf: (): Promise<User> => {
+      return this.get(`user`).then((res) => res);
+    },
+    detail: (id: string): Promise<User> => {
+      return this.get(`user/${id}`).then((res) => res);
+    },
+    query: (filter: Condition<User>): Promise<User[]> => {
+      return this.post("user", filter).then((res) => res);
+    },
+    create: (body: User): Promise<User> => {
+      return this.post("user/create", body).then((res) => res);
+    },
+    update: (id: string, rep: Partial<User>): Promise<User> => {
+      return this.put(`user/${id}`, rep).then((res) => res);
+    },
+    delete: (id: string): Promise<User> => {
+      return this.del(`user/${id}`).then((res) => res);
+    },
+  };
 
-  createReptile(rep: CreateReptileBody): Promise<Reptile> {
-    return this.post("reptiles", rep).then((res) => res.reptile);
-  }
-  updateReptile(reptileId: number, rep: UpdateReptileBody): Promise<Reptile> {
-    return this.put(`reptiles/${reptileId}`, rep).then((res) => res.reptiles);
-  }
-  getReptile(reptileId: number): Promise<Reptile> {
-    return this.get(`reptiles/${reptileId}`).then((res) => res.reptile);
-  }
-  createSchedule(
-    rep: CreateScheduleBody,
-    reptileId: number
-  ): Promise<Schedule> {
-    return this.post(`schedules/${reptileId}`, rep).then((res) => res.schedule);
-  }
+  readonly reptile = {
+    detail: (id: string): Promise<Reptile> => {
+      return this.get(`reptiles/${id}`).then((res) => res);
+    },
+    query: (filter: Condition<Reptile>): Promise<Reptile[]> => {
+      return this.post("reptiles", filter).then((res) => res);
+    },
+    create: (body: Reptile): Promise<Reptile> => {
+      return this.post("reptiles/create", body).then((res) => res);
+    },
+    update: (id: string, rep: Partial<Reptile>): Promise<Reptile> => {
+      return this.put(`reptiles/${id}`, rep).then((res) => res);
+    },
+    delete: (id: string): Promise<Reptile> => {
+      return this.del(`reptiles/${id}`).then((res) => res);
+    },
+  };
 
-  getSchedule(scheduleId: number): Promise<Schedule> {
-    return this.get(`schedules/${scheduleId}`).then((res) => res.schedule);
-  }
+  // createSchedule(rep: Schedule, reptileId: string): Promise<Schedule> {
+  //   return this.post(`schedules/${reptileId}`, rep).then((res) => res);
+  // }
 
-  getSchedulesByReptile(reptileId: number): Promise<Schedule[]> {
-    return this.get(`schedules/reptile/${reptileId}`).then(
-      (res) => res.schedules
-    );
-  }
+  // getSchedule(scheduleId: string): Promise<Schedule> {
+  //   return this.get(`schedules/${scheduleId}`).then((res) => res.schedule);
+  // }
 
-  getSchedulesByUser(userID: number): Promise<Schedule[]> {
-    return this.get(`schedules/user/${userID}`).then((res) => res.schedules);
-  }
+  // getSchedulesByReptile(reptileId: string): Promise<Schedule[]> {
+  //   return this.get(`schedules/reptile/${reptileId}`).then(
+  //     (res) => res.schedules
+  //   );
+  // }
 
-  updateSchedule(
-    scheduleId: number,
-    rep: CreateScheduleBody
-  ): Promise<Schedule> {
-    return this.put(`schedules/${scheduleId}`, rep).then((res) => res.schedule);
-  }
+  // getSchedulesByUser(userID: string): Promise<Schedule[]> {
+  //   return this.get(`schedules/user/${userID}`).then((res) => res.schedules);
+  // }
 
-  createHusbandryRecord(
-    reptileId: number,
-    rep: CreateHusbandryBody
-  ): Promise<HusbandryRecord> {
-    return this.post(`record/${reptileId}`, rep).then(
-      (res) => res.husbandryRecord
-    );
-  }
+  // updateSchedule(scheduleId: string, rep: Schedule): Promise<Schedule> {
+  //   return this.put(`schedules/${scheduleId}`, rep).then((res) => res.schedule);
+  // }
 
-  getHusbandryRecords(reptileId: number): Promise<HusbandryRecord[]> {
-    return this.get(`record/${reptileId}`).then((res) => res.records);
-  }
+  // createHusbandryRecord(
+  //   reptileId: string,
+  //   rep: HusbandryRecord
+  // ): Promise<HusbandryRecord> {
+  //   return this.post(`record/${reptileId}`, rep).then(
+  //     (res) => res.husbandryRecord
+  //   );
+  // }
 
-  createFeeding(reptileID: number, rep: CreateFeedingBody): Promise<Feeding> {
-    return this.post(`feeding/${reptileID}`, rep).then((res) => res.feeding);
-  }
+  // getHusbandryRecords(reptileId: string): Promise<HusbandryRecord[]> {
+  //   return this.get(`record/${reptileId}`).then((res) => res.records);
+  // }
 
-  getFeedings(reptileID: number): Promise<Feeding[]> {
-    return this.get(`feeding/${reptileID}`).then((res) => res.feedings);
-  }
+  // createFeeding(reptileID: string, rep: Feeding): Promise<Feeding> {
+  //   return this.post(`feeding/${reptileID}`, rep).then((res) => res.feeding);
+  // }
+
+  // getFeedings(reptileID: string): Promise<Feeding[]> {
+  //   return this.get(`feeding/${reptileID}`).then((res) => res.feedings);
+  // }
 }

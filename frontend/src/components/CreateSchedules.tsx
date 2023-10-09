@@ -1,7 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Schedule, Reptile, User } from "../api/models";
-import { CreateScheduleBody } from "../api/apiTypes";
-import { ScheduleType } from "../api/apiTypes";
+import { Schedule, Reptile, User, ScheduleType } from "../api/models";
 import { AuthContext } from "../context/AuthContext";
 import {
   TextField,
@@ -22,6 +20,19 @@ import {
 import { daysList, initialSchedule } from "../utils/constants";
 import { camelToTitleCase } from "../utils/miscFunctions";
 
+type CreateScheduleForm = Pick<
+  Schedule,
+  | "type"
+  | "description"
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday"
+>;
+
 type CreateScheduleProps = {
   refreshScheduleList: () => void;
   initialReptileId?: number;
@@ -29,7 +40,7 @@ type CreateScheduleProps = {
 
 export const CreateSchedule = (props: CreateScheduleProps) => {
   const { refreshScheduleList, initialReptileId } = props;
-  const [schedule, setSchedule] = useState<CreateScheduleBody>(initialSchedule);
+  const [schedule, setSchedule] = useState<CreateScheduleForm>(initialSchedule);
   const [reptileID, setReptileID] = useState<number | undefined>(
     initialReptileId
   );
@@ -42,7 +53,7 @@ export const CreateSchedule = (props: CreateScheduleProps) => {
     schedule.type,
     schedule.description,
     reptileID,
-    daysList.some((day) => schedule[day as keyof CreateScheduleBody]),
+    daysList.some((day) => schedule[day as keyof CreateScheduleForm]),
   ].every((t) => !!t);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +96,7 @@ export const CreateSchedule = (props: CreateScheduleProps) => {
   const reptileOptionSelection = () => {
     const reptileOptions = reptiles.map((reptile) => {
       return (
-        <MenuItem key={reptile.id} value={reptile.id}>
+        <MenuItem key={reptile._id} value={reptile._id}>
           {reptile.name}
         </MenuItem>
       );
@@ -155,7 +166,7 @@ export const CreateSchedule = (props: CreateScheduleProps) => {
                     control={
                       <Checkbox
                         name={day}
-                        checked={!!schedule[day as keyof CreateScheduleBody]}
+                        checked={!!schedule[day as keyof CreateScheduleForm]}
                         onChange={handleCheckboxChange}
                       />
                     }

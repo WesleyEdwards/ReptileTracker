@@ -20,7 +20,7 @@ export const ScheduleList = () => {
   const fetchSchedules = () => {
     setSchedules(undefined);
     api
-      .getSchedulesByUser(user.id)
+      .getSchedulesByUser(user._id)
       .then((schedules) => {
         const todaySchedules = schedules.filter(
           (schedule) => schedule[today as keyof Schedule]
@@ -57,7 +57,7 @@ export const ScheduleList = () => {
 
       <Grid container spacing={4} paddingTop={4}>
         {schedules.map((schedule) => (
-          <Grid item key={schedule.id}>
+          <Grid item key={schedule._id}>
             <ScheduleCard schedule={schedule} />
           </Grid>
         ))}
@@ -69,7 +69,7 @@ export const ScheduleList = () => {
 
       <Grid container spacing={4} paddingTop={4}>
         {otherSchedules.map((schedule) => (
-          <Grid item key={schedule.id}>
+          <Grid item key={schedule._id}>
             <ScheduleCard schedule={schedule} />
           </Grid>
         ))}

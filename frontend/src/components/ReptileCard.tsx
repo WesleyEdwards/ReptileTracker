@@ -17,7 +17,7 @@ export const ReptileCard: FC<ReptileCardProps> = (props) => {
     <Card
       sx={{ minWidth: "12rem", cursor: "pointer" }}
       onClick={() => {
-        navigate(`/reptile/${reptile.id}`);
+        navigate(`/reptile/${reptile._id}`);
       }}
     >
       <CardContent>

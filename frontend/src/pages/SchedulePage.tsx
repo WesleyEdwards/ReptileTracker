@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CreateScheduleBody } from "../api/apiTypes";
 import { Schedule } from "../api/models";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { HeaderTitle } from "../components/HeaderTitle";
@@ -20,8 +19,7 @@ import { camelToTitleCase } from "../utils/miscFunctions";
 
 export const SchedulePage: FC = () => {
   const { api } = useContext(AuthContext);
-  const { id } = useParams();
-  const scheduleId = parseInt(id || "");
+  const { id: scheduleId } = useParams();
 
   const [schedule, setSchedule] = useState<Schedule | null>();
   const [originalSchedule, setOriginalSchedule] = useState<Schedule>();
@@ -51,8 +49,8 @@ export const SchedulePage: FC = () => {
 
   const handleSave = () => {
     if (!dirty || !schedule) return;
-    api
-      .updateSchedule(scheduleId, schedule)
+    api.schedule
+      .update(scheduleId, schedule)
       .then((res) => {
         setSchedule(res);
         setOriginalSchedule(res);
@@ -61,13 +59,13 @@ export const SchedulePage: FC = () => {
   };
 
   useEffect(() => {
-    api
-      .getSchedule(scheduleId)
+    api.schedule
+      .detail(scheduleId)
       .then((schedule) => {
         setSchedule(schedule);
         setOriginalSchedule(schedule);
-        api
-          .getReptile(schedule.reptileId)
+        api.reptile
+          .detail(schedule.reptile)
           .then((reptile) => setReptileName(reptile.name));
       })
       .catch(() => setSchedule(null));
@@ -114,7 +112,7 @@ export const SchedulePage: FC = () => {
                 control={
                   <Checkbox
                     name={day}
-                    checked={!!schedule[day as keyof CreateScheduleBody]}
+                    checked={!!schedule[day as keyof Schedule]}
                     onChange={handleCheckboxChange}
                   />
                 }

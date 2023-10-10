@@ -46,7 +46,9 @@ export const feedingDetail: ReqBuilder =
 export const queryFeedings: ReqBuilder =
   (client) =>
   async ({body, jwtBody}, res) => {
-    const condition = jwtBody?.admin ? body : {...body, user: jwtBody?.userId}
+    const condition = jwtBody?.admin
+      ? body
+      : {...body, reptile: jwtBody?.reptiles}
     const feedings = await client.feeding.findMany(condition)
     return res.json(feedings)
   }

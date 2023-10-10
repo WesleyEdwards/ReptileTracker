@@ -36,7 +36,9 @@ export const createSched: ReqBuilder =
 export const querySched: ReqBuilder =
   (client) =>
   async ({body, jwtBody}, res) => {
-    const condition = jwtBody?.admin ? body : {...body, user: jwtBody?.userId}
+    const condition = jwtBody?.admin
+      ? body
+      : {...body, reptile: jwtBody?.reptiles}
     const schedules = await client.schedule.findMany(condition)
     return res.json(schedules)
   }
@@ -50,7 +52,7 @@ export const updateSched: ReqBuilder =
       updatedAt: getCurrentDateTime()
     })
     if (isParseError(schedBody)) return res.status(400).json(schedBody)
-    const updatedSched = await client.schedule.updateOne(params._id, schedBody)
+    const updatedSched = await client.schedule.updateOne(params.id, schedBody)
     return res.json(updatedSched)
   }
 
@@ -59,8 +61,9 @@ export const getSched: ReqBuilder =
   async ({params, jwtBody}, res) => {
     const condition = jwtBody?.admin
       ? {_id: params.id}
-      : {_id: params.id, user: jwtBody?.userId}
+      : {_id: params.id, reptile: jwtBody?.reptiles ?? []}
     const schedule = await client.schedule.findOne(condition)
+    if (!schedule) return res.status(404)
     return res.json(schedule)
   }
 

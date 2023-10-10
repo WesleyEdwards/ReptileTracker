@@ -24,6 +24,7 @@ import { CreateFeeding } from "../components/feeding/CreateFeeding";
 import { ScheduleCard } from "../components/schedule/ScheduleCard";
 import { HusbandryRecordCard } from "../components/husbandry/HusbandryRecordCard";
 import { FeedingCard } from "../components/feeding/FeedingCard";
+
 export const ReptilePage: FC = () => {
   const navigate = useNavigate();
   const { id: reptileId } = useParams();
@@ -36,21 +37,6 @@ export const ReptilePage: FC = () => {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [editedReptile, setEditedReptile] = useState<Reptile>();
   const [editingName, setEditingName] = useState(false);
-
-  const fetchReptile = () => {
-    setReptile(undefined);
-    api.reptile.detail(reptileId).then((rep) => {
-      setReptile(rep);
-      setEditedReptile(rep);
-    });
-  };
-
-  const fetchFeedings = () =>
-    api.feeding.query({ reptile: reptileId }).then(setFeedings);
-  const fetchHusbandryRecords = () =>
-    api.husbandry.query({ reptile: reptileId }).then(setRecords);
-  const fetchSchedules = () =>
-    api.schedule.query({ reptile: reptileId }).then(setSchedules);
 
   function editReptile<T extends keyof Reptile>(field: T, value: Reptile[T]) {
     if (!reptile) return;
@@ -74,11 +60,15 @@ export const ReptilePage: FC = () => {
   };
 
   useEffect(() => {
+    setReptile(undefined);
     Promise.all([
-      fetchReptile(),
-      fetchFeedings(),
-      fetchHusbandryRecords(),
-      fetchSchedules(),
+      api.reptile.detail(reptileId).then((rep) => {
+        setReptile(rep);
+        setEditedReptile(rep);
+      }),
+      api.feeding.query({ reptile: reptileId }).then(setFeedings),
+      api.husbandry.query({ reptile: reptileId }).then(setRecords),
+      api.schedule.query({ reptile: reptileId }).then(setSchedules),
     ]).catch((e) => {
       setReptile(null);
       console.error(e);
@@ -131,7 +121,9 @@ export const ReptilePage: FC = () => {
       <HeaderTitle title="Feedings" secondary>
         <CreateFeeding
           reptileId={reptile._id}
-          refreshFeedingList={fetchFeedings}
+          refreshFeedingList={() =>
+            api.feeding.query({ reptile: reptileId }).then(setFeedings)
+          }
         />
       </HeaderTitle>
       <Grid container spacing={4} paddingTop={0}>
@@ -145,7 +137,9 @@ export const ReptilePage: FC = () => {
       <HeaderTitle title="Husbandry Records" secondary>
         <CreateHusbandryRecord
           reptileId={reptile._id}
-          refreshHusbandryRecordList={fetchHusbandryRecords}
+          refreshHusbandryRecordList={() =>
+            api.husbandry.query({ reptile: reptileId }).then(setRecords)
+          }
         />
       </HeaderTitle>
       <Grid container spacing={4} paddingTop={0}>
@@ -158,7 +152,9 @@ export const ReptilePage: FC = () => {
       <HeaderTitle title="Schedules" secondary>
         <CreateSchedule
           initialReptileId={reptile._id}
-          refreshScheduleList={fetchSchedules}
+          refreshScheduleList={() =>
+            api.schedule.query({ reptile: reptileId }).then(setSchedules)
+          }
         />
       </HeaderTitle>
       <Grid container spacing={4} paddingTop={0}>

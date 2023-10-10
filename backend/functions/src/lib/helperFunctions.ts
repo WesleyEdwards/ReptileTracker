@@ -14,7 +14,7 @@ export const creationDates = () => {
 
 export function createUserToken(jwtBody: JWTBody) {
   return jwt.sign(jwtBody, process.env.ENCRYPTION_KEY!, {
-    expiresIn: "10m"
+    expiresIn: "60m"
   })
 }
 

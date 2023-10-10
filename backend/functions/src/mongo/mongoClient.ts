@@ -39,7 +39,9 @@ function functionsForModel<T extends HasId>(
       return undefined
     },
     findOne: async (filter) => {
-      const item = (await collection.findOne(filter as Filter<T>)) as T | null
+      const item = (await collection.findOne(
+        conditionToFilter(filter)
+      )) as T | null
       if (item) {
         return item
       }

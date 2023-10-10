@@ -47,9 +47,8 @@ export const husbandryDetail: ReqBuilder =
 
 export const queryHusbandry: ReqBuilder =
   (client) =>
-  async ({body, jwtBody}, res) => {
-    const condition = jwtBody?.admin ? body : {...body, reptile: jwtBody?.reptiles}
-    const husbandry = await client.husbandryRecord.findMany(condition)
+  async ({body}, res) => {
+    const husbandry = await client.husbandryRecord.findMany(body)
     return res.json(husbandry)
   }
 

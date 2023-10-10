@@ -52,8 +52,8 @@ export const CreateReptile: FC<CreateReptileProps> = (props) => {
     if (!name || !species || !sex) {
       return setError("Please fill out all fields");
     }
-    api
-      .reptile.create({
+    api.reptile
+      .create({
         _id: crypto.randomUUID(),
         user: user._id,
         feeding: [],
@@ -66,8 +66,11 @@ export const CreateReptile: FC<CreateReptileProps> = (props) => {
         sex,
       })
       .then((newRep) => {
-        handleClose();
-        navigate(`/reptile/${newRep._id}`);
+        // A list of the reptiles is stored in the jwt, thus the need to refresh.
+        api.auth.refreshToken().then(() => {
+          handleClose();
+          navigate(`/reptile/${newRep._id}`);
+        });
       });
   };
 

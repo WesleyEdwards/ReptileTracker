@@ -14,7 +14,7 @@ import {
 import React, { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../context/UnAuthContext";
-import { camelToTitleCase } from "../utils/miscFunctions";
+import { LoadingButton } from "@mui/lab";
 
 export const CreateAccount: FC = () => {
   const { setUser, api } = useContext(UnAuthContext);
@@ -24,6 +24,7 @@ export const CreateAccount: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>();
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleSubmit = () => {
     setError(undefined);
@@ -36,13 +37,30 @@ export const CreateAccount: FC = () => {
       return;
     }
 
-    api.createAccount({ email, password, firstName, lastName }).then((user) => {
-      if (!user) {
-        setError("Invalid email or password");
-        return;
-      }
-      setUser(user);
-    });
+    setSubmitting(true);
+    api.auth
+      .createAccount({
+        email,
+        password,
+        firstName,
+        lastName,
+        _id: crypto.randomUUID(),
+        admin: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+      .then((user) => {
+        if (!user) {
+          setError("Invalid email or password");
+          return;
+        }
+        setUser(user);
+        setSubmitting(false);
+      })
+      .catch((e) => {
+        setError("Error creating account");
+        setSubmitting(false);
+      });
   };
 
   const switchToLogin = () => navigate("/sign-in");
@@ -60,56 +78,68 @@ export const CreateAccount: FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Card>
-        <CardContent>
-          <Stack gap="2rem" paddingX="1rem">
-            <Stack direction="row">
-              <IconButton>
-                <ArrowBackIcon onClick={switchToLogin} />
-              </IconButton>
-              <Typography
-                variant="h4"
-                textAlign="center"
-                width="100%"
-                sx={{ mr: "2rem" }}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <Card>
+          <CardContent>
+            <Stack gap="2rem" paddingX="1rem">
+              <Stack direction="row">
+                <IconButton onClick={switchToLogin}>
+                  <ArrowBackIcon />
+                </IconButton>
+                <Typography
+                  variant="h4"
+                  textAlign="center"
+                  width="100%"
+                  sx={{ mr: "2rem" }}
+                >
+                  Create Your Account
+                </Typography>
+              </Stack>
+              <Stack direction="row" gap="2rem">
+                <TextField
+                  {...makeTextFieldProps(firstName, setFirstName, "First Name")}
+                  fullWidth
+                  placeholder="First Name"
+                />
+                <TextField
+                  {...makeTextFieldProps(lastName, setLastName, "Last Name")}
+                  fullWidth
+                  placeholder="Last Name"
+                />
+              </Stack>
+              <TextField
+                {...makeTextFieldProps(email, setEmail, "Email")}
+                placeholder="Email"
+              />
+              <TextField
+                {...makeTextFieldProps(password, setPassword, "Password")}
+                placeholder="Password"
+                type="password"
+              />
+              {error && <Alert severity="error">{error}</Alert>}
+
+              <LoadingButton
+                variant="contained"
+                size="large"
+                loading={submitting}
+                sx={{ width: "12rem", alignSelf: "center", my: "1rem" }}
+                type="submit"
               >
-                Create Your Account
-              </Typography>
-            </Stack>
-            <TextField
-              {...makeTextFieldProps(firstName, setFirstName, "First Name")}
-              placeholder="First Name"
-            />
-            <TextField
-              {...makeTextFieldProps(lastName, setLastName, "Last Name")}
-              placeholder="Last Name"
-            />
-            <TextField
-              {...makeTextFieldProps(email, setEmail, "Email")}
-              placeholder="Email"
-            />
-            <TextField
-              {...makeTextFieldProps(password, setPassword, "Password")}
-              placeholder="Password"
-              type="password"
-            />
-            {error && <Alert severity="error">{error}</Alert>}
+                Submit
+              </LoadingButton>
 
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ width: "12rem", alignSelf: "center", my: "1rem" }}
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-
-            <Stack direction="row" gap="1rem" justifyContent="center">
-              <Divider orientation="vertical" flexItem />
+              <Stack direction="row" gap="1rem" justifyContent="center">
+                <Divider orientation="vertical" flexItem />
+              </Stack>
             </Stack>
-          </Stack>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </form>
     </Container>
   );
 };

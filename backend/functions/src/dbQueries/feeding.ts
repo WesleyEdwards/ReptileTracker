@@ -45,21 +45,15 @@ export const feedingDetail: ReqBuilder =
 
 export const queryFeedings: ReqBuilder =
   (client) =>
-  async ({body, jwtBody}, res) => {
-    const condition = jwtBody?.admin
-      ? body
-      : {...body, reptile: jwtBody?.reptiles}
-    const feedings = await client.feeding.findMany(condition)
+  async ({body}, res) => {
+    const feedings = await client.feeding.findMany(body)
     return res.json(feedings)
   }
 
 export const updateFeeding: ReqBuilder =
   (client) =>
-  async ({params, body, jwtBody}, res) => {
-    const condition = jwtBody?.admin
-      ? {_id: params.id}
-      : {_id: params.id, user: jwtBody?.userId}
-    const exists = await client.feeding.findOne(condition)
+  async ({params, body}, res) => {
+    const exists = await client.feeding.findOne({_id: params.id})
 
     if (!exists) return res.status(404).json("Feeding does not exist")
 

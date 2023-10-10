@@ -43,8 +43,8 @@ export const useUserInfo: UserInfo = () => {
   useEffect(() => {
     if (!user) return;
     const interval = setInterval(() => {
-      api.auth.getSelf();
-    }, 1000 * 60 );
+      api.auth.refreshToken();
+    }, 1000 * 60 * 5);
     return () => clearInterval(interval);
   }, [user]);
 

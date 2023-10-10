@@ -22,3 +22,17 @@ export function sendUserBody(user: User): Omit<User, "passwordHash"> {
   const {passwordHash, ...rest} = user
   return rest
 }
+
+export function canAccessReptile(body: any, jwtBody?: JWTBody): boolean {
+  if (!("reptile" in body)) return true
+  if (!jwtBody) return false
+  if (jwtBody.admin) return true
+  const {reptile} = body
+  if (typeof reptile === "string") {
+    if (!jwtBody.reptiles.includes(reptile)) return false
+  }
+  if (Array.isArray(reptile)) {
+    if (!reptile.every((r) => jwtBody.reptiles.includes(r))) return false
+  }
+  return true
+}

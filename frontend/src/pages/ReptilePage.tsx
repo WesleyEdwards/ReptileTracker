@@ -71,7 +71,6 @@ export const ReptilePage: FC = () => {
       api.schedule.query({ reptile: reptileId }).then(setSchedules),
     ]).catch((e) => {
       setReptile(null);
-      console.error(e);
     });
   }, [reptileId]);
 

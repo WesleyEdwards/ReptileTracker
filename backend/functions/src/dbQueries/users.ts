@@ -9,13 +9,16 @@ import {
 
 export const createUser: ReqBuilder =
   (client) =>
-  async ({body}, res) => {
+  async ({body, jwtBody}, res) => {
     if (!("password" in body)) {
       return res.status(400).json({error: "Password is required"})
     }
     const passwordHash = await bcrypt.hash(body.password, 10)
     const userBody = checkValidation("user", {...body, passwordHash})
     if (isParseError(userBody)) return res.status(400).json(userBody)
+    if (userBody.admin && !jwtBody?.admin) {
+      return res.status(401).json("Unauthorized")
+    }
 
     const emailExists = await client.user.findOne({
       email: userBody.email
@@ -73,9 +76,17 @@ export const getSelf: ReqBuilder =
   }
 
 export const refreshToken: ReqBuilder =
-  () =>
-  ({jwtBody}, res) => {
-    return res.json(createUserToken(jwtBody!))
+  (client) =>
+  async ({jwtBody}, res) => {
+    const reptiles = await client.reptile.findMany({user: [jwtBody!.userId]})
+    if (isParseError(reptiles)) return res.status(404)
+    return res.json(
+      createUserToken({
+        userId: jwtBody!.userId,
+        admin: jwtBody!.admin,
+        reptiles: reptiles.map((r) => r._id)
+      })
+    )
   }
 
 export const loginUser: ReqBuilder =

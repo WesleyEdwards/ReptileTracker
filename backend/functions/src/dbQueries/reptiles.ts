@@ -30,7 +30,6 @@ export const reptileDetail: ReqBuilder =
 
       return res.json(reptile)
     } catch (error) {
-      console.log(error)
       return res.status(500).json({error})
     }
   }

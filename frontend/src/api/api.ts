@@ -61,8 +61,8 @@ export class Api {
   }
 
   readonly auth = {
-    createAccount: (body: User): Promise<User> => {
-      return this.post("user", body).then((res) => {
+    createAccount: (body: User & { password: string }): Promise<User> => {
+      return this.post("user/create", body).then((res) => {
         this.setToken(res.token);
         return res.user;
       });
@@ -79,9 +79,9 @@ export class Api {
     },
     refreshToken: (): Promise<string> => {
       if (!this.token) return Promise.reject(null);
-      return this.post("user/refresh", {}).then((res) => {
-        this.setToken(res.token);
-        return res.token;
+      return this.post("user/refresh", {}).then((jwt) => {
+        this.setToken(jwt);
+        return jwt;
       });
     },
   };

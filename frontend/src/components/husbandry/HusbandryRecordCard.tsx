@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { HusbandryRecord } from "../api/models";
+import { HusbandryRecord } from "../../api/models";
 
 interface HusbandryRecordProps {
   record: HusbandryRecord;

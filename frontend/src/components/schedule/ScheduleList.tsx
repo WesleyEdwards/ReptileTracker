@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Divider, Grid, Typography } from "@mui/material";
-import { AuthContext } from "../context/AuthContext";
-import { Schedule } from "../api/models";
+import { AuthContext } from "../../context/AuthContext";
+import { Schedule } from "../../api/models";
 import { ScheduleCard } from "./ScheduleCard";
 import { CreateSchedule } from "./CreateSchedules";
-import { Spinner } from "./Spinner";
-import { ErrorMessage } from "./ErrorMessage";
-import { HeaderTitle } from "./HeaderTitle";
-import { daysList } from "../utils/constants";
-import { camelToTitleCase } from "../utils/miscFunctions";
+import { Spinner } from "../Spinner";
+import { ErrorMessage } from "../ErrorMessage";
+import { HeaderTitle } from "../HeaderTitle";
+import { daysList } from "../../utils/constants";
+import { camelToTitleCase } from "../../utils/miscFunctions";
 
 export const ScheduleList = () => {
   const [schedules, setSchedules] = useState<Schedule[] | null>();
@@ -19,8 +19,8 @@ export const ScheduleList = () => {
 
   const fetchSchedules = () => {
     setSchedules(undefined);
-    api
-      .getSchedulesByUser(user._id)
+    api.schedule
+      .query({})
       .then((schedules) => {
         const todaySchedules = schedules.filter(
           (schedule) => schedule[today as keyof Schedule]

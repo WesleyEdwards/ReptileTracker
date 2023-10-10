@@ -8,25 +8,45 @@ type UserInfo = () => {
   setUser: (user: User | undefined) => void;
   logout: () => void;
   api: Api;
+  loadingUser: boolean;
 };
 
 export const useUserInfo: UserInfo = () => {
   const [user, setUser] = useState<User>();
-  const [api] = useState(new Api());
+  const [api] = useState(new Api(getToken()));
+  const [loadingUser, setLoadingUser] = useState(true);
 
   const logout = () => {
     removeToken();
     setUser(undefined);
   };
 
-  useEffect(() => {
+  const fetchUser = async () => {
     if (user) return;
-    if (!getToken()) return;
-    api.getUser().then((user) => {
-      if (!user) return;
-      setUser(user);
-    });
+    try {
+      const fetchUser = await api.auth.getSelf();
+      setUser(fetchUser);
+    } catch {
+      setUser(undefined);
+    }
+    setLoadingUser(false);
+  };
+
+  useEffect(() => {
+    if (api.getToken()) {
+      fetchUser();
+      return;
+    }
+    setLoadingUser(false);
   }, []);
 
-  return { user, setUser, logout, api };
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(() => {
+      api.auth.getSelf();
+    }, 1000 * 60 );
+    return () => clearInterval(interval);
+  }, [user]);
+
+  return { user, setUser, logout, api, loadingUser };
 };

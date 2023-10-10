@@ -1,24 +1,24 @@
 import { Button, Grid } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import { Reptile } from "../api/models";
-import { AuthContext } from "../context/AuthContext";
+import { Reptile } from "../../api/models";
+import { AuthContext } from "../../context/AuthContext";
 import { CreateReptile } from "./CreateReptile";
-import { ErrorMessage } from "./ErrorMessage";
-import { HeaderTitle } from "./HeaderTitle";
+import { ErrorMessage } from "../ErrorMessage";
+import { HeaderTitle } from "../HeaderTitle";
 import ReptileCard from "./ReptileCard";
-import { Spinner } from "./Spinner";
+import { Spinner } from "../Spinner";
 
 export const ReptileList = () => {
   const [reptiles, setReptiles] = useState<Reptile[] | null>();
-  const { api } = useContext(AuthContext);
+  const { api, user } = useContext(AuthContext);
 
   const fetchReptiles = () => {
     setReptiles(undefined);
-    api
-      .getReptiles()
-      .then((reptiles) => {
-        setReptiles(reptiles);
+    api.reptile
+      .query({
+        user: user._id,
       })
+      .then(setReptiles)
       .catch(() => setReptiles(null));
   };
 

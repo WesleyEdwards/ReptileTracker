@@ -16,9 +16,9 @@ import {
 } from "@mui/material";
 import { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { camelToTitleCase } from "../utils/miscFunctions";
-import { SexType, SpeciesType } from "../api/models";
+import { AuthContext } from "../../context/AuthContext";
+import { camelToTitleCase } from "../../utils/miscFunctions";
+import { SexType, SpeciesType } from "../../api/models";
 
 type CreateReptileProps = {
   refreshReptileList: () => void;
@@ -53,7 +53,7 @@ export const CreateReptile: FC<CreateReptileProps> = (props) => {
       return setError("Please fill out all fields");
     }
     api
-      .createReptile({
+      .reptile.create({
         _id: crypto.randomUUID(),
         user: user._id,
         feeding: [],

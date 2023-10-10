@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import { ScheduleList } from "../components/ScheduleList";
+import { ScheduleList } from "../components/schedule/ScheduleList";
 
 export const SchedulesPage = () => {
   return (

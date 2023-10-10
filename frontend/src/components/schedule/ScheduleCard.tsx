@@ -1,9 +1,9 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { Schedule } from "../api/models";
-import { daysList } from "../utils/constants";
-import { camelToTitleCase } from "../utils/miscFunctions";
+import { Schedule } from "../../api/models";
+import { daysList } from "../../utils/constants";
+import { camelToTitleCase } from "../../utils/miscFunctions";
 
 interface ScheduleCardProps {
   schedule: Schedule;

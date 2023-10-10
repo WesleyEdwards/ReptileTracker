@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import { Schedule, Reptile, User, ScheduleType } from "../api/models";
-import { AuthContext } from "../context/AuthContext";
+import { Schedule, Reptile, User, ScheduleType } from "../../api/models";
+import { AuthContext } from "../../context/AuthContext";
 import {
   TextField,
   FormControl,
@@ -17,8 +17,8 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
-import { daysList, initialSchedule } from "../utils/constants";
-import { camelToTitleCase } from "../utils/miscFunctions";
+import { daysList, initialSchedule } from "../../utils/constants";
+import { camelToTitleCase } from "../../utils/miscFunctions";
 
 type CreateScheduleForm = Pick<
   Schedule,
@@ -35,13 +35,13 @@ type CreateScheduleForm = Pick<
 
 type CreateScheduleProps = {
   refreshScheduleList: () => void;
-  initialReptileId?: number;
+  initialReptileId?: string;
 };
 
 export const CreateSchedule = (props: CreateScheduleProps) => {
   const { refreshScheduleList, initialReptileId } = props;
   const [schedule, setSchedule] = useState<CreateScheduleForm>(initialSchedule);
-  const [reptileID, setReptileID] = useState<number | undefined>(
+  const [reptileID, setReptileID] = useState<string | undefined>(
     initialReptileId
   );
   const [reptiles, setReptiles] = useState<Reptile[]>([]);
@@ -79,14 +79,22 @@ export const CreateSchedule = (props: CreateScheduleProps) => {
       setError("Please fill out all fields");
       return;
     }
-    api.createSchedule(schedule, reptileID).then(() => {
-      refreshScheduleList();
-      handleClose();
-    });
+    api.schedule
+      .create({
+        ...schedule,
+        _id: crypto.randomUUID(),
+        reptile: reptileID,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+      .then(() => {
+        refreshScheduleList();
+        handleClose();
+      });
   };
 
   const getReptiles = () => {
-    api.getReptiles().then(setReptiles);
+    api.reptile.query({}).then(setReptiles);
   };
 
   useEffect(() => {
@@ -107,9 +115,7 @@ export const CreateSchedule = (props: CreateScheduleProps) => {
         <Select
           label="Reptile"
           value={reptileID?.toString()}
-          onChange={(e) => {
-            setReptileID(parseInt(e.target.value));
-          }}
+          onChange={(e) => setReptileID(e.target.value)}
         >
           {reptileOptions}
         </Select>

@@ -31,7 +31,7 @@ export const SignIn: FC = () => {
       return;
     }
 
-    api.signIn({ email, password }).then((user) => {
+    api.auth.signIn({ email, password }).then((user) => {
       if (!user) {
         setError("An error occurred");
         return;

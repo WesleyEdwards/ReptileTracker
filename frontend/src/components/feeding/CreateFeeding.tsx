@@ -1,5 +1,5 @@
 import { FC, useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import {
   TextField,
   Button,
@@ -13,7 +13,7 @@ import {
 
 type CreateFeedingProps = {
   refreshFeedingList: () => void;
-  reptileId: number;
+  reptileId: string;
 };
 
 export const CreateFeeding = (props: CreateFeedingProps) => {
@@ -42,7 +42,13 @@ export const CreateFeeding = (props: CreateFeedingProps) => {
       return;
     }
 
-    await api.createFeeding(reptileId, feeding);
+    await api.feeding.create({
+      _id: crypto.randomUUID(),
+      reptile: reptileId,
+      foodItem: feeding,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
     refreshFeedingList();
     handleClose();
   };

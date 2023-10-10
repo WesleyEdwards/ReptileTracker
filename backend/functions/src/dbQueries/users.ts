@@ -72,6 +72,12 @@ export const getSelf: ReqBuilder =
     return res.json(sendUserBody(user))
   }
 
+export const refreshToken: ReqBuilder =
+  () =>
+  ({jwtBody}, res) => {
+    return res.json(createUserToken(jwtBody!))
+  }
+
 export const loginUser: ReqBuilder =
   (client) =>
   async ({body}, res) => {

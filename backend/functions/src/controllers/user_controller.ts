@@ -5,10 +5,12 @@ import {
   getSelf,
   getUser,
   loginUser,
-  queryUser
+  queryUser,
+  refreshToken
 } from "../dbQueries/users"
 
 export const usersController = controller("user", [
+  {path: "/refresh", method: "post", endpointBuilder: refreshToken},
   {
     path: "/create",
     method: "post",

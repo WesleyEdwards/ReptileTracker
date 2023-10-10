@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { FC } from "react";
-import { Feeding } from "../api/models";
+import { Feeding } from "../../api/models";
 
 interface FeedingRecordProps {
   feeding: Feeding;

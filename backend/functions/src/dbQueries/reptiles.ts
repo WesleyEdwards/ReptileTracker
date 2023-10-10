@@ -21,13 +21,18 @@ export const createReptile: ReqBuilder =
 export const reptileDetail: ReqBuilder =
   (client) =>
   async ({params, jwtBody}, res) => {
-    const condition = jwtBody?.admin
-      ? {_id: params.id}
-      : {_id: params.id, reptile: jwtBody?.reptiles}
-    const reptile = await client.reptile.findOne(condition)
-    if (!reptile) return res.status(404)
+    try {
+      const condition = jwtBody?.admin
+        ? {_id: params.id}
+        : {_id: params.id, user: jwtBody?.userId ?? ""}
+      const reptile = await client.reptile.findOne(condition)
+      if (!reptile) return res.status(404)
 
-    return res.json(reptile)
+      return res.json(reptile)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({error})
+    }
   }
 
 export const queryReptiles: ReqBuilder =

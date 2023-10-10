@@ -17,20 +17,18 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { HeaderTitle } from "../components/HeaderTitle";
 import { Spinner } from "../components/Spinner";
 import { AuthContext } from "../context/AuthContext";
-import { CreateSchedule } from "../components/CreateSchedules";
-import { DeleteReptile } from "../components/DeleteReptile";
-import { CreateHusbandryRecord } from "../components/CreateHusbandryRecord";
-import { CreateFeeding } from "../components/CreateFeeding";
-import { ScheduleCard } from "../components/ScheduleCard";
-import { HusbandryRecordCard } from "../components/HusbandryRecordCard";
-import { FeedingCard } from "../components/FeedingCard";
+import { CreateSchedule } from "../components/schedule/CreateSchedules";
+import { DeleteReptile } from "../components/reptile/DeleteReptile";
+import { CreateHusbandryRecord } from "../components/husbandry/CreateHusbandryRecord";
+import { CreateFeeding } from "../components/feeding/CreateFeeding";
+import { ScheduleCard } from "../components/schedule/ScheduleCard";
+import { HusbandryRecordCard } from "../components/husbandry/HusbandryRecordCard";
+import { FeedingCard } from "../components/feeding/FeedingCard";
 export const ReptilePage: FC = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const reptileId = parseInt(id ?? "");
+  const { id: reptileId } = useParams();
   const { api } = useContext(AuthContext);
-  if (!reptileId || isNaN(reptileId))
-    return <ErrorMessage title="Error fetching reptile" />;
+  if (!reptileId) return <ErrorMessage title="Error fetching reptile" />;
 
   const [reptile, setReptile] = useState<Reptile | null>();
   const [records, setRecords] = useState<HusbandryRecord[]>([]);
@@ -41,17 +39,18 @@ export const ReptilePage: FC = () => {
 
   const fetchReptile = () => {
     setReptile(undefined);
-    api.getReptile(reptileId).then((rep) => {
+    api.reptile.detail(reptileId).then((rep) => {
       setReptile(rep);
       setEditedReptile(rep);
     });
   };
 
-  const fetchFeedings = () => api.getFeedings(reptileId).then(setFeedings);
+  const fetchFeedings = () =>
+    api.feeding.query({ reptile: reptileId }).then(setFeedings);
   const fetchHusbandryRecords = () =>
-    api.getHusbandryRecords(reptileId).then(setRecords);
+    api.husbandry.query({ reptile: reptileId }).then(setRecords);
   const fetchSchedules = () =>
-    api.getSchedulesByReptile(reptileId).then(setSchedules);
+    api.schedule.query({ reptile: reptileId }).then(setSchedules);
 
   function editReptile<T extends keyof Reptile>(field: T, value: Reptile[T]) {
     if (!reptile) return;
@@ -61,7 +60,7 @@ export const ReptilePage: FC = () => {
   const save = () => {
     if (!editedReptile) return;
     const { name, sex, species } = editedReptile;
-    api.updateReptile(reptileId, { name, sex, species }).then(() => {
+    api.reptile.update(reptileId, { name, sex, species }).then(() => {
       setReptile(editedReptile);
       setEditingName(false);
     });
@@ -69,7 +68,7 @@ export const ReptilePage: FC = () => {
 
   const deleteReptile = () => {
     if (!reptile) return;
-    api.deleteReptile(reptile._id).then(() => {
+    api.reptile.delete(reptile._id).then(() => {
       navigate("/dashboard");
     });
   };

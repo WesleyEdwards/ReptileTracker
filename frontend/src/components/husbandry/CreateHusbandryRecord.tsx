@@ -1,5 +1,5 @@
 import { FC, useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import {
   TextField,
   Button,
@@ -10,8 +10,8 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
-import { HusbandryRecord } from "../api/models";
-import { initialHusbandryRecord } from "../utils/constants";
+import { HusbandryRecord } from "../../api/models";
+import { initialHusbandryRecord } from "../../utils/constants";
 
 type HusbandryForm = Pick<
   HusbandryRecord,
@@ -20,7 +20,7 @@ type HusbandryForm = Pick<
 
 type CreateHusbandryRecordProps = {
   refreshHusbandryRecordList: () => void;
-  reptileId: number;
+  reptileId: string;
 };
 
 export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
@@ -31,8 +31,6 @@ export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
   const [husbandryRecord, setHusbandryRecord] = useState<HusbandryForm>(
     initialHusbandryRecord
   );
-
-  if (!reptileId) throw new Error("reptileId is undefined");
 
   const handleClose = () => {
     setOpen(false);
@@ -59,7 +57,13 @@ export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
       return;
     }
 
-    await api.createHusbandryRecord(reptileId, husbandryRecord);
+    await api.husbandry.create({
+      _id: crypto.randomUUID(),
+      reptile: reptileId,
+      ...husbandryRecord,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
     refreshHusbandryRecordList();
     handleClose();
   };

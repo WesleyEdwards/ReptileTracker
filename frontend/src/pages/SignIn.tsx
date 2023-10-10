@@ -12,6 +12,7 @@ import {
 import React, { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../context/UnAuthContext";
+import { LoadingButton } from "@mui/lab";
 
 export const SignIn: FC = () => {
   const { setUser, api } = useContext(UnAuthContext);
@@ -19,6 +20,7 @@ export const SignIn: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>();
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleSignIn = () => {
     setError(undefined);
@@ -31,54 +33,73 @@ export const SignIn: FC = () => {
       return;
     }
 
-    api.signIn({ email, password }).then((user) => {
-      if (!user) {
+    setSubmitting(true);
+    api.auth
+      .signIn({ email, password })
+      .then((user) => {
+        if (!user) {
+          setError("An error occurred");
+          return;
+        }
+        setUser(user);
+        navigation("/");
+      })
+      .catch((e) => {
         setError("An error occurred");
-        return;
-      }
-      setUser(user);
-      navigation("/");
-    });
+        setSubmitting(false);
+      });
   };
 
   const navCreateAccount = () => navigation("/create-account");
 
   return (
     <Container maxWidth="sm" sx={{ pt: 8 }}>
-      <Card>
-        <CardContent>
-          <Stack gap="2rem" paddingX="1rem">
-            <Typography variant="h4" textAlign="center">
-              Sign In
-            </Typography>
-            <TextField
-              label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {error && <Alert severity="error">{error}</Alert>}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          navCreateAccount();
+        }}
+      >
+        <Card>
+          <CardContent>
+            <Stack gap="2rem" paddingX="1rem">
+              <Typography variant="h4" textAlign="center">
+                Sign In
+              </Typography>
+              <TextField
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {error && <Alert severity="error">{error}</Alert>}
 
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ width: "12rem", alignSelf: "center", my: "1rem" }}
-              onClick={handleSignIn}
-            >
-              Sign In
-            </Button>
-            <Divider />
-            <Button variant="text" size="small" onClick={navCreateAccount}>
-              Create Account
-            </Button>
-          </Stack>
-        </CardContent>
-      </Card>
+              <Button
+                variant="contained"
+                size="large"
+                sx={{ width: "12rem", alignSelf: "center", my: "1rem" }}
+                onClick={handleSignIn}
+              >
+                Sign In
+              </Button>
+              <Divider />
+              <LoadingButton
+                loading={submitting}
+                variant="text"
+                size="small"
+                type="submit"
+              >
+                Create Account
+              </LoadingButton>
+            </Stack>
+          </CardContent>
+        </Card>
+      </form>
     </Container>
   );
 };

@@ -1,16 +1,14 @@
-import { SpeciesType } from "../api/apiTypes";
-import { Reptile } from "../api/models";
 
 export function setTokenToLocalStorage(token: string) {
-  localStorage.setItem("token", token);
+  localStorage.setItem("reptile-token", token);
 }
 
 export function getToken(): string | null {
-  return localStorage.getItem("token");
+  return localStorage.getItem("reptile-token");
 }
 
 export function removeToken() {
-  localStorage.removeItem("token");
+  localStorage.removeItem("reptile-token");
 }
 
 export function camelToTitleCase(camelCase: string): string {

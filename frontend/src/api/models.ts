@@ -1,54 +1,59 @@
-import { ScheduleType, SpeciesType } from "./apiTypes";
+export type SexType = "male" | "female";
 
-type DateTime = string;
+export type SpeciesType =
+  | "ball_python"
+  | "king_snake"
+  | "corn_snake"
+  | "redtail_boa";
+
+export type ScheduleType = "feed" | "record" | "clean";
 
 export type User = {
-  id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
+  admin: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Reptile = {
-  id: number;
-  userId: number;
+  _id: string;
+  user: string;
   species: SpeciesType;
   name: string;
-  sex: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
-  feeding: Feeding[];
-  husbandryRecord: HusbandryRecord[];
-  schedule: Schedule[];
+  sex: SexType;
+  feeding: string[];
+  husbandryRecord: string[];
+  schedule: string[];
+  createdAt: string;
+  updatedAt: string;
 };
+
 export type Feeding = {
-  id: number;
-  reptile: Reptile;
-  reptileId: number;
+  _id: string;
+  reptile: string;
   foodItem: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type HusbandryRecord = {
-  id: number;
-  reptile: Reptile;
-  reptileId: number;
-  length: number;
-  weight: number;
-  temperature: number;
-  humidity: number;
-  createdAt: DateTime;
-  updatedAt: DateTime;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  reptile: string;
+  length?: number | undefined;
+  weight?: number | undefined;
+  temperature?: number | undefined;
+  humidity?: number | undefined;
 };
 
 export type Schedule = {
-  id: number;
-  reptileId: number;
-  userId: number;
+  _id: string;
   type: ScheduleType;
+  reptile: string;
   description: string;
   monday: boolean;
   tuesday: boolean;
@@ -57,6 +62,6 @@ export type Schedule = {
   friday: boolean;
   saturday: boolean;
   sunday: boolean;
-  createdAt?: DateTime;
-  updatedAt?: DateTime;
+  createdAt: string;
+  updatedAt: string;
 };

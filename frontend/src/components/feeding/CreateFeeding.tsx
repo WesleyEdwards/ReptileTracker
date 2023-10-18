@@ -10,18 +10,19 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
+import { Feeding } from "../../api/models";
+import { useToast } from "../Toaster";
+import { useReptileContext } from "../reptile/ReptileContext";
 
-type CreateFeedingProps = {
-  refreshFeedingList: () => void;
-  reptileId: string;
-};
+export const CreateFeeding = () => {
+  const { addInfo, reptile } = useReptileContext();
 
-export const CreateFeeding = (props: CreateFeedingProps) => {
-  const { refreshFeedingList, reptileId } = props;
   const { api } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
   const [feeding, setFeeding] = useState<string>("");
+
+  const toast = useToast();
 
   const handleClose = () => {
     setOpen(false);
@@ -31,25 +32,30 @@ export const CreateFeeding = (props: CreateFeedingProps) => {
 
   const validInput = () => {
     if (!feeding) return false;
-    if (!reptileId) return false;
     return true;
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validInput()) {
       setError("Please fill out all fields");
       return;
     }
 
-    await api.feeding.create({
+    const newFeeding: Feeding = {
       _id: crypto.randomUUID(),
-      reptile: reptileId,
+      reptile: reptile._id,
       foodItem: feeding,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+    };
+
+    addInfo("feedings", newFeeding);
+
+    api.feeding.create(newFeeding).catch((e) => {
+      toast("Error creating feeding", "error");
     });
-    refreshFeedingList();
+
     handleClose();
   };
 

@@ -12,25 +12,24 @@ import {
 } from "@mui/material";
 import { HusbandryRecord } from "../../api/models";
 import { initialHusbandryRecord } from "../../utils/constants";
+import { useReptileContext } from "../reptile/ReptileContext";
+import { useToast } from "../Toaster";
 
 type HusbandryForm = Pick<
   HusbandryRecord,
   "length" | "weight" | "temperature" | "humidity"
 >;
 
-type CreateHusbandryRecordProps = {
-  refreshHusbandryRecordList: () => void;
-  reptileId: string;
-};
-
-export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
-  const { refreshHusbandryRecordList, reptileId } = props;
+export const CreateHusbandryRecord = () => {
+  const { addInfo, reptile } = useReptileContext();
   const { api } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
   const [husbandryRecord, setHusbandryRecord] = useState<HusbandryForm>(
     initialHusbandryRecord
   );
+
+  const toast = useToast();
 
   const handleClose = () => {
     setOpen(false);
@@ -50,21 +49,25 @@ export const CreateHusbandryRecord = (props: CreateHusbandryRecordProps) => {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validInput()) {
       setError("Please fill out all fields");
       return;
     }
 
-    await api.husbandry.create({
+    const newHusbandry: HusbandryRecord = {
       _id: crypto.randomUUID(),
-      reptile: reptileId,
+      reptile: reptile._id,
       ...husbandryRecord,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+    };
+
+    addInfo("husbandry", newHusbandry);
+    api.husbandry.create(newHusbandry).catch((e) => {
+      toast("Error creating feeding", "error");
     });
-    refreshHusbandryRecordList();
     handleClose();
   };
 

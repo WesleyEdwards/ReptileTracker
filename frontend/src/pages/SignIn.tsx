@@ -79,23 +79,20 @@ export const SignIn: FC = () => {
               />
               {error && <Alert severity="error">{error}</Alert>}
 
-              <Button
+              <LoadingButton
                 variant="contained"
                 size="large"
                 sx={{ width: "12rem", alignSelf: "center", my: "1rem" }}
                 onClick={handleSignIn}
-              >
-                Sign In
-              </Button>
-              <Divider />
-              <LoadingButton
                 loading={submitting}
-                variant="text"
-                size="small"
                 type="submit"
               >
-                Create Account
+                Sign In
               </LoadingButton>
+              <Divider />
+              <Button variant="text" size="small">
+                Create Account
+              </Button>
             </Stack>
           </CardContent>
         </Card>

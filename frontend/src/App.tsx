@@ -4,6 +4,7 @@ import { authRouter, unAuthRouter } from "./utils/routes";
 import { UnAuthContext } from "./context/UnAuthContext";
 import { useUserInfo } from "./utils/hooks";
 import { Spinner } from "./components/Spinner";
+import { ToastProvider } from "./components/Toaster";
 
 function App() {
   const { user, setUser, logout, api, loadingUser } = useUserInfo();
@@ -11,8 +12,8 @@ function App() {
   if (loadingUser) return <Spinner />;
 
   return (
-    <>
-      {user ? ( 
+    <ToastProvider>
+      {user ? (
         <AuthContext.Provider value={{ user, setUser, logout, api }}>
           <RouterProvider router={authRouter} />
         </AuthContext.Provider>
@@ -21,7 +22,7 @@ function App() {
           <RouterProvider router={unAuthRouter} />
         </UnAuthContext.Provider>
       )}
-    </>
+    </ToastProvider>
   );
 }
 

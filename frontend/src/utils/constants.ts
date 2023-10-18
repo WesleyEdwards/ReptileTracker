@@ -28,7 +28,3 @@ export const initialHusbandryRecord = {
   temperature: undefined,
   humidity: undefined,
 } satisfies Partial<HusbandryRecord>;
-
-// export const initialFeedingRecord: CreateFeedingBody = {
-//   foodItem: "",
-// };

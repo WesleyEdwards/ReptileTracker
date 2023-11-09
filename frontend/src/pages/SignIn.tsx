@@ -90,7 +90,7 @@ export const SignIn: FC = () => {
                 Sign In
               </LoadingButton>
               <Divider />
-              <Button variant="text" size="small">
+              <Button onClick={() => navigation("/create-account")} variant="text" size="small">
                 Create Account
               </Button>
             </Stack>
